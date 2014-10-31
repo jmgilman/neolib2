@@ -63,59 +63,65 @@ class Profile:
             }
 
     def __init__(self, username):
+        # Much of the user profile can change without much formality. This means
+        # certain HTML may or may not be in different places. It all depends on
+        # how much the user has filled their profile in. Therefore, this class
+        # uses a combination of xpath and regular expressions to parse all
+        # required information from the profile.
+
+        # Since the pattern for parsing with regular expressions and xpath is
+        # fairly similar across all the sections of a user profile, a refactored
+        # function was implemented which takes an exception function for dealing
+        # with any exceptional fields when running through a profile section.
+
+        # The age of an account is only displayed in the form of an image. This
+        # image can represent either the number of weeks, months, or years. The
+        # below exception function determines which type of image it is and
+        # calculates the proper age.
+        def general_exception(self, key, exp):
+            if key == 'age':
+                if 'years' in exp.group(1).decode('utf-8'):
+                    self.age = int(exp.group(1).decode('utf-8').split("_")[0]) * 12
+                elif 'mth' in exp.group(1).decode('utf-8'):
+                    self.age = int(exp.group(1).decode('utf-8').split('mth')[0])
+                else:
+                    self.age = int(exp.group(1).decode('utf-8').split('wk')[0]) / 4
+                return True
+            else:
+                return False
+
+        # The number of neocards a user has is display differently depending on
+        # if the user has an active deck. The below exception function determines
+        # which case exists and parses accordingly.
+        def collections2_exception(self, key, exp):
+            if key == 'neocards':
+                # If the first match failed it will match an entire sentence. So
+                # we just check the results length to see if it failed (4 is arbitrary)
+                if len(exp.group(1).decode('utf-8')) > 4:
+                    exp = re.compile(bytes(self.regex['collections2']['neocards2'], 'utf-8'), re.DOTALL).search(collections2)
+                    self.neocards = int(self._remove_extra(exp.group(1).decode('utf-8')))
+                else:
+                    self.neocards = int(self._remove_extra(exp.group(1).decode('utf-8')))
+                return True
+            elif key == 'neocards2':
+                return True
+            else:
+                return False
+
         # Get the profile page
         pg = Page('http://www.neopets.com/userlookup.phtml?user=' + username)
 
-        # The general details can have any number of fields in any order depending
-        # on what the user decided to input into his/her profile. This makes
-        # parsing with lxml difficult and so a combination of lxml and regex is used
-        general = etree.tostring(pg.xpath(self.paths['general'])[0])
-        collections1 = etree.tostring(pg.xpath(self.paths['collections1'])[0])
-        collections2 = etree.tostring(pg.xpath(self.paths['collections2'])[0])
-        shop_gallery = etree.tostring(pg.xpath(self.paths['shop_gallery'])[0])
+        # Parse the general profile details
+        self._set_attributes(pg, self.paths['general'], self.regex['general'], general_exception)
 
-        for key in self.regex['general'].keys():
-            exp = re.compile(bytes(self.regex['general'][key], 'utf-8')).search(general)
-            if exp:
-                # Age is done a bit differently
-                if key == 'age':
-                    if 'years' in exp.group(1).decode('utf-8'):
-                        self.age = int(exp.group(1).decode('utf-8').split("_")[0]) * 12
-                    elif 'mth' in exp.group(1).decode('utf-8'):
-                        self.age = int(exp.group(1).decode('utf-8').split('mth')[0])
-                    else:
-                        self.age = int(exp.group(1).decode('utf-8').split('wk')[0]) / 4
-                else:
-                    setattr(self, key, exp.group(1).decode('utf-8').strip())
+        # Parse the first set of collections
+        self._set_attributes(pg, self.paths['collections1'], self.regex['collections1'])
 
-        # To maintain consistency, continue to use the above pattern for the
-        # rest of the profile
-        for key in self.regex['collections1'].keys():
-            exp = re.compile(bytes(self.regex['collections1'][key], 'utf-8'), re.DOTALL).search(collections1)
-            if not exp: exp = re.compile(bytes(self.regex['collections1'][key], 'utf-8'), re.DOTALL).search(collections1)
-            if exp:
-                setattr(self, key, int(self._remove_extra(exp.group(1).decode('utf-8'))))
+        # Parse the second set of collections
+        self._set_attributes(pg, self.paths['collections2'], self.regex['collections2'], collections2_exception)
 
-        for key in self.regex['collections2'].keys():
-            exp = re.compile(bytes(self.regex['collections2'][key], 'utf-8')).search(collections2)
-            if not exp: exp = re.compile(bytes(self.regex['collections2'][key], 'utf-8'), re.DOTALL).search(collections2)
-            if exp:
-                # Neocards can have different formats unfortunately
-                if key == 'neocards':
-                    if len(exp.group(1).decode('utf-8')) > 4:
-                        exp = re.compile(bytes(self.regex['collections2']['neocards2'], 'utf-8'), re.DOTALL).search(collections2)
-                        self.neocards = int(self._remove_extra(exp.group(1).decode('utf-8')))
-                    else:
-                        self.neocards = int(self._remove_extra(exp.group(1).decode('utf-8')))
-                elif key == 'neocards2':
-                    continue
-                else:
-                    setattr(self, key, int(self._remove_extra(exp.group(1).decode('utf-8'))))
-
-        for key in self.regex['shop_gallery'].keys():
-            exp = re.compile(bytes(self.regex['shop_gallery'][key], 'utf-8')).search(shop_gallery)
-            if exp:
-                setattr(self, key, self._remove_extra(exp.group(1).decode('utf-8')))
+        # Parse the shop and gallery information
+        self._set_attributes(pg, self.paths['shop_gallery'], self.regex['shop_gallery'])
 
         # The neopets are parsed slightly differently
         for td in pg.xpath(self.paths['neopets']):
@@ -128,5 +134,27 @@ class Profile:
                     setattr(pet, key, self._remove_extra(exp.group(1).decode('utf-8')))
             self.neopets.append(pet)
 
+    def _set_attributes(self, pg, path, patterns, exception=None):
+        html = etree.tostring(pg.xpath(path)[0])
+
+        # Loop through all supplied regular expressions
+        for key in patterns.keys():
+            # Search the supplied HTML for matches
+            exp = re.compile(bytes(patterns[key], 'utf-8')).search(html)
+
+            # Sometimes weird characters mess with the match so we try it one
+            # more time with DOTALL
+            if not exp: exp = re.compile(bytes(patterns[key], 'utf-8'), re.DOTALL).search(html)
+
+            if exp:
+                # If an exception function was given, call it and continue if it passes
+                if exception:
+                    if exception(self, key, exp): continue
+                # Set this classes attribute with the cleaned up match
+                setattr(self, key, self._remove_extra(exp.group(1).decode('utf-8')))
+
+
+
     def _remove_extra(self, string):
+        # Remove all the extra ugly from any matches
         return string.strip().replace('\n', '').replace('\r', '').replace('\t', '')
