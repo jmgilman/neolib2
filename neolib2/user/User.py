@@ -4,11 +4,11 @@ from neolib2.http.Page import Page
 
 class User:
 
-    username = ""
-    password = ""
-    pin = ""
+    username = ''
+    password = ''
+    pin = ''
 
-    session = ""
+    session = ''
 
     neopoints = 0
 
@@ -40,11 +40,11 @@ class User:
         # TNT has very tight anti-cheat controls so in this scenario it
         # is best to simulate a legitimate login by navigating to the
         # index page first
-        pg = self.get_page("http://www.neopets.com/")
+        pg = self.get_page('http://www.neopets.com/')
 
         # Fill in the login form
-        form = pg.form(action = "/login.phtml")[0]
-        form.update({"username": self.username, "password": self.password})
+        form = pg.form(action = '/login.phtml')[0]
+        form.update({'username': self.username, 'password': self.password})
 
         # Submit the form
         pg = form.submit(self)
@@ -52,5 +52,5 @@ class User:
         # Return if it was successful
         return self.username in pg.content
 
-    def get_page(self, url, post_data="", header_values=""):
+    def get_page(self, url, post_data='', header_values=''):
         return Page(url, self, post_data=post_data, header_values=header_values)

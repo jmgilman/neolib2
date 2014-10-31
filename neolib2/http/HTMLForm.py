@@ -2,28 +2,28 @@ from urllib.parse import urlparse
 
 class HTMLForm:
     html = None
-    action = ""
-    method = ""
-    url = ""
+    action = ''
+    method = ''
+    url = ''
     fields = {}
 
     def __init__(self, base_url, form_element):
         # Form setup
         self.url = base_url
 
-        if len(form_element.xpath("./@action")) > 0:
-            self.action = form_element.xpath("./@action")[0]
-        if len(form_element.xpath("./@method")) > 0:
-            self.method = form_element.xpath("./@method")[0]
+        if len(form_element.xpath('./@action')) > 0:
+            self.action = form_element.xpath('./@action')[0]
+        if len(form_element.xpath('./@method')) > 0:
+            self.method = form_element.xpath('./@method')[0]
 
         # Grab all the inputs
         self.fields = {}
-        for einp in form_element.xpath(".//input"):
+        for einp in form_element.xpath('.//input'):
             # Search for any attributes and assign them as necessary
             inp = HTMLFormInput()
             for attribute in dir(inp):
-                if len(einp.xpath("./@" + attribute)) > 0:
-                    setattr(inp, attribute, einp.xpath("./@" + attribute)[0])
+                if len(einp.xpath('./@' + attribute)) > 0:
+                    setattr(inp, attribute, einp.xpath('./@' + attribute)[0])
             if inp.name: self.fields[inp.name] = inp
 
     def update(self, fields):
@@ -44,12 +44,12 @@ class HTMLForm:
             self.action = self.url
         else:
             if not u.netloc in self.action:
-                path = "/".join(u.path.split("/")[1:-1])
-                if self.action.startswith("/"):
+                path = '/'.join(u.path.split('/')[1:-1])
+                if self.action.startswith('/'):
                     path = path + self.action
                 else:
-                    path = path + "/" + self.action
-                self.action = "http://" + u.netloc + "/" + path
+                    path = path + '/' + self.action
+                self.action = 'http://' + u.netloc + '/' + path
 
         # Return a new page with the result of the form submission
         return usr.get_page(self.action, post_data)
@@ -68,9 +68,9 @@ class HTMLForm:
         return len(self.fields)
 
 class HTMLFormInput:
-    type = ""
-    name = ""
-    value = ""
+    type = ''
+    name = ''
+    value = ''
 
     x = 0
     y = 0

@@ -4,13 +4,13 @@ import requests
 from neolib2.http.HTMLForm import HTMLForm
 
 class Page:
-    url = ""
+    url = ''
 
     request = None
     response = None
 
     headers = None
-    content = ""
+    content = ''
 
     post_data = {}
     header_values = {}
@@ -52,7 +52,7 @@ class Page:
         self.document = lxml.html.document_fromstring(self.content)
 
         # Process forms
-        for form in self.xpath("//form"):
+        for form in self.xpath('//form'):
             self.forms.append(HTMLForm(url, form))
 
     def form(self, **kwargs):
