@@ -1,9 +1,12 @@
 from neolib2.http.Page import Page
 from neolib2.user.Neopet import Neopet
+from neolib2.Exceptions import ParseException
 from lxml import etree
+import logging
 import re
 
 class Profile:
+    username = ''
     name = ''
     age = 0
     gender = ''
@@ -63,11 +66,14 @@ class Profile:
             }
 
     def __init__(self, username):
-        # Much of the user profile can change without much formality. This means
-        # certain HTML may or may not be in different places. It all depends on
-        # how much the user has filled their profile in. Therefore, this class
-        # uses a combination of xpath and regular expressions to parse all
-        # required information from the profile.
+        self.username = username
+
+    def load(self):
+        # Much of the user profile can change without much uniformity. This means
+        # certain HTML elements may or may not be in different places. It all
+        # depends on how much the user has filled their profile in. Therefore,
+        # this class uses a combination of xpath and regular expressions to
+        # parse all required information from the profile.
 
         # Since the pattern for parsing with regular expressions and xpath is
         # fairly similar across all the sections of a user profile, a refactored
@@ -109,30 +115,34 @@ class Profile:
                 return False
 
         # Get the profile page
-        pg = Page('http://www.neopets.com/userlookup.phtml?user=' + username)
+        pg = Page('http://www.neopets.com/userlookup.phtml?user=' + self.username)
 
-        # Parse the general profile details
-        self._set_attributes(pg, self.paths['general'], self.regex['general'], general_exception)
+        try:
+            # Parse the general profile details
+            self._set_attributes(pg, self.paths['general'], self.regex['general'], general_exception)
 
-        # Parse the first set of collections
-        self._set_attributes(pg, self.paths['collections1'], self.regex['collections1'])
+            # Parse the first set of collections
+            self._set_attributes(pg, self.paths['collections1'], self.regex['collections1'])
 
-        # Parse the second set of collections
-        self._set_attributes(pg, self.paths['collections2'], self.regex['collections2'], collections2_exception)
+            # Parse the second set of collections
+            self._set_attributes(pg, self.paths['collections2'], self.regex['collections2'], collections2_exception)
 
-        # Parse the shop and gallery information
-        self._set_attributes(pg, self.paths['shop_gallery'], self.regex['shop_gallery'])
+            # Parse the shop and gallery information
+            self._set_attributes(pg, self.paths['shop_gallery'], self.regex['shop_gallery'])
 
-        # The neopets are parsed slightly differently
-        for td in pg.xpath(self.paths['neopets']):
-            html = etree.tostring(td)
-            pet = Neopet()
+            # The neopets are parsed slightly differently
+            for td in pg.xpath(self.paths['neopets']):
+                html = etree.tostring(td)
+                pet = Neopet()
 
-            for key in self.regex['neopets'].keys():
-                exp = re.compile(bytes(self.regex['neopets'][key], 'utf-8')).search(html)
-                if exp:
-                    setattr(pet, key, self._remove_extra(exp.group(1).decode('utf-8')))
-            self.neopets.append(pet)
+                for key in self.regex['neopets'].keys():
+                    exp = re.compile(bytes(self.regex['neopets'][key], 'utf-8')).search(html)
+                    if exp:
+                        setattr(pet, key, self._remove_extra(exp.group(1).decode('utf-8')))
+                self.neopets.append(pet)
+        except:
+            logging.getLogger('neolib.user.profile').exception('Failed to parse user profile')
+            raise ParseException
 
     def _set_attributes(self, pg, path, patterns, exception=None):
         html = etree.tostring(pg.xpath(path)[0])

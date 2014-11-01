@@ -1,6 +1,7 @@
 import requests
 
 from neolib2.http.Page import Page
+from neolib2.user.Profile import Profile
 
 class User:
 
@@ -33,8 +34,11 @@ class User:
         # Grab the pin if available
         self.pin = pin if pin else None
 
-        #Intialize all future stuff here
+        # Initialize session
         self.session = requests.session()
+
+        # Set profile
+        self.profile = Profile(self.username)
 
     def login(self):
         # TNT has very tight anti-cheat controls so in this scenario it
