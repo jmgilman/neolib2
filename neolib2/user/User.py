@@ -3,6 +3,7 @@ import requests
 from neolib2.http.Page import Page
 from neolib2.user.Profile import Profile
 
+
 class User:
 
     username = ''
@@ -47,7 +48,7 @@ class User:
         pg = self.get_page('http://www.neopets.com/')
 
         # Fill in the login form
-        form = pg.form(action = '/login.phtml')[0]
+        form = pg.form(action='/login.phtml')[0]
         form.update({'username': self.username, 'password': self.password})
 
         # Submit the form

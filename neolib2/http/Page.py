@@ -3,6 +3,7 @@ import requests
 
 from neolib2.http.HTMLForm import HTMLForm
 
+
 class Page:
     url = ''
 
@@ -20,25 +21,32 @@ class Page:
     document = None
     forms = []
 
-    def __init__(self, url, usr=None, session=None, post_data=None, header_values=None, proxy=None):
+    def __init__(self, url, usr=None, session=None, post_data=None,
+                 header_values=None, proxy=None):
         # Set class attributes
-        self.url, self.post_data, self.header_values = url, post_data, header_values
+        self.url = url
+        self.post_data = post_data
+        self.header_values = header_values
 
-        # Determine if this request is using an existing user or session and act accordingly
+        # Determine if this request is using an existing user or session and
+        # act accordingly
         if usr:
             if post_data:
-                r = usr.session.post(url, data=post_data, headers=header_values, proxies=proxy)
+                r = usr.session.post(url, data=post_data,
+                                     headers=header_values, proxies=proxy)
             else:
                 r = usr.session.get(url, headers=header_values, proxies=proxy)
         elif session:
             if post_data:
-                r = session.post(url, data=post_data, headers=header_values, proxies=proxy)
+                r = session.post(url, data=post_data, headers=header_values,
+                                 proxies=proxy)
             else:
                 r = session.get(url, headers=header_values, proxies=proxy)
         else:
             # Was there post data attached to this request
             if post_data:
-                r = requests.post(url, data=post_data, headers=header_values, proxies=proxy)
+                r = requests.post(url, data=post_data, headers=header_values,
+                                  proxies=proxy)
             else:
                 r = requests.get(url, headers=header_values, proxies=proxy)
 
@@ -63,7 +71,8 @@ class Page:
             for key in kwargs.keys():
                 try:
                     value = getattr(form, key)
-                    if kwargs[key] == value: matches.append(form)
+                    if kwargs[key] == value:
+                        matches.append(form)
                 except Exception:
                     continue
         return matches

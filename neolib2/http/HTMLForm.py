@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 
+
 class HTMLForm:
     html = None
     action = ''
@@ -24,7 +25,8 @@ class HTMLForm:
             for attribute in dir(inp):
                 if len(einp.xpath('./@' + attribute)) > 0:
                     setattr(inp, attribute, einp.xpath('./@' + attribute)[0])
-            if inp.name: self.fields[inp.name] = inp
+            if inp.name:
+                self.fields[inp.name] = inp
 
     def update(self, fields):
         for key in fields.keys():
@@ -43,7 +45,7 @@ class HTMLForm:
         elif self.action == u.path:
             self.action = self.url
         else:
-            if not u.netloc in self.action:
+            if u.netloc not in self.action:
                 path = '/'.join(u.path.split('/')[1:-1])
                 if self.action.startswith('/'):
                     path = path + self.action
@@ -66,6 +68,7 @@ class HTMLForm:
 
     def __len__(self):
         return len(self.fields)
+
 
 class HTMLFormInput:
     type = ''
