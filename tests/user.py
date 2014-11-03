@@ -1,11 +1,12 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
+
+from neolib.user.Profile import Profile
+from neolib.user.User import User
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
-from neolib2.user.User import User
-from neolib2.user.Profile import Profile
 
 class TestUser(unittest.TestCase):
     username = ''
@@ -20,7 +21,7 @@ class TestUser(unittest.TestCase):
         self.assertTrue(usr.login())
 
     def test_profile(self):
-        p = Profile(self.username)
+        p = Profile(User(self.username))
         p.load()
 
         print('Name: ' + p.name)
@@ -56,7 +57,6 @@ class TestUser(unittest.TestCase):
             print('Age: ' + str(pet.age))
             print('Level: ' + str(pet.level))
             print('')
-
 
 
 if __name__ == '__main__':

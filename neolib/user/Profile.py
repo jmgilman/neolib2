@@ -1,11 +1,43 @@
-from neolib2.Exceptions import ParseException
-from neolib2.http.Page import Page
-from neolib2.NeolibBase import NeolibBase
-from neolib2.user.Neopet import Neopet
+from neolib.Exceptions import ParseException
+from neolib.NeolibBase import NeolibBase
+from neolib.user.Neopet import Neopet
 
 
 class Profile(NeolibBase):
-    username = ''
+    """Represents the Neopets profile page of a user
+
+    This class holds most (not all) of the information found on the profile
+    page of a user. This includes the user's general information, statistics
+    about their collections, shop and gallery information, and general
+    information about all of their neopets.
+
+    Attributes
+       name: The real name of the user (often not given)
+       age: The age of the user's accounts in months
+       gender: The gender of the user
+       country: The user's country of origin
+       last_spotted: A string describing the last time the user was seen
+       started_playing: The date the user started playing Neopets
+       hobbies: Any hobbies the user has (often not given)
+
+       secret_avatars: The number of secret avatars the user has
+       keyquest_tokens: The number of Keyquest tokens the user has
+       stamps: The number of stamps the user has
+       neocards: The total number of neocards the user has
+       site_themes: The total number of site themes the user has
+       bd_wins: The total number of one-player battledome wins the user has
+
+       neopets: A list of :class:`Neopet` objects representing the user's pets
+
+       shop_name: The name of the user's shop
+       shop_size: The size of the user's shop
+       shop_link: The partial url to the user's shop
+
+       gallery_name: The name of the user's gallery
+       gallery_size: The size of the user's gallery
+       gallery_link: The partial url to the user's gallery
+    """
+
     name = ''
     age = 0
     gender = ''
@@ -31,13 +63,13 @@ class Profile(NeolibBase):
     gallery_size = 0
     gallery_link = ''
 
-    log_name = 'neolib.user.profile'
+    _log_name = 'neolib.user.profile'
 
-    urls = {
+    _urls = {
         'profile': 'http://www.neopets.com/userlookup.phtml?user='
         }
 
-    paths = {
+    _paths = {
         'general': '//*[@id="userinfo"]/table/tr[2]/td/table/tr[1]/td',
         'colls1': '//*[@id="usercollections"]/table/tr[2]/td/table/tr/td[1]',
         'colls2': '//*[@id="usercollections"]/table/tr[2]/td/table/tr/td[2]',
@@ -45,7 +77,7 @@ class Profile(NeolibBase):
         'neopets': '//*[@id="userneopets"]/table/tr[2]/td/table/tr/td',
         }
 
-    regex = {
+    _regex = {
         'general': {
             'age': 'shields/(.*?).gif',
             'name': 'Name:</b>(.*?)<br/>',
@@ -83,11 +115,25 @@ class Profile(NeolibBase):
             },
         }
 
-    def __init__(self, username):
+    def __init__(self, user):
+        """Initializes the profile with the given :class:`User` object
+
+        Args:
+            user: The :class:`User` object to load the profile for
+        """
         super().__init__()
-        self.username = username
+        self.usr = user
 
     def load(self):
+        """Fetches the user profile data and populates the attributes
+
+        Query's the user's profile on Neopets using the username of the given
+        :class:`User` object when the profile was initialized. This method can
+        be called multiple times to update the loaded profile details.
+
+        Raises:
+            ParseException: An error occured parsing the user's profile
+        """
         # Much of the user profile can change without much uniformity. This
         # means certain HTML elements may or may not be in different places.
         # It all depends on how much the user has filled their profile in.
@@ -124,7 +170,7 @@ class Profile(NeolibBase):
                 # If the first match failed it will match an entire sentence.
                 # So we just check the results length to see if it failed
                 if len(result) > 4:
-                    result = self._search(self.regex['colls2']['neocards2'],
+                    result = self._search(self._regex['colls2']['neocards2'],
                                           html, True)[0]
 
                     self.neocards = int(self._remove_extra(result))
@@ -137,37 +183,37 @@ class Profile(NeolibBase):
                 return False
 
         # Get the profile page
-        pg = Page(self.urls['profile'] + self.username)
+        pg = self.usr.get_page(self._urls['profile'] + self.usr.username)
 
         try:
             # Parse the general profile details
-            self._set_attributes(pg, self.paths['general'],
-                                 self.regex['general'], general_exception)
+            self._set_attributes(pg, self._paths['general'],
+                                 self._regex['general'], general_exception)
 
             # Parse the first set of collections
-            self._set_attributes(pg, self.paths['colls1'],
-                                 self.regex['colls1'])
+            self._set_attributes(pg, self._paths['colls1'],
+                                 self._regex['colls1'])
 
             # Parse the second set of collections
-            self._set_attributes(pg, self.paths['colls2'], self.regex['colls2'],
-                                 collections2_exception)
+            self._set_attributes(pg, self._paths['colls2'],
+                                 self._regex['colls2'], collections2_exception)
 
             # Parse the shop and gallery information
-            self._set_attributes(pg, self.paths['shop_gallery'],
-                                 self.regex['shop_gallery'])
+            self._set_attributes(pg, self._paths['shop_gallery'],
+                                 self._regex['shop_gallery'])
 
             # The neopets are parsed slightly differently
-            for td in pg.xpath(self.paths['neopets']):
+            for td in pg.xpath(self._paths['neopets']):
                 html = self._to_html(td)
                 pet = Neopet()
 
-                for key in self.regex['neopets'].keys():
-                    result = self._search(self.regex['neopets'][key], html)
+                for key in self._regex['neopets'].keys():
+                    result = self._search(self._regex['neopets'][key], html)
                     if result:
                         setattr(pet, key, self._remove_extra(result[0]))
                 self.neopets.append(pet)
         except:
-            self.logger.exception('Failed to parse user profile')
+            self._logger.exception('Failed to parse user profile')
             raise ParseException
 
     def _set_attributes(self, pg, path, patterns, exception=None):
@@ -200,3 +246,6 @@ class Profile(NeolibBase):
         clean_string = clean_string.replace('\t', '')
 
         return clean_string
+
+    def __repr__(self):
+        return "Profile <" + self.usr.username + ">"
