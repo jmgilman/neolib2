@@ -11,12 +11,12 @@ class HTMLForm:
     object (I.E form.input_name)
 
     Attributes
-       action: The destination of the form
-       method: The method in which the form is submitted
-       url: The base URL this form came from
-       fields: A dictionary containing all of the inputs of the field. The
-           dictionary uses the input name as the key and an instance of
-           :class:`HTMLFormInput` as the value.
+       | **action**: The destination of the form
+       | **method**: The method in which the form is submitted
+       | **url**: The base URL this form came from
+       | **fields**: A dictionary containing all of the inputs of the field. The
+              dictionary uses the input name as the key and an instance of
+              :class:`.HTMLFormInput` as the value.
     """
 
     action = ''
@@ -28,8 +28,8 @@ class HTMLForm:
         """Initializes the form with the given base URL and form element
 
         Args:
-            base_url: The base URL this form originated from
-            form_element: An instance of a form element
+            | **base_url**: The base URL this form originated from
+            | **form_element**: An instance of a form element
         """
         # Form setup
         self.url = base_url
@@ -54,7 +54,7 @@ class HTMLForm:
         """Updates the stored fields with the given fields
 
         Args:
-            fields: A dictionary to update the currently stored fields with
+            **fields**: A dictionary to update the currently stored fields with
         """
         for key in fields.keys():
             self.fields[key].value = fields[key]
@@ -68,7 +68,7 @@ class HTMLForm:
         of the POST action.
 
         Args:
-            usr: An instance of :class:`User` to use for submitting the form
+            **usr**: An instance of :class:`User` to use for submitting the form
 
         Returns:
             A instance of class:`Page` representing the result
@@ -114,11 +114,11 @@ class HTMLFormInput:
     """Represents an input element of an HTML form
 
     Attributes
-       type: The input type
-       name: The input name
-       value: The input value
-       x: The x-coordinate if this input is an image
-       y: The y-coordinate if this input is an image
+       | **type**: The input type
+       | **name**: The input name
+       | **value**: The input value
+       | **x**: The x-coordinate if this input is an image
+       | **y**: The y-coordinate if this input is an image
     """
 
     type = ''

@@ -14,26 +14,26 @@ class User:
     reference this class.
 
     Attributes
-       username: The account username
-       password: The account password
-       pin: The pin number for the account if applicable
+       | **username**: The account username
+       | **password**: The account password
+       | **pin**: The pin number for the account if applicable
 
-       session: The HTTP session for the account
+       | **session**: The HTTP session for the account
 
-       neopoints: The number of neopoints the user has on hand
+       | **neopoints**: The number of neopoints the user has on hand
 
-       active_pet: :class:`Neopet` object representing the user's active pet
+       | **active_pet**: :class:`.Neopet` object representing the user's active pet
 
-       profile: :class:`Profile` object representing the user's account profile
-       mail: :class:`Neomail` object for interacting with the user's neomail
+       | **profile**: :class:`.Profile` object representing the user's account profile
+       | **mail**: :class:`Neomail` object for interacting with the user's neomail
 
-       inventory: :class:`UserInventory` object representing the user's inventory
-       sdb: :class:`SDB` object representing the user's safety deposit box
-       shop: :class:`UserShop` object representing the user's shop
-       bank: :class:`Bank` object representing the user's bank
+       | **inventory**: :class:`UserInventory` object representing the user's inventory
+       | **sdb**: :class:`SDB` object representing the user's safety deposit box
+       | **shop**: :class:`UserShop` object representing the user's shop
+       | **bank**: :class:`Bank` object representing the user's bank
 
-       trades: :class:`TradingPost` object for interacting with the user's trades
-       auctions: :class:`AuctionHouse` object for interacting with the user's auctions
+       | **trades**: :class:`TradingPost` object for interacting with the user's trades
+       | **auctions**: :class:`AuctionHouse` object for interacting with the user's auctions
     """
 
     username = ''
@@ -69,9 +69,9 @@ class User:
         """Initializes the user with the given username, password, and pin
 
         Args:
-            username: The username for the account
-            password: The password for the account
-            pin: Optional pin number for the user's account
+            | **username**: The username for the account
+            | **password**: The password for the account
+            | **pin**: Optional pin number for the user's account
         """
         # Set username and password
         self.username, self.password = username, password
@@ -118,11 +118,11 @@ class User:
         and acts on them accordingly.
 
         Args:
-            url: The url of the page to request
-            post_data: Optional dictionary containing post data to POST
-            header_values: Optional dictionary to override header values
+            | **url**: The url of the page to request
+            | **post_data**: Optional dictionary containing post data to POST
+            | **header_values**: Optional dictionary to override header values
 
         Returns:
-            A :class:`Page` object representng the requested page
+            A :class:`.Page` object representng the requested page
         """
         return Page(url, self, post_data=post_data, header_values=header_values)

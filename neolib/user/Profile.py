@@ -12,30 +12,30 @@ class Profile(NeolibBase):
     information about all of their neopets.
 
     Attributes
-       name: The real name of the user (often not given)
-       age: The age of the user's accounts in months
-       gender: The gender of the user
-       country: The user's country of origin
-       last_spotted: A string describing the last time the user was seen
-       started_playing: The date the user started playing Neopets
-       hobbies: Any hobbies the user has (often not given)
+       | **name**: The real name of the user (often not given)
+       | **age**: The age of the user's accounts in months
+       | **gender**: The gender of the user
+       | **country**: The user's country of origin
+       | **last_spotted**: A string describing the last time the user was seen
+       | **started_playing**: The date the user started playing Neopets
+       | **hobbies**: Any hobbies the user has (often not given)
 
-       secret_avatars: The number of secret avatars the user has
-       keyquest_tokens: The number of Keyquest tokens the user has
-       stamps: The number of stamps the user has
-       neocards: The total number of neocards the user has
-       site_themes: The total number of site themes the user has
-       bd_wins: The total number of one-player battledome wins the user has
+       | **secret_avatars**: The number of secret avatars the user has
+       | **keyquest_tokens**: The number of Keyquest tokens the user has
+       | **stamps**: The number of stamps the user has
+       | **neocards**: The total number of neocards the user has
+       | **site_themes**: The total number of site themes the user has
+       | **bd_wins**: The total number of one-player battledome wins the user has
 
-       neopets: A list of :class:`Neopet` objects representing the user's pets
+       | **neopets**: A list of :class:`.Neopet` objects representing the user's pets
 
-       shop_name: The name of the user's shop
-       shop_size: The size of the user's shop
-       shop_link: The partial url to the user's shop
+       | **shop_name**: The name of the user's shop
+       | **shop_size**: The size of the user's shop
+       | **shop_link**: The partial url to the user's shop
 
-       gallery_name: The name of the user's gallery
-       gallery_size: The size of the user's gallery
-       gallery_link: The partial url to the user's gallery
+       | **gallery_name**: The name of the user's gallery
+       | **gallery_size**: The size of the user's gallery
+       | **gallery_link**: The partial url to the user's gallery
     """
 
     name = ''
@@ -119,7 +119,7 @@ class Profile(NeolibBase):
         """Initializes the profile with the given :class:`User` object
 
         Args:
-            user: The :class:`User` object to load the profile for
+            **user**: The :class:`User` object to load the profile for
         """
         super().__init__()
         self.usr = user
@@ -132,7 +132,7 @@ class Profile(NeolibBase):
         be called multiple times to update the loaded profile details.
 
         Raises:
-            ParseException: An error occured parsing the user's profile
+            **ParseException**: An error occured parsing the user's profile
         """
         # Much of the user profile can change without much uniformity. This
         # means certain HTML elements may or may not be in different places.

@@ -6,10 +6,29 @@
 Welcome to Neolib2's documentation!
 ===================================
 
-Contents:
+Base:
 
 .. toctree::
    :maxdepth: 2
+
+   neolibbase
+
+HTTP:
+
+.. toctree::
+   :maxdepth: 2
+
+   http/page
+   http/htmlform
+
+User:
+
+.. toctree::
+   :maxdepth: 2
+
+   user/neopet
+   user/profile
+   user/user
 
 
 
@@ -19,4 +38,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

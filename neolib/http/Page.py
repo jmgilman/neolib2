@@ -14,21 +14,21 @@ class Page:
     to tie in the requests and lxml libraries into one easy-to-use object.
 
     Attributes:
-        url: The originating URL for this web page
+        | **url**: The originating URL for this web page
 
-        request: A :class:`Request` object representing the HTTP request
-        response: A :class:`Response` object representing the HTTP response
+        | **request**: A :class:`Request` object representing the HTTP request
+        | **response**: A :class:`Response` object representing the HTTP response
 
-        headers: A dictionary containing the response headers
-        content: The HTML content of the web page
+        | **headers**: A dictionary containing the response headers
+        | **content**: The HTML content of the web page
 
-        post_data: Optional dictionary containing any POST data sent
-        header_values: Optional dictionary with any header values overriden
+        | **post_data**: Optional dictionary containing any POST data sent
+        | **header_values**: Optional dictionary with any header values overriden
 
-        usr: Optional :class:`User` object used to request this page
+        | **usr**: Optional :class:`.User` object used to request this page
 
-        document: An instance of the root element of this HTML page
-        forms: A list of :class:`HTMLForm` objects for forms on this page
+        | **document**: An instance of the root element of this HTML page
+        | **forms**: A list of :class:`.HTMLForm` objects for forms on this page
     """
 
     url = ''
@@ -52,12 +52,12 @@ class Page:
         """Initializes the page with the given request details
 
         Args:
-            url: The URL of the page to request
-            usr: Optional :class:`User` object to make the request with
-            post_data: Optional dictionary of data to POST with (name -> value)
-            header_values: Optional dictionary of header values to override the
+            | **url**: The URL of the page to request
+            | **usr**: Optional :class:`.User` object to make the request with
+            | **post_data**: Optional dictionary of data to POST with (name -> value)
+            | **header_values**: Optional dictionary of header values to override the
                 request headers with.
-            proxy: Optional proxy to use with the request
+            | **proxy**: Optional proxy to use with the request
         """
         # Set class attributes
         self.url = url
@@ -98,10 +98,10 @@ class Page:
             **kwargs: The keyword arguments to search for
 
         Returns:
-            A list of :class:`HTMLForm` instances that match the original query
+            A list of :class:`.HTMLForm` instances that match the original query
 
         Example:
-            form = pg.form(action='/login.phtml')
+            `form = pg.form(action='/login.phtml')`
         """
         matches = []
         # Loop through all forms and associated attributes looking for
@@ -120,7 +120,7 @@ class Page:
         """Queries the current page using the given XPath query
 
         Args:
-            query: The XPath query to use
+            **query**: The XPath query to use
 
         Returns:
             A list of elements resulting from the XPath query
