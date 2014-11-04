@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name="neolib2",
-    packages=["requests", "lxml"],
+    packages=["neolib"],
     version="0.1.1",
     description="Neopets automation library for Python",
     author="Joshua Gilman",
@@ -20,5 +20,6 @@ setup(
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
-    long_description=""
+    long_description="",
+    requires=["requests", "lxml"]
     )
