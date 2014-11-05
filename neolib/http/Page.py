@@ -1,3 +1,4 @@
+import json
 import lxml.html
 import requests
 
@@ -21,6 +22,7 @@ class Page:
 
         | **headers**: A dictionary containing the response headers
         | **content**: The HTML content of the web page
+        | **json**: If the returned content is JSON this will be loaded
 
         | **post_data**: Optional dictionary containing any POST data sent
         | **header_values**: Optional dictionary with any header values overriden
@@ -38,6 +40,7 @@ class Page:
 
     headers = None
     content = ''
+    json = {}
 
     post_data = {}
     header_values = {}
@@ -84,12 +87,16 @@ class Page:
         self.headers = r.headers
         self.content = r.text
 
-        # Prep the html parser
-        self.document = lxml.html.document_fromstring(self.content)
+        # Check what this is
+        if r.headers['Content-Type'] == 'application/ajax':
+            self.json = json.loads(r.text)
+        else:
+            # Prep the html parser
+            self.document = lxml.html.document_fromstring(self.content)
 
-        # Process forms
-        for form in self.xpath('//form'):
-            self.forms.append(HTMLForm(url, form))
+            # Process forms
+            for form in self.xpath('//form'):
+                self.forms.append(HTMLForm(url, form))
 
     def form(self, **kwargs):
         """Searches for forms this page holds using the given keyword args
