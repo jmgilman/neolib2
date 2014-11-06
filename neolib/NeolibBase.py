@@ -1,5 +1,7 @@
 import logging
 import re
+import time
+import random
 
 from lxml import etree, html
 from neolib.http.Page import Page
@@ -69,6 +71,14 @@ class NeolibBase:
         else:
             return re.findall(query, string)
 
+    """Converts a HTML string into a lxml element
+
+    Args:
+        **string**: The HTML string to convert
+    """
+    def _to_element(self, string):
+        return html.document_fromstring(string)
+
     def _to_html(self, element):
         """Converts a html element to a string
 
@@ -76,3 +86,12 @@ class NeolibBase:
             **element**: The HTML element to conver to a HTML string
         """
         return etree.tostring(element).decode('utf-8')
+
+    def _wait_random(max):
+        if max == 0:
+            return
+
+        min = max / 2
+        delay = random.randint(min, max)
+
+        time.sleep(delay)
