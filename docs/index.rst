@@ -13,6 +13,13 @@ Base:
 
    neolibbase
 
+Registration:
+
+.. toctree::
+   :maxdepth: 2
+
+   registration/registeruser
+
 HTTP:
 
 .. toctree::
@@ -29,6 +36,14 @@ User:
    user/neopet
    user/profile
    user/user
+
+Hooks:
+
+.. toctree::
+  :maxdepth: 2
+
+  user/hooks/Hook
+  user/hooks/UserDetails
 
 
 

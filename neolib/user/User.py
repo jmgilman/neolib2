@@ -1,10 +1,13 @@
 import requests
 
+from neolib.Exceptions import NeopetsOffline
 from neolib.http.Page import Page
+from neolib.NeolibBase import NeolibBase
 from neolib.user.Profile import Profile
+from neolib.user.hooks.UserDetails import UserDetails
 
 
-class User:
+class User(NeolibBase):
     """Represents a Neopets user account
 
     This is the one class that ties most of the library together. Every object
@@ -34,6 +37,9 @@ class User:
 
        | **trades**: :class:`TradingPost` object for interacting with the user's trades
        | **auctions**: :class:`AuctionHouse` object for interacting with the user's auctions
+
+       | **hooks**: A list of :class:`Hook` based classes that will be executed
+            after requesting a page
     """
 
     username = ''
@@ -57,6 +63,14 @@ class User:
     trades = None
     auctions = None
 
+    hooks = []
+
+    _log_name = 'neolib.user.user'
+
+    _urls = {
+        'index': 'http://www.neopets.com/',
+    }
+
     @property
     def profile(self):
         if not self._profile:
@@ -73,6 +87,9 @@ class User:
             | **password**: The password for the account
             | **pin**: Optional pin number for the user's account
         """
+        # Initialize parent
+        super().__init__()
+
         # Set username and password
         self.username, self.password = username, password
 
@@ -81,6 +98,9 @@ class User:
 
         # Initialize session
         self.session = requests.session()
+
+        # Setup default hooks
+        self.add_hook(UserDetails)
 
     def login(self):
         """Performs a login and returns the result
@@ -97,7 +117,7 @@ class User:
         # TNT has very tight anti-cheat controls so in this scenario it
         # is best to simulate a legitimate login by navigating to the
         # index page first
-        pg = self.get_page('http://www.neopets.com/')
+        pg = self.get_page(self._urls['index'])
 
         # Fill in the login form
         form = pg.form(action='/login.phtml')[0]
@@ -125,4 +145,21 @@ class User:
         Returns:
             A :class:`.Page` object representng the requested page
         """
-        return Page(url, self, post_data=post_data, header_values=header_values)
+        pg = Page(url, self, post_data=post_data, header_values=header_values)
+
+        # This image is shown if Neopets is offline
+        if "http://images.neopets.com/homepage/indexbak_oops_en.png" in pg.content:
+            raise NeopetsOffline
+
+        # Call hooks
+        for hook in self.hooks:
+            h = hook()
+            h.execute(self, pg)
+
+        return pg
+
+    def add_hook(self, hook):
+        """Adds an instance of a :class:`Hook` based class to be executed after
+        page calls
+        """
+        self.hooks.append(hook)

@@ -27,3 +27,7 @@ class NeopetNotAvailable(Exception):
 
 class InvalidNeopet(Exception):
     pass
+
+# User
+class NeopetsOffline(Exception):
+    pass
