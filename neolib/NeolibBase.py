@@ -1,9 +1,11 @@
 import logging
+import random
 import re
 import time
-import random
+from functools import reduce
 
 from lxml import etree, html
+
 from neolib.http.Page import Page
 
 
@@ -43,21 +45,23 @@ class NeolibBase:
 
     _base_url = 'http://www.neopets.com'
 
-    def __init__(self):
+    def __init__(self, usr=None):
         """Initializes the base class by initializing the logger instance"""
         self._logger = logging.getLogger(self._log_name)
+        self._usr = usr
 
-    def _search(self, query, subject, all=False):
-        """Searches the given string using the given Regex query
+    def _search(self, exp, subject, all=False):
+        """Searches the given string using the given expression name
 
         Args:
-            | **query**: The regular expression query
+            | **exp**: The name of the expression to use for querying as stored
+            in _regex. Should be in the format of 'key1/key2/key3'.
             | **subject*: Instance of :class:`.Page`, :class:`HTMLElement`, or
                 a string value to search
             | **all**: Whether to search with DOTALL
 
         Returns:
-            A list of matches from the query
+            A list of matches from the regular expression query
         """
         if type(subject) is Page:
             string = subject.content
@@ -66,17 +70,39 @@ class NeolibBase:
         else:
             string = subject
 
+        query = reduce(dict.__getitem__, exp.split('/'), self._regex)
+
         if all:
             return re.findall(query, string, re.DOTALL)
         else:
             return re.findall(query, string)
 
-    """Converts a HTML string into a lxml element
+    def _xpath(self, path, subject):
+        """Searches the given subject using the given xpath name
 
-    Args:
-        **string**: The HTML string to convert
-    """
+        Args:
+            | **path**: The name of the expression to use for querying as stored
+            in _paths. Should be in the format of 'key1/key2/key3'.
+            | **subject*: Instance of :class:`.Page`, or :class:`HTMLElement`
+
+        Returns:
+            A list of matches from the xpath query
+        """
+        if type(subject) is Page:
+            ele = subject.document
+        else:
+            ele = subject
+
+        query = reduce(dict.__getitem__, path.split('/'), self._paths)
+
+        return ele.xpath(query)
+
     def _to_element(self, string):
+        """Converts a HTML string into a lxml element
+
+        Args:
+            **string**: The HTML string to convert
+        """
         return html.document_fromstring(string)
 
     def _to_html(self, element):
@@ -87,7 +113,30 @@ class NeolibBase:
         """
         return etree.tostring(element).decode('utf-8')
 
+    def _path_to_html(self, path, subject):
+        """Converts an xpath query to HTML
+
+        Note that this function will fail if the xpath query returns no
+        results. Furthermore, if the query returns more than one result only
+        the first result will be converted to HTML and returned.
+
+        Args:
+            **path**: The name of the expression to use for querying as stored
+            in _paths. Should be in the format of 'key1/key2/key3'.
+            **subject**: Instance of :class:`.Page`, or :class:`HTMLElement`
+        """
+        return self._to_html(self._xpath(path, subject)[0])
+
     def _wait_random(max):
+        """Wait a random time up to the max seconds given
+
+        Takes the max seconds given and divides it by two to obtain a minimum
+        wait value. Picks a random number between the max and minimum value to
+        wait.
+
+        Args:
+            **max**: The max number of seconds to wait
+        """
         if max == 0:
             return
 

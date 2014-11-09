@@ -170,8 +170,7 @@ class Profile(NeolibBase):
                 # If the first match failed it will match an entire sentence.
                 # So we just check the results length to see if it failed
                 if len(result) > 4:
-                    result = self._search(self._regex['colls2']['neocards2'],
-                                          html, True)[0]
+                    result = self._search('colls2/neocards2', html, True)[0]
 
                     self.neocards = int(self._remove_extra(result))
                 else:
@@ -187,20 +186,16 @@ class Profile(NeolibBase):
 
         try:
             # Parse the general profile details
-            self._set_attributes(pg, self._paths['general'],
-                                 self._regex['general'], general_exception)
+            self._set_attributes(pg, 'general', 'general', general_exception)
 
             # Parse the first set of collections
-            self._set_attributes(pg, self._paths['colls1'],
-                                 self._regex['colls1'])
+            self._set_attributes(pg, 'colls1', 'colls1')
 
             # Parse the second set of collections
-            self._set_attributes(pg, self._paths['colls2'],
-                                 self._regex['colls2'], collections2_exception)
+            self._set_attributes(pg, 'colls2', 'colls2', collections2_exception)
 
             # Parse the shop and gallery information
-            self._set_attributes(pg, self._paths['shop_gallery'],
-                                 self._regex['shop_gallery'])
+            self._set_attributes(pg, 'shop_gallery', 'shop_gallery')
 
             # The neopets are parsed slightly differently
             for td in pg.xpath(self._paths['neopets']):
@@ -208,7 +203,7 @@ class Profile(NeolibBase):
                 pet = Neopet()
 
                 for key in self._regex['neopets'].keys():
-                    result = self._search(self._regex['neopets'][key], html)
+                    result = self._search('neopets/' + key, html)
                     if result:
                         setattr(pet, key, self._remove_extra(result[0]))
                 self.neopets.append(pet)
@@ -216,27 +211,27 @@ class Profile(NeolibBase):
             self._logger.exception('Failed to parse user profile')
             raise ParseException('Could not parse user profile')
 
-    def _set_attributes(self, pg, path, patterns, exception=None):
-        html = self._to_html(pg.xpath(path)[0])
+    def _set_attributes(self, pg, path, exps, exception=None):
+        html = self._path_to_html(path, pg)
 
         # Loop through all supplied regular expressions
-        for key in patterns.keys():
+        for exp in self._regex[exps].keys():
             # Search the supplied HTML for matches
-            result = self._search(patterns[key], html)
+            result = self._search(exps + '/' + exp, html)
 
             # Sometimes weird characters mess with the match so we try it one
             # more time with DOTALL
             if not result:
-                result = self._search(patterns[key], html, True)
+                result = self._search(exps + '/' + exp, html, True)
 
             if result:
                 # If an exception function was given, call it and continue if
                 # it passes
                 if exception:
-                    if exception(self, key, result[0], html):
+                    if exception(self, exp, result[0], html):
                         continue
                 # Set this classes attribute with the cleaned up match
-                setattr(self, key, self._remove_extra(result[0]))
+                setattr(self, exp, self._remove_extra(result[0]))
 
     def _remove_extra(self, string):
         # Remove all the extra ugly from any matches

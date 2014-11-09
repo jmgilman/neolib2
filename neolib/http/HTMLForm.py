@@ -109,6 +109,9 @@ class HTMLForm:
     def __len__(self):
         return len(self.fields)
 
+    def __repr__(self):
+        return "HTML Form <" + self.action + ">"
+
 
 class HTMLFormInput:
     """Represents an input element of an HTML form
@@ -127,3 +130,6 @@ class HTMLFormInput:
 
     x = 0
     y = 0
+
+    def __repr__(self):
+        return "HTML Input <" + self.name + "(" + self.type + ")>"

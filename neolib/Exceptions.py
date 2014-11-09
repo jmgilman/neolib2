@@ -3,6 +3,10 @@
 class ParseException(Exception):
     pass
 
+# Item
+class InvalidItemID(Exception):
+    pass
+
 # Registration
 class MissingRequiredAttribute(Exception):
     pass

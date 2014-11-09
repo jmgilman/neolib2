@@ -133,3 +133,6 @@ class Page:
             A list of elements resulting from the XPath query
         """
         return self.document.xpath(query)
+
+    def __repr__(self):
+        return "Page <" + self.url + ">"

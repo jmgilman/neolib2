@@ -29,18 +29,18 @@ class UserDetails(Hook):
         """A hook for grabbing the user's neopoints and active pet"""
         # First get the neopoints if available
         if "NP: <a id='npanchor'" in pg.content:
-            nps = pg.document.xpath(self._paths['nps'])[0].text
+            nps = self._xpath('nps', pg)[0].text
             usr.neopoints = int(nps.replace(',', ''))
 
         # Next try for the active pet
         if 'activePetInfo' in pg.content:
             usr.active_pet = Neopet()
-            usr.active_pet.name = pg.xpath(self._paths['neopet_name'])[0].text
+            usr.active_pet.name = self._xpath('neopet_name', pg)[0].text
 
-            html = self._to_html(pg.xpath(self._paths['neopet_info'])[0])
+            html = self._path_to_html('neopet_info', pg)
             for key in self._regex['neopet'].keys():
                 if key == 'age' or key == 'level':
-                    value = int(self._search(self._regex['neopet'][key], html, True)[0])
+                    value = int(self._search('neopet/' + key, html, True)[0])
                 else:
-                    value = self._search(self._regex['neopet'][key], html, True)[0]
+                    value = self._search('neopet/' + key, html, True)[0]
                 setattr(usr.active_pet, key, value)

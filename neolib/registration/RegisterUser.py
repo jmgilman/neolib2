@@ -399,3 +399,6 @@ class RegisterUser(NeolibBase):
                                 (self._urls['neopet_check'] % self.neopet_name))
 
         return 'is taken' not in pg.content
+
+    def __repr__(self):
+        return "User Registration <" + self.username + ">"
