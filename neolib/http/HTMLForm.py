@@ -1,7 +1,8 @@
+from collections import UserDict
 from urllib.parse import urlparse
 
 
-class HTMLForm:
+class HTMLForm(UserDict):
     """Represents a HTML form on a web page
 
     This class is used to encapsulate an HTML form into a Python object. It
@@ -14,7 +15,7 @@ class HTMLForm:
        | **action**: The destination of the form
        | **method**: The method in which the form is submitted
        | **url**: The base URL this form came from
-       | **fields**: A dictionary containing all of the inputs of the field. The
+       | **data**: A dictionary containing all of the inputs of the field. The
               dictionary uses the input name as the key and an instance of
               :class:`.HTMLFormInput` as the value.
     """
@@ -22,7 +23,7 @@ class HTMLForm:
     action = ''
     method = ''
     url = ''
-    fields = {}
+    data = {}
 
     def __init__(self, base_url, form_element):
         """Initializes the form with the given base URL and form element
@@ -40,24 +41,24 @@ class HTMLForm:
             self.method = form_element.xpath('./@method')[0]
 
         # Grab all the inputs
-        self.fields = {}
-        for einp in form_element.xpath('.//input'):
+        self.data = {}
+        for einp in form_element.xpath('.//input | .//select'):
             # Search for any attributes and assign them as necessary
             inp = HTMLFormInput()
             for attribute in dir(inp):
                 if len(einp.xpath('./@' + attribute)) > 0:
                     setattr(inp, attribute, einp.xpath('./@' + attribute)[0])
             if inp.name:
-                self.fields[inp.name] = inp
+                self.data[inp.name] = inp
 
-    def update(self, fields):
+    def update(self, **kwargs):
         """Updates the stored fields with the given fields
 
         Args:
             **fields**: A dictionary to update the currently stored fields with
         """
-        for key in fields.keys():
-            self.fields[key].value = fields[key]
+        for key in kwargs.keys():
+            self.data[key].value = kwargs[key]
 
     def submit(self, usr):
         """Submits the current form as if the user had pressed the submit button
@@ -75,8 +76,8 @@ class HTMLForm:
         """
         # Assemble the post data
         post_data = {}
-        for key in self.fields.keys():
-            post_data[key] = self.fields[key].value
+        for key in self.data.keys():
+            post_data[key] = self.data[key].value
 
         # Assemble the address to post to
         u = urlparse(self.url)
@@ -95,19 +96,6 @@ class HTMLForm:
 
         # Return a new page with the result of the form submission
         return usr.get_page(self.action, post_data)
-
-    def __get__(self, key):
-        return self.fields[key].value
-
-    def __set__(self, key, value):
-        self.fiedlds[key].value = value
-
-    def __iter__(self):
-        for field in self.fields:
-            yield field
-
-    def __len__(self):
-        return len(self.fields)
 
     def __repr__(self):
         return "HTML Form <" + self.action + ">"

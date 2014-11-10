@@ -13,6 +13,24 @@ Base:
 
    neolibbase
 
+Inventory:
+
+.. toctree::
+   :maxdepth: 2
+
+   inventory/inventory
+   inventory/userinventory
+
+Item:
+
+.. toctree::
+   :maxdepth: 2
+
+   item/inventoryitem
+   item/inventoryitemlist
+   item/item
+   item/itemlist
+
 Registration:
 
 .. toctree::

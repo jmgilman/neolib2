@@ -144,3 +144,10 @@ class NeolibBase:
         delay = random.randint(min, max)
 
         time.sleep(delay)
+
+    def _is_init(self, string):
+        try:
+            int(string)
+            return True
+        except Exception:
+            return False

@@ -1,7 +1,9 @@
+from collections import UserList
+
 from neolib.NeolibBase import NeolibBase
 
 
-class Inventory(NeolibBase):
+class Inventory(NeolibBase, UserList):
     """A base class for templating how an inventory should operate
 
     This class should be inherited when parsing and delivering any inventory
@@ -9,9 +11,18 @@ class Inventory(NeolibBase):
     end-user may interact with (i.e shop inventory, SDB inventory, etc).
 
     Attributes
-        | **items**: A list of items in the inventory
+        | **data**: A list of items in the inventory
+        | **query_types**: The valid queries that can be supplied to find()
     """
-    items = []
+    data = []
+
+    query_types = [
+        'contains',
+        'startswith',
+        'endswith'
+        'gt',
+        'lt',
+    ]
 
     def load(self):
         """ Loads the current inventory
@@ -21,7 +32,7 @@ class Inventory(NeolibBase):
         """
         pass
 
-    def item(self, **kwargs):
+    def find(self, **kwargs):
         """ Searches the current inventory using keyword arguments
 
         Loops through each keyword argument and searches the current inventory
@@ -39,28 +50,47 @@ class Inventory(NeolibBase):
         """
         matches = []
 
-        for item in self.items:
+        for item in self.data:
+            match = 0
             for key in kwargs.keys():
                 try:
-                    value = getattr(item, key)
-                    if kwargs[key] == value:
-                        matches.append(item)
+                    # Determine if this query has extra arguments
+                    if '__' in key:
+                        arg = key.split('__')[1]
+                        atrib = key.split('__')[0]
+                        value = getattr(item, atrib)
+
+                        if arg not in self.query_types:
+                            continue
+
+                        if arg == 'contains' and type(value) is str:
+                            if kwargs[key] in value:
+                                match += 1
+                        elif arg == 'startswith' and type(value) is str:
+                            if value.startswith(kwargs[key]):
+                                match += 1
+                        elif arg == 'endswith' and type(value) is str:
+                            if value.endswith(kwargs[key]):
+                                match += 1
+                        elif arg == 'gt' and self._is_int(value):
+                            if int(value) > int(kwargs[key]):
+                                match += 1
+                        elif arg == 'lt' and self._is_init(value):
+                            if int(value) < int(kwargs[key]):
+                                match += 1
+                    else:
+                        value = getattr(item, key)
+                        if kwargs[key] == value:
+                            match += 1
                 except Exception:
                     continue
+
+            if match == len(kwargs.keys()):
+                matches.append(item)
         return matches
 
     def __init__(self, usr):
         super().__init__(usr)
-
-    def __contains__(self, item):
-        return item in self.items
-
-    def __iter__(self):
-        for item in self.items:
-            yield item
-
-    def __len__(self):
-        return len(self.items)
 
     def __repr__(self):
         return "Inventory <" + str(len(self)) + " items>"

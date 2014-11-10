@@ -14,6 +14,14 @@ class InventoryItem(Item):
     rarity = ''
     value = ''
 
+    SDB = 'safetydeposit'
+    DONATE = 'donate'
+    DROP = 'drop'
+    SHOP = 'stockshop'
+    GALLERY = 'stockgallery'
+    # GIVE = 'give' (FUTURE)
+    # AUCTION = 'auction' (FUTURE)
+
     _urls = {
         'item': 'http://www.neopets.com/iteminfo.phtml?obj_id=%s'
     }
@@ -47,13 +55,50 @@ class InventoryItem(Item):
             raise InvalidItemID(self.id)
 
         try:
-            self.name = self._xpath('name', pg)[0].replace(' : ', '')
-            self.img = self._xpath('image', pg)[0]
-            self.desc = self._xpath('desc', pg)[0]
-            self.type = self._xpath('type', pg)[0]
-            self.weight = self._xpath('weight', pg)[0]
-            self.rarity = self._xpath('rarity', pg)[0]
-            self.value = self._xpath('value', pg)[0]
+            self.name = str(self._xpath('name', pg)[0].replace(' : ', ''))
+            self.img = str(self._xpath('image', pg)[0])
+            self.desc = str(self._xpath('desc', pg)[0])
+            self.type = str(self._xpath('type', pg)[0])
+            self.weight = str(self._xpath('weight', pg)[0])
+            self.rarity = str(self._xpath('rarity', pg)[0])
+            self.value = str(self._xpath('value', pg)[0])
         except Exception:
             self._logger.exception('Failed to parse details for ' + self.name)
             raise ParseException
+
+    def move(self, location):
+        """ Moves an item from the user's inventory to the given location
+
+        Args
+            | **location**: The location to move the items
+
+        Returns
+            Boolean value indicating whether the move was successful or not
+
+        Example:
+            >>> item = usr.inventory.items[0]
+            >>> item.move(item.SHOP)
+            True
+        """
+        pg = self._usr.get_page(self._urls['item'] % self.id)
+
+        form = pg.form(action='useobject.phtml')[0]
+
+        if location == self.SDB:
+            form.update(action=self.SDB)
+        elif location == self.DONATE:
+            form.update(action=self.DONATE)
+        elif location == self.DROP:
+            form.update(action=self.DROP)
+        elif location == self.SHOP:
+            form.update(action=self.SHOP)
+        elif location == self.GALLERY:
+            form.update(action=self.GALLERY)
+        else:
+            return False
+
+        pg = form.submit(self._usr)
+        if 'red_oops.gif' in pg.content:
+            return False
+        else:
+            return True

@@ -1,4 +1,5 @@
 import json
+
 import lxml.html
 import requests
 
@@ -95,6 +96,7 @@ class Page:
             self.document = lxml.html.document_fromstring(self.content)
 
             # Process forms
+            self.forms = []
             for form in self.xpath('//form'):
                 self.forms.append(HTMLForm(url, form))
 

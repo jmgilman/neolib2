@@ -1,5 +1,6 @@
 from neolib.inventory.Inventory import Inventory
 from neolib.item.InventoryItem import InventoryItem
+from neolib.item.InventoryItemList import InventoryItemList
 
 
 class UserInventory(Inventory):
@@ -29,16 +30,21 @@ class UserInventory(Inventory):
         pg = self._usr.get_page(self._urls['inventory'])
 
         # Loops through all non-NC items
+        self.data = []
         for td in self._xpath('main_inventory', pg):
-            id = self._xpath('item/id', td).replace(';)', '')
+            id = str(self._xpath('item/id', td)).replace(');', '')
             item = InventoryItem(id, self._usr)
 
-            item.img = self._xpath('item/img', td)[0]
-            item.desc = self._xpath('item/desc', td)[0]
-            item.name = self._xpath('item/name', td)[0]
+            item.img = str(self._xpath('item/img', td)[0])
+            item.desc = str(self._xpath('item/desc', td)[0])
+            item.name = str(self._xpath('item/name', td)[0])
 
             if len(self._xpath('item/rarity', td)) > 0:
-                item.rarity = self._xpath('item/rarity', td)[0]
+                item.rarity = str(self._xpath('item/rarity', td)[0])
                 item.rarity = item.rarity.replace('(', '').replace(')', '')
 
-            self.items.append(item)
+            self.data.append(item)
+
+    def find(self, **kwargs):
+        result = super().find(**kwargs)
+        return InventoryItemList(self._usr, result)

@@ -66,6 +66,8 @@ class User(NeolibBase):
 
     hooks = []
 
+    _last_page = ''
+
     _log_name = 'neolib.user.user'
 
     _urls = {
@@ -130,7 +132,7 @@ class User(NeolibBase):
 
         # Fill in the login form
         form = pg.form(action='/login.phtml')[0]
-        form.update({'username': self.username, 'password': self.password})
+        form.update(username=self.username, password=self.password)
 
         # Submit the form
         pg = form.submit(self)
@@ -154,7 +156,15 @@ class User(NeolibBase):
         Returns:
             A :class:`.Page` object representng the requested page
         """
+        # Inject a referer (Neopets looks for these often)
+        if not header_values and self._last_page:
+            header_values = {'Referer': self._last_page}
+        elif "Referer" not in header_values and self._last_page:
+            header_values['Referer'] = self._last_page
+
         pg = Page(url, self, post_data=post_data, header_values=header_values)
+
+        self._last_page = url
 
         # This image is shown if Neopets is offline
         if "http://images.neopets.com/homepage/indexbak_oops_en.png" in pg.content:
