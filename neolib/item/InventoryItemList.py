@@ -31,7 +31,7 @@ class InventoryItemList(ItemList):
             >>> snowballs.move(snowballs.SHOP)
             True
         """
-        pg = self._usr.get_page(self._urls['quickstock'])
+        pg = self._get_page('quickstock')
         form = pg.form(action='process_quickstock.phtml')[0]
 
         # First we need to build a dictionary of positions and id's

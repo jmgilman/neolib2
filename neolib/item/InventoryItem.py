@@ -48,7 +48,7 @@ class InventoryItem(Item):
         Most details can be obtained directly off of the user's inventory
         screen, however a few key details like weight and value cannot and this
         function should be called to retrieve these """
-        pg = self._usr.get_page(self._urls['item'] % self.id)
+        pg = self._get_page('item', self.id)
 
         if "not in your inventory" in pg.content:
             self._logger.error('No item with id ' + self.id + ' in inventory')

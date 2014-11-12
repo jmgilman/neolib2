@@ -66,7 +66,7 @@ class Profile(NeolibBase):
     _log_name = 'neolib.user.profile'
 
     _urls = {
-        'profile': 'http://www.neopets.com/userlookup.phtml?user='
+        'profile': 'http://www.neopets.com/userlookup.phtml?user=%s'
         }
 
     _paths = {
@@ -115,14 +115,13 @@ class Profile(NeolibBase):
             },
         }
 
-    def __init__(self, user):
+    def __init__(self, usr):
         """Initializes the profile with the given :class:`User` object
 
         Args:
             **user**: The :class:`User` object to load the profile for
         """
-        super().__init__()
-        self.usr = user
+        super().__init__(usr)
 
     def load(self):
         """Fetches the user profile data and populates the attributes
@@ -182,7 +181,7 @@ class Profile(NeolibBase):
                 return False
 
         # Get the profile page
-        pg = self.usr.get_page(self._urls['profile'] + self.usr.username)
+        pg = self._get_page('profile', self._usr.username)
 
         try:
             # Parse the general profile details
@@ -243,4 +242,4 @@ class Profile(NeolibBase):
         return clean_string
 
     def __repr__(self):
-        return "Profile <" + self.usr.username + ">"
+        return "Profile <" + self._usr.username + ">"

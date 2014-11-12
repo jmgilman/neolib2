@@ -50,12 +50,29 @@ class NeolibBase:
         self._logger = logging.getLogger(self._log_name)
         self._usr = usr
 
+    def _get_page(self, url, args=None, post_data='', header_values=''):
+        """ Returns a :class:`Page` object representing the given url
+
+        Args:
+            | **url**: The name of the url to use for querying as stored
+            in _urls. Should be in the format of 'key1/key2/key3'.
+
+        Returns:
+            :class:`Page` instance representing the given url
+        """
+        url = reduce(dict.__getitem__, url.split('/'), self._urls)
+
+        if args:
+            url = url % args
+
+        return self._usr.get_page(url, post_data, header_values)
+
     def _search(self, exp, subject, all=False):
         """Searches the given string using the given expression name
 
         Args:
             | **exp**: The name of the expression to use for querying as stored
-            in _regex. Should be in the format of 'key1/key2/key3'.
+                in _regex. Should be in the format of 'key1/key2/key3'.
             | **subject*: Instance of :class:`.Page`, :class:`HTMLElement`, or
                 a string value to search
             | **all**: Whether to search with DOTALL
@@ -81,8 +98,8 @@ class NeolibBase:
         """Searches the given subject using the given xpath name
 
         Args:
-            | **path**: The name of the expression to use for querying as stored
-            in _paths. Should be in the format of 'key1/key2/key3'.
+            | **path**: The name of the path to use for querying as stored in
+                _paths. Should be in the format of 'key1/key2/key3'.
             | **subject*: Instance of :class:`.Page`, or :class:`HTMLElement`
 
         Returns:
@@ -96,6 +113,19 @@ class NeolibBase:
         query = reduce(dict.__getitem__, path.split('/'), self._paths)
 
         return ele.xpath(query)
+
+    def _xpath_page(self, url, path):
+        """ Fetches the given url and applies the given xpath to the page
+        Args:
+            | **url**: The name of the url to use for querying as stored in
+                _urls. Should be in the format of 'key1/key2/key3'.
+            | **path**: The name of the xpath to use for querying as stored in
+                _paths. Should be in the format of 'key1/key2/key3'.
+
+        Returns:
+            A list of matches from the xpath query
+        """
+        return self._xpath(path, self._get_page(url))
 
     def _to_element(self, string):
         """Converts a HTML string into a lxml element
@@ -146,6 +176,14 @@ class NeolibBase:
         time.sleep(delay)
 
     def _is_init(self, string):
+        """Determines whether a string can be safely casted to an integer
+
+        Args:
+            **string**: The string to test
+
+        Returns
+            Boolean result representing if the cast was successful or not
+        """
         try:
             int(string)
             return True

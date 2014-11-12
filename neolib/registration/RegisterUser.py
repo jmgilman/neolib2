@@ -37,7 +37,7 @@ class RegisterUser(NeolibBase):
         | **neopet_meetothers**: What the new neopet does when it meets others (0-7)
         | **neopet_stats**: The stats to select for the new neopet (1-3)
 
-        |**step_delay**: The maximum delay time (in seconds) to wait between
+        | **step_delay**: The maximum delay time (in seconds) to wait between
             each registration step (min = max / 2)
 
         | **COLORS**: A list of acceptable colors for the new neopet
@@ -223,7 +223,7 @@ class RegisterUser(NeolibBase):
             A :class:`.User` instance configured with the newly registered user
         """
         # Setup the cookies by requesting the sign-up page
-        self._usr.get_page(self._urls['index'])
+        self._get_page('index')
 
         if not self._check_username():
             raise UsernameNotAvailable(self.username + ' is taken')
@@ -237,7 +237,7 @@ class RegisterUser(NeolibBase):
             raise InvalidPassword('`' + self.password + '` is not valid')
 
         # Need to ensure next step is requested to preserve cookies
-        self._usr.get_page(self._urls['step'])
+        self._get_page('step')
 
         # Pause for realism
         self._wait_random(self.step_delay)
@@ -250,7 +250,7 @@ class RegisterUser(NeolibBase):
             self._logger.error('Failed step 2 with result: ' + msg)
             raise InvalidDetails('Second step of registration failed')
 
-        self._usr.get_page(self._urls['step'])
+        self._get_page('step')
 
         self._wait_random(self.step_delay)
 
@@ -262,7 +262,7 @@ class RegisterUser(NeolibBase):
             self._logger.error('Failed step 3 with result: ' + msg)
             raise InvalidEmail('Invalid email address')
 
-        self._usr.get_page(self._urls['neopet_step'])
+        self._get_page('neopet_step')
 
         self._wait_random(self.step_delay)
 
@@ -298,7 +298,7 @@ class RegisterUser(NeolibBase):
         }
 
         self._logger.debug('Initiating step 1 with: ' + str(data))
-        pg = self._usr.get_page(self._urls['ajax'], post_data=data)
+        pg = self._get_page('ajax', post_data=data)
 
         return pg.json
 
@@ -326,7 +326,7 @@ class RegisterUser(NeolibBase):
             }
 
         self._logger.debug('Initiating step 2 with: ' + str(data))
-        pg = self._usr.get_page(self._urls['ajax'], post_data=data)
+        pg = self._get_page('ajax', post_data=data)
 
         return pg.json
 
@@ -348,7 +348,7 @@ class RegisterUser(NeolibBase):
         }
 
         self._logger.debug('Initiating step 3 with: ' + str(data))
-        pg = self._usr.get_page(self._urls['ajax'], post_data=data)
+        pg = self._get_page('ajax', post_data=data)
 
         return pg.json
 
@@ -373,7 +373,7 @@ class RegisterUser(NeolibBase):
         }
 
         self._logger.debug('Creating neopet with: ' + str(data))
-        pg = self._usr.get_page(self._urls['neopet'], post_data=data)
+        pg = self._get_page('neopet', post_data=data)
 
         return pg.content
 
@@ -385,7 +385,7 @@ class RegisterUser(NeolibBase):
         """
         data = {'method': 'checkAvailability', 'username': self.username}
 
-        pg = self._usr.get_page(self._urls['ajax'], post_data=data)
+        pg = self._get_page('ajax', post_data=data)
 
         return pg.json['success']
 

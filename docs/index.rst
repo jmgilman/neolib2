@@ -64,6 +64,14 @@ Hooks:
   user/hooks/UserDetails
 
 
+For developers
+==============
+.. toctree::
+  :maxdepth: 2
+
+  development/primer
+
+
 
 Indices and tables
 ==================

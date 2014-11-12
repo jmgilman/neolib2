@@ -27,7 +27,7 @@ class UserInventory(Inventory):
     def load(self):
         """ Loads the inventory for the :class:`User` instance of this class """
         # Load the inventory
-        pg = self._usr.get_page(self._urls['inventory'])
+        pg = self._get_page('inventory')
 
         # Loops through all non-NC items
         self.data = []
