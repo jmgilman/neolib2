@@ -6,8 +6,8 @@ actions around the Neopets user account. The library includes strong
 functionality for performing complex tasks as well as built-in querying of a
 user's assets.
 
-Neolib is built upon python's famous `requests <http://docs.python-requests.org/en/latest/>`
-library for handling HTTP communications and the powerful `lxml <http://lxml.de/>`
+Neolib is built upon python's famous [requests](http://docs.python-requests.org/en/latest/)
+library for handling HTTP communications and the powerful [lxml](http://lxml.de/)
 library for parsing HTML content. These two libraries combine to give Neolib a
 powerful and fast framework for automation.
 
@@ -30,16 +30,22 @@ Contribution Primer: http://neolib2.readthedocs.org/en/latest/development/primer
 
 Installation
 ============
-1. Clone the repository
-2. Install the dependancies
-    $ pip install -r requirements.txt
-3. Use it!
+* Clone the repository
+* Install the dependancies
+
+```
+$ pip install -r requirements.txt
+```
+
+* Use it!
 
 Usage
 =====
+```python
 >>> from neolib.user.User import User
 >>> usr = User('username', 'password')
 >>> usr.login()
 True
 >>> usr.inventory
 Inventory <32 items>
+```
