@@ -26,6 +26,7 @@ A very detailed and useful primer can be found in the links below. Please read
 it and understand it fully before making contributions to the project.
 
 Documentation: http://neolib2.readthedocs.org/en/latest/
+
 Contribution Primer: http://neolib2.readthedocs.org/en/latest/development/primer.html
 
 Installation
