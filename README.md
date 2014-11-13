@@ -1,11 +1,45 @@
-Neolib2
+Neolib 2
 =======
+Neolib is a python library which aims to automate the cult classic web based
+game, Neopets. Neolib automates the game from the ground up by centralizing
+actions around the Neopets user account. The library includes strong
+functionality for performing complex tasks as well as built-in querying of a
+user's assets.
 
-This is an overhaul of the original Neolib python library which provided an object based framework for automating the popular browser based game, Neopets. This second revision has the same core mission but takes an updated approach by:
+Neolib is built upon python's famous `requests <http://docs.python-requests.org/en/latest/>`
+library for handling HTTP communications and the powerful `lxml <http://lxml.de/>`
+library for parsing HTML content. These two libraries combine to give Neolib a
+powerful and fast framework for automation.
 
-- Increasing overall speed of the library by switching the main parsing engine to lxml
-- Implementing a core base class to support a more uniform library
-- Being written with Python 3 from scratch
-- Focusing on a cloud based approach rather than expecting the end-user to be using a graphical interface.
+Neolib is aimed for being deployed on a server or cloud environment. The
+library does not assume that there will be a graphical interface for interacting
+with the library. Rather, it assumes the code will either be ran in a script on
+a server or as part of a grander program with a web interface.
 
-The project is currently in early development and many things will break in the future. For more information about the current objects found in the class, the most up to date documentation can be found here: http://neolib2.readthedocs.org/en/latest/
+Neolib is still in a very early stage of development. As such, things are
+expected to change, up to and including the base classes. If you intend on using
+the library in this state please ensure you check back frequently with the master
+branch for changes.
+
+Neolib is also looking for developers interested in contributing to the project.
+A very detailed and useful primer can be found in the links below. Please read
+it and understand it fully before making contributions to the project.
+
+Documentation: http://neolib2.readthedocs.org/en/latest/
+Contribution Primer: http://neolib2.readthedocs.org/en/latest/development/primer.html
+
+Installation
+============
+1. Clone the repository
+2. Install the dependancies
+    $ pip install -r requirements.txt
+3. Use it!
+
+Usage
+=====
+>>> from neolib.user.User import User
+>>> usr = User('username', 'password')
+>>> usr.login()
+True
+>>> usr.inventory
+Inventory <32 items>
