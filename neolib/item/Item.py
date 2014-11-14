@@ -23,7 +23,7 @@ class Item(NeolibBase):
     id = ''
     name = ''
     desc = ''
-    price = ''
+    price = 0
     img = ''
     type = ''
 

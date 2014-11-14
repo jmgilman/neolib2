@@ -4,6 +4,7 @@ from neolib.Exceptions import NeopetsOffline
 from neolib.http.Page import Page
 from neolib.inventory.UserInventory import UserInventory
 from neolib.NeolibBase import NeolibBase
+from neolib.shop.UserBackShop import UserBackShop
 from neolib.user.hooks.UserDetails import UserDetails
 from neolib.user.Profile import Profile
 
@@ -58,7 +59,7 @@ class User(NeolibBase):
 
     _inventory = None
     sdb = None
-    shop = None
+    _shop = None
     bank = None
 
     trades = None
@@ -89,6 +90,14 @@ class User(NeolibBase):
             self._inventory.load()
 
         return self._inventory
+
+    @property
+    def shop(self):
+        if not self._shop:
+            self._shop = UserBackShop(self)
+            self._shop.load()
+
+        return self._shop
 
     def __init__(self, username, password='', pin=None):
         """Initializes the user with the given username, password, and pin
