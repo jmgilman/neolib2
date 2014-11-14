@@ -4,6 +4,7 @@ from neolib.item.ItemList import ItemList
 
 
 class USBackItemList(ItemList):
+    """ Represents a returned list of items from querying a user's shop """
 
     _log_name = 'neolib.item.USBackItemList'
 
@@ -11,6 +12,7 @@ class USBackItemList(ItemList):
         super().__init__(usr, items)
 
     def remove(self):
+        """ Sets all items in the current list to be removed in the next update """
         for item in self.data:
             item.remove()
 

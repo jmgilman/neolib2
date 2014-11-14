@@ -13,12 +13,21 @@ Base:
 
    neolibbase
 
+HTTP:
+
+.. toctree::
+   :maxdepth: 2
+
+   http/page
+   http/htmlform
+
 Inventory:
 
 .. toctree::
    :maxdepth: 2
 
    inventory/inventory
+   inventory/usbackinventory
    inventory/userinventory
 
 Item:
@@ -30,6 +39,8 @@ Item:
    item/inventoryitemlist
    item/item
    item/itemlist
+   item/usbackitem
+   item/usbackitemlist
 
 Registration:
 
@@ -38,13 +49,12 @@ Registration:
 
    registration/registeruser
 
-HTTP:
+Shop:
 
 .. toctree::
    :maxdepth: 2
 
-   http/page
-   http/htmlform
+   shop/userbackshop
 
 User:
 

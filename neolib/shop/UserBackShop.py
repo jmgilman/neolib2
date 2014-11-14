@@ -3,7 +3,22 @@ from neolib.NeolibBase import NeolibBase
 
 
 class UserBackShop(NeolibBase):
+    """ Represents the backend of a user shop
 
+    This class provides an interface to the backend of a user's shop. This
+    includes access to all shop details, shop inventory, and additional actions
+    like updating the inventory or changing the shop details.
+
+    Attributs:
+        | **name**: The shop name
+        | **size**: The shop size
+        | **keeper_img**: The image for the shop keeper
+        | **keeper_message**: The shop keeper's message
+        | **stocked**: The total number of items stocked in the shop
+        | **free_space**: The total amount of free space in the shop
+        | **inventory**: Instance of :class:`USBackInventory`
+        | **till**: The user's current till (updated everytime it's read)
+    """
     name = ''
     size = ''
     keeper_img = ''
@@ -48,6 +63,7 @@ class UserBackShop(NeolibBase):
         super().__init__(usr)
 
     def load(self):
+        """ Loads the user's shop details and inventory """
         # Load the index
         pg = self._get_page('index')
 
@@ -65,6 +81,13 @@ class UserBackShop(NeolibBase):
         self.inventory.load(pg)
 
     def update(self):
+        """ Looks for any changes in the user's inventory and updates them
+
+        This method will move through all items per inventory page looking for
+        changes in either the delete attribute or a difference between the
+        old price and current price of an item (indicating a price change). It
+        will then submit only the pages that have items which changed.
+        """
         # Determine if any pages have changed
         changed_pages = []
         for i in range(1, self.inventory.pages + 1):
@@ -80,6 +103,14 @@ class UserBackShop(NeolibBase):
                 self._get_page('update', post_data=data)
 
     def withdraw(self, amount):
+        """ Withdraws the given amount from the user's shop till
+
+        Arguments:
+            **amount**: The amount to withdraw
+
+        Returns:
+            Boolean indicating if the withdrawal was successful
+        """
         # Build the data
         data = {}
         data['type'] = 'withdraw'
@@ -96,6 +127,8 @@ class UserBackShop(NeolibBase):
 
     def _page_change(self, items):
         for item in items:
+            # A difference between price and old_price indicates a price change
+            # A change in the remove attribute indicates an item needs removing
             if item.old_price != item.price:
                 return True
             elif item.remove == 1:
@@ -120,4 +153,4 @@ class UserBackShop(NeolibBase):
         return data
 
     def __repr__(self):
-        return 'User Shop Backend <' + self._usr.username + '>'
+        return 'User Shop Backend <' + len(self.inventory) + ' items stocked>'

@@ -4,6 +4,11 @@ from neolib.item.USBackItemList import USBackItemList
 
 
 class USBackInventory(Inventory):
+    """ Represents the inventory of the backend of a user's shop
+
+    Attributes:
+        **pages**: The number of pages in the user's inventory
+    """
 
     pages = 0
 
@@ -30,6 +35,12 @@ class USBackInventory(Inventory):
         super().__init__(usr)
 
     def load(self, index=None):
+        """ Loads the shop inventory for the :class:`User` instance of this class
+
+        Arguments:
+            **index**: Optional :class:`Page` instance with the user's shop
+                index page loaded
+        """
         # Load the main index
         if not index:
             pg = self._get_page('index')
