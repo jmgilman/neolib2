@@ -1,3 +1,6 @@
+from collections import UserList
+
+from neolib.Exceptions import ParseException
 from neolib.item.ItemList import ItemList
 
 
@@ -9,6 +12,8 @@ class InventoryItemList(ItemList):
     DROP = 'discard'
     SHOP = 'stock'
     GALLERY = 'gallery'
+
+    _log_name = 'neolib.item.InventoryItemList'
 
     _urls = {
         'quickstock': 'http://www.neopets.com/quickstock.phtml'
@@ -36,10 +41,14 @@ class InventoryItemList(ItemList):
 
         # First we need to build a dictionary of positions and id's
         ids = {}
-        for name, inp in form.items():
-            if 'id_arr' in name:
-                pos = inp.name.split('[')[1].replace(']', '')
-                ids[pos] = inp.value
+        try:
+            for name, inp in form.items():
+                if 'id_arr' in name:
+                    pos = inp.name.split('[')[1].replace(']', '')
+                    ids[pos] = inp.value
+        except Exception:
+            self._logger.exception('Unable to parse item id\'s')
+            raise ParseException('Unable to parse item id\'s')
 
         # Next we need to remove all positions that are not changing
         remove = []
@@ -56,11 +65,15 @@ class InventoryItemList(ItemList):
             del ids[pos]
 
         # Now we need to remove all radio fields that are not changing
-        for name, inp in list(form.items()):
-            if 'radio_arr' in name:
-                pos = inp.name.split('[')[1].replace(']', '')
-                if pos not in list(ids.keys()):
-                    del form[name]
+        try:
+            for name, inp in list(form.items()):
+                if 'radio_arr' in name:
+                    pos = inp.name.split('[')[1].replace(']', '')
+                    if pos not in list(ids.keys()):
+                        del form[name]
+        except Exception:
+            self._logger.exception('Unable to parse radio fields')
+            raise ParseException('Unable to parse radio fields')
 
         # Finally we need to set the destination for remaining radio fields
         if location == self.SDB:
@@ -86,3 +99,11 @@ class InventoryItemList(ItemList):
             return False
         else:
             return True
+
+    def __getitem__(self, item):
+        result = UserList.__getitem__(self, item)
+        if type(result) is list:
+            if len(result) > 1:
+                return InventoryItemList(self._usr, result)
+        else:
+            return result

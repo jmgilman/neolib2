@@ -68,7 +68,7 @@ class User(NeolibBase):
 
     _last_page = ''
 
-    _log_name = 'neolib.user.user'
+    _log_name = 'neolib.user.User'
 
     _urls = {
         'index': 'http://www.neopets.com/',

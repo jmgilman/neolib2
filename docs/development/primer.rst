@@ -56,10 +56,10 @@ should be used for requesting configured urls with the configured :class:`User`
 instance.
 
 7. The internal :class:`User` instance supplied in the initialization of the
-base class and copied to the `_usr` instance should be used for all transactions
+base class and copied to the `_usr` attribute should be used for all transactions
 that require a :class:`User` instance.
 
-8. All child classes of the base class should override the `_logger` attribute
+8. All child classes of the base class should override the `_log_name` attribute
 to something unique and meaningful to that particular class. This attribute is
 appended to log entries and helps in identifying where the entry originated
 from.
@@ -73,7 +73,7 @@ needs to parse content take the following guidelines into consideration:
 
 1. As far as Neolib 2 is concerned, xpath is preferred over regular
 expressions. If all content can be parsed with xpath, this would be the
-preferred method rather than combining the two. However,
+preferred method rather than combining the two.
 
 2. It is not uncommon to come across such poorly formatted HTML on Neopets that
 using xpath purely is simply not ideal. In this case xpath should be used to

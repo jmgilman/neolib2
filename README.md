@@ -25,9 +25,9 @@ Neolib is also looking for developers interested in contributing to the project.
 A very detailed and useful primer can be found in the links below. Please read
 it and understand it fully before making contributions to the project.
 
-Documentation: http://neolib2.readthedocs.org/en/latest/
+**Documentation**: http://neolib2.readthedocs.org/en/latest/
 
-Contribution Primer: http://neolib2.readthedocs.org/en/latest/development/primer.html
+**Contribution Primer**: http://neolib2.readthedocs.org/en/latest/development/primer.html
 
 Installation
 ============

@@ -22,11 +22,11 @@ class InventoryItem(Item):
     # GIVE = 'give' (FUTURE)
     # AUCTION = 'auction' (FUTURE)
 
+    _log_name = 'neolib.item.InventoryItem'
+
     _urls = {
         'item': 'http://www.neopets.com/iteminfo.phtml?obj_id=%s'
     }
-
-    _log_name = 'neolib.item.InventoryItem'
 
     _paths = {
         'image': '/html/body/table[1]/tr/td[1]/img/@src',
@@ -64,7 +64,7 @@ class InventoryItem(Item):
             self.value = str(self._xpath('value', pg)[0])
         except Exception:
             self._logger.exception('Failed to parse details for ' + self.name)
-            raise ParseException
+            raise ParseException('Failed to parse details for ' + self.name)
 
     def move(self, location):
         """ Moves an item from the user's inventory to the given location
