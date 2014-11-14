@@ -190,17 +190,17 @@ class NeolibBase:
         except Exception:
             return False
 
-    def _remove_multi(self, string, **args):
+    def _remove_multi(self, string, substrings):
         """ Removes all instances of given substrings from the given string
 
         Args:
             | **string**: The string to replace in
-            | **args**: The substrings to remove from the given string
+            | **substrings**: The substrings to remove from the given string
 
         Returns:
             Modified string with substrings removed
         """
-        for sub in args:
+        for sub in substrings:
             string = string.replace(sub, '')
 
         return string

@@ -1,5 +1,6 @@
 from neolib.inventory.USBackInventory import USBackInventory
 from neolib.NeolibBase import NeolibBase
+from neolib.shop.History import History
 
 
 class UserBackShop(NeolibBase):
@@ -18,16 +19,20 @@ class UserBackShop(NeolibBase):
         | **free_space**: The total amount of free space in the shop
         | **inventory**: Instance of :class:`USBackInventory`
         | **till**: The user's current till (updated everytime it's read)
+        | **history**: The sales history for the user's shop (:class:`History`)
+        | **upgrade_cost**: The cost to upgrade the shop to the next size
     """
     name = ''
-    size = ''
+    size = 0
     keeper_img = ''
     keeper_name = ''
     keeper_message = ''
-    stocked = ''
-    free_space = ''
+    stocked = 0
+    free_space = 0
 
     inventory = None
+
+    _history = None
 
     _log_name = 'neolib.shop.UserBackShop'
 
@@ -35,6 +40,7 @@ class UserBackShop(NeolibBase):
         'index': 'http://www.neopets.com/market.phtml?type=your',
         'update': 'http://www.neopets.com/process_market.phtml',
         'till': 'http://www.neopets.com/market.phtml?type=till',
+        'edit': 'http://www.neopets.com/market.phtml?type=edit',
     }
 
     _paths = {
@@ -50,6 +56,9 @@ class UserBackShop(NeolibBase):
             'stocked': '//*[@id="content"]/table/tr/td[2]/center[1]/b[2]/text()',
             'free_space': '//*[@id="content"]/table/tr/td[2]/center[1]/b[3]/text()',
         },
+        'upgrade': {
+            'cost': '//form[@action="process_market.phtml"]/input[@type="submit"]/@value',
+        },
         'till': '//*[@id="content"]/table/tr/td[2]/p[1]/b/text()',
     }
 
@@ -58,6 +67,21 @@ class UserBackShop(NeolibBase):
         pg = self._get_page('till')
 
         return int(self._xpath('till', pg)[0].replace(' NP', ''))
+
+    @property
+    def history(self):
+        if not self._history:
+            self._history = History(self._usr)
+            self._history.load()
+
+        return self._history
+
+    @property
+    def upgrade_cost(self):
+        pg = self._get_page('edit')
+
+        amt = self._xpath('upgrade/cost', pg)[0].split(': ')[1].replace(' NP', '')
+        return int(amt)
 
     def __init__(self, usr):
         super().__init__(usr)
@@ -69,12 +93,12 @@ class UserBackShop(NeolibBase):
 
         # Load the main details
         self.name = self._xpath('shop/name', pg)[0]
-        self.size = self._xpath('shop/size', pg)[0].split('size ')[1].replace(')', '')
+        self.size = int(self._xpath('shop/size', pg)[0].split('size ')[1].replace(')', ''))
         self.keeper_img = self._xpath('keeper/img', pg)[0]
         self.keeper_name = self._xpath('keeper/name_msg', pg)[0].split(' says')[0]
         self.keeper_message = self._xpath('keeper/name_msg', pg)[0].split('says ')[1].replace('\'', '')
-        self.stocked = self._xpath('stock/stocked', pg)[0]
-        self.free_space = self._xpath('stock/free_space', pg)[0]
+        self.stocked = int(self._xpath('stock/stocked', pg)[0])
+        self.free_space = int(self._xpath('stock/free_space', pg)[0])
 
         # Load the inventory
         self.inventory = USBackInventory(self._usr)
@@ -125,6 +149,22 @@ class UserBackShop(NeolibBase):
         else:
             return True
 
+    def upgrade(self):
+        """ Upgrades the user's shop to the next size
+
+        Returns:
+            Boolean indicating whether or not the upgrade was successful
+        """
+        data = {}
+        data['type'] = 'upgrade'
+
+        pg = self._get_page('update', post_data=data)
+
+        if 'red_oops.gif' in pg.content:
+            return False
+        else:
+            return True
+
     def _page_change(self, items):
         for item in items:
             # A difference between price and old_price indicates a price change
@@ -153,4 +193,4 @@ class UserBackShop(NeolibBase):
         return data
 
     def __repr__(self):
-        return 'User Shop Backend <' + len(self.inventory) + ' items stocked>'
+        return 'User Shop Backend <' + str(len(self.inventory)) + ' items stocked>'
