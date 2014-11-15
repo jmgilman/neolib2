@@ -1,0 +1,936 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+ host - web-025.intneo.com
+//-->
+<html><head>
+	<meta name="description" content="Neopets.Com - Virtual Pet Community! Join up for free games, shops, auctions, chat and more!">
+	<meta name="keywords" content="pets, pet, games, game, virtual, chat, fun, prizes, play, virtual pet, kids">
+	<meta name="robots" content="noodp, index, follow">
+	<meta http-equiv="X-UA-Compatible" content="IE=8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<link rel="stylesheet" type="text/css" href="http://images.neopets.com/css/default.css?v=4">
+	<link rel="stylesheet" type="text/css" href="http://images.neopets.com/css/ad.css?v=3">
+
+	<link rel="stylesheet" type="text/css" href="http://images.neopets.com/css/themes/000_def_f65b1.css?v=5">
+		
+	<title>Neopets - Browsing a Shop</title>
+	<script id="js-framework" type="text/javascript" language="JavaScript" src="http://images.neopets.com/js/common.js?v=6"></script>
+
+		<script src="http://images.neopets.com/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+	<script src="http://images.neopets.com/js/jquery-ui-1.8.17.min.js" type="text/javascript"></script>
+	
+	
+	<script type="text/javascript">
+	var Neo = {
+		clog: function() {
+			if (window.console && console.log) {
+				if (arguments.length == 0) {
+					console.log('! no arguments passed !');
+				} else if (arguments.length == 1) {
+					console.log(arguments[0]);
+				} else {
+					console.log(arguments);
+				}
+			}
+		},
+		popups: {
+			list: [],
+			add: function(popup) {
+				Neo.popups.list.push(popup);
+				Neo.fade.show();
+			},
+			rem: function(popup) {
+				for (var i = Neo.popups.list.length - 1; i >= 0; i--) {
+					var curPopup = Neo.popups.list[i];
+					Neo.clog(i, popup, curPopup, popup == curPopup);
+					if (curPopup == popup) {
+						Neo.popups.list.splice(i, 1);
+					}
+				}
+				if (Neo.popups.list.length == 0) {
+					Neo.fade.hide();
+				}
+			},
+			remAll: function() {
+				Neo.popups.list = [];
+				Neo.fade.hide();
+			}
+		},
+		fade: {
+			show: function() {
+				$('#neoFade').show();
+			},
+			hide: function() {
+				$('#neoFade').hide();
+			}
+		},
+		setNp: function(newnp) {
+			$('#npanchor').text(newnp);
+		},
+		setNc: function(newnc) {
+			Neo.clog('lol', newnc);
+			$('#ncanchor').text(newnc);
+		},
+		precache: function(url) {
+			if ($.isArray(url)) {
+				for (var i = 0; i < url.length; i++) {
+					new Image().src = url[i];
+				}
+			} else {
+				new Image().src = url;
+			}
+		}
+	};
+	</script>
+	<style type="text/css">
+		#neoFade { display: none; position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0.5; background: black; filter: alpha(opacity=50); z-index: 9500; }
+	</style>
+
+	<script id="js-browserdetect" type="text/javascript" language="JavaScript" src="http://images.neopets.com/js/getbrowser.js?v=1"></script>
+	<script type="text/javascript" src="http://images.neopets.com/n.js"></script>	
+	<script type="text/javascript">
+	<!--
+		var nl = "en";
+		var nh = 6;
+		var nm = 36;
+		var ns = 47;
+		var na = "pm";
+		var ncl = new Array(0, 53, 104, 137, 169, 198, 231, 265, 299, 335, 368, 397, 427);
+
+		window.setInterval('nc()', 1000);
+
+		function sh(i) {
+			ol.style.clip = "rect("+ncl[i-1]+" 128 "+ncl[i]+" 0)";
+			ol.style.visibility = "visible";
+		}
+
+		function mo() {
+			ol.style.visibility = "hidden";
+		}
+
+		function search_handle(searchForm) {
+			searchForm.action = "/search.phtml";
+			searchForm.target = "";
+			searchForm.method = "post";
+			searchForm.s.value = searchForm.q.value;
+			searchForm.submit();
+		};
+		function logout_nchub() {
+			var f = document.createElement("iframe");
+			f.setAttribute("src", "http://nc.neopets.com/auth/logout?no-redirect=1");
+			f.setAttribute("width", "0");
+			f.setAttribute("height", "0");
+			f.setAttribute("border", "0");
+	
+			var i = document.getElementById('logout_nchub');
+			i.appendChild(f);
+
+					}
+		jQuery(document).ready(function(){
+			$('a#logout_link').click(function (event) {
+				setTimeout(function() {window.location = '/logout.phtml';},1000);
+				logout_nchub();
+				return false;
+			});
+		});
+	//-->
+	</script>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1152868-1']);
+_gaq.push(['_setCustomVar', 1, 'age-gender', 'male-23', 2]);
+_gaq.push(['_trackPageview', '/browseshop.phtml']);
+(function() {
+	var ga = document.createElement('script');
+	ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+<script>
+function omnitureTrackPage(advertiser, id) { }
+function omnitureTrackClick(advertiser, id) { }
+</script>
+
+</head>
+<body class="en">	<div id="neoFade"></div>
+	<div id="pushdown_banner">
+		<div id="ad-slug-wrapper">
+			<table id="ad-table">
+				<tr>
+					<td class="slug"><img src="http://images.neopets.com/adslug-opa-l.png" width="13" height="66"></td>
+					<td>
+						<script>
+var NeoRubicon = {
+	interval: null,
+
+	refreshAds: function() {
+		$('div.rubiconAdWrapper').each(function(k, v) {
+			if ($(this).attr('data-dorefresh') == 'true') {
+				var iframe = $(this).find('iframe');
+				var i2 = $(iframe).clone();
+				$(iframe).after(i2);
+				$(iframe).remove();
+			}
+		});
+
+	}
+};
+$(function() {
+	NeoRubicon.interval = setInterval(NeoRubicon.refreshAds, 30000);
+});
+</script>
+
+<style>
+iframe.rubicon { overflow: hidden; }
+iframe.rubicon.banner { width: 728px; height: 90px; }
+iframe.rubicon.tower { width: 160px; height: 600px; }
+iframe.rubicon.mrec { width: 300px; height: 250px; }
+</style>
+<!-- neo-us-regular-0 -->
+<div id="ad-728x90DivWrapper" class="rubiconAdWrapper ad_wrapper_fixed" data-dorefresh="true">
+	<iframe class="rubicon banner" frameborder="0" scrolling="no" src="/ads/rubiconFrame.phtml?rpAccount=11488&rpSite=33424&rpZoneSize=137408-2&rpAdType=js"></iframe>
+</div>
+
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+<div id="main" class= >
+
+<div id="ban"  ></div>
+
+	<div id="header">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td width="156" rowspan="3"><a href="/index.phtml"><img src="http://images.neopets.com/transparent_spacer.gif" width="156" height="77" alt="" border="0"></a></td>
+				<td class="eventIcon sf" xalign="left">&nbsp;</td>
+				<td class="user medText">
+Welcome, <a href="/userlookup.phtml?user=aliasxneo">aliasxneo</a> <span style="font-weight: normal;">|</span> NP: <a id='npanchor' href="/inventory.phtml">60,547</a> <span style="font-weight: normal;">|</span> <a id="logout_link" href="/logout.phtml"><b>Logout</b></a>				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="navigation">
+					<table width="100%" cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td width="725" align="center">
+<script type="text/javascript">
+	// Yay for Suckerfish!
+	startList = function() {
+		if (document.all&&document.getElementById) {
+			navRoot = document.getElementById("template_nav");
+			for (i=0; i<navRoot.childNodes.length; i++) {
+				node = navRoot.childNodes[i];
+				if (node.nodeName=="LI") {
+					node.onmouseover=function() {
+						this.className+=" over";
+					}
+					node.onmouseout=function() {
+						this.className=this.className.replace(" over", "");
+					}
+				}
+			}
+		}
+	}
+	window.onload=startList;
+</script>
+
+<ul id="template_nav">
+	<li class="nav_image"><a href="/myaccount.phtml"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/myaccount.png" alt="" border="0" width="115" height="38"></a><ul class="dropdown">
+			<li><a href="/myaccount.phtml">&raquo; Control Panel</a></li>
+			<li><a href="/preferences.phtml">&raquo; Preferences</a></li>
+			<li><a href="/userinfo.phtml">&raquo; Edit Profile</a></li>
+			<li><a href="/neomessages.phtml">&raquo; Neomail</a></li>
+			<li><a href="/neofriends.phtml">&raquo; Neofriends</a></li>
+			<li><a href="/addpet.phtml">&raquo; Create a Neopet</a></li>
+						<li><a href="/space/warehouse/prizecodes.phtml">&raquo; Redeem Code</a></li>
+				</ul>
+
+	<li class="nav_image"><a href="/customise/"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/customise.png" alt="" border="0" width="90" height="38"></a><ul class="dropdown">
+			<li><a href="/customise/">&raquo; Customise Neopet</a></li>
+			<li><a href="/inventory.phtml">&raquo; Inventory</a></li>
+			<li><a href="/closet.phtml">&raquo; Closet</a></li>
+			<li><a href="/neohome/"> &raquo; Neohomes</a></li>
+			<li><a href="/addpet.phtml">&raquo; Create a Neopet</a></li>
+			<li><a href="/pound/">&raquo; Pound</a></li>
+		</ul>
+	</li>
+
+		<li class="nav_image"><a href="/games/"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/games.png" alt="" border="0" width="65" height="38"></a><ul class="dropdown">
+			<li><a href="/games/">&raquo; Games Room</a></li>
+			<li><a href="/games/category.phtml?sortby=pop">&raquo; Popular</a></li>
+			<li><a href="/games/hiscores.phtml">&raquo; High Scores</a></li>
+			<li><a href="/games/favourites.phtml">&raquo; Favourites</a></li>
+			<li><a href="/keyquest/">&raquo; Key Quest</a></li>
+						<li><a href="/habitarium/">&raquo; Habitarium</a></li>
+						<li><a href="/dome/">&raquo; Battledome</a></li>
+		</ul>
+	</li>
+	
+	<li class="nav_image"><a href="/explore.phtml"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/explore.png" alt="" border="0" width="74" height="38"></a><ul class="dropdown">
+			<li><a href="/explore.phtml">&raquo; Map of Neopia</a></li>
+			<li><a href="/help/tutorial/index.phtml">&raquo; Tutorial</a></li>
+						<li><a href="/neopedia.phtml">&raquo; Neopedia</a></li>
+			<li><a href="/petcentral.phtml">&raquo; Pet Central</a></li>
+			<li><a href="/calendar.phtml">&raquo; Calendar</a></li>
+		</ul>
+	</li>
+
+	<li class="nav_image"><a href="/nf.phtml"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/news.png" alt="" border="0" width="57" height="38"></a><ul class="dropdown">
+		<li><a href="/nf.phtml">&raquo; New Features</a></li>
+		<li><a href="/comingsoon.phtml">&raquo; Coming Soon</a></li>
+		<li><a href="/ntimes/index.phtml">&raquo; Neopian Times</a></li><li><a href="/stuff.phtml">&raquo; Merch News</a></li>		</ul>
+	</li>
+
+	
+	<li class="nav_image"><a href="/community/index.phtml"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/community.png" alt="" border="0" width="97" height="38"></a><ul class="dropdown">
+			<li><a href="/community/index.phtml">&raquo; Hub</a></li>
+			<li><a href="/neoboards/index.phtml">&raquo; Neoboards</a></li>
+						<li><a href="/contests.phtml">&raquo; Spotlights</a></li>
+			<li><a href="/guilds/index.phtml">&raquo; Guilds</a></li>
+		</ul>
+	</li>
+	<li class="nav_image"><a href="/objects.phtml"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/shops.png" alt="" border="0" width="61" height="38"></a><ul class="dropdown">
+			<li><a href="/objects.phtml">&raquo; Neopia Central</a></li>
+			<li><a href="/market.phtml?type=wizard">&raquo; Shop Wizard</a></li>
+			<li><a href="/market.phtml?type=your">&raquo; Your Shop</a></li>
+			<li><a href="/auctions.phtml">&raquo; Auctions</a></li>
+			<li><a href="/island/tradingpost.phtml">&raquo; Trading Post</a></li>
+			<li><a href="/bank.phtml">&raquo; Bank</a></li>
+						<li><a href="/shopping/index.phtml">&raquo; Merchandise</a></li>
+				</ul>
+	</li>
+
+	<style type="text/css">
+		li.nav_image { margin-left: 0px; }
+	</style>
+	<li class="nav_image"><a href="http://ncmall.neopets.com/mall/index.phtml"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/ncmall.png" alt="" border="0" width="70" height="38"></a><ul class="dropdown">
+			<li><a href="http://ncmall.neopets.com/mall/index.phtml">&raquo; Shop</a></li>
+			<li><a href="http://nc.neopets.com/get-nickcash">&raquo; Get Neocash</a></li>
+			<li><a href="http://nc.neopets.com/nickcash-cards">&raquo; Find Neocash Cards</a></li>
+			<li><a href="http://nc.neopets.com/redeemnc">&raquo; Redeem Neocash Cards</a></li>
+			<li><a href='http://nc.neopets.com/transactionlog/'>&raquo; Transaction Logs</a></li>
+					</ul>
+	</li>
+		<style type="text/css">
+		li.nav_image { margin-left: 0px; }
+	</style>
+		<li class="nav_image"><a href="http://nc.neopets.com/membership/"><img src="http://images.neopets.com/themes/000_def_f65b1/navigation/premium.png" alt="" border="0" width="96" height="38"></a><ul class="dropdown">
+
+						<li><a href="http://nc.neopets.com/membership/">&raquo; Become a Member</a></li>
+								</ul>
+	</li>
+</ul>
+</td>
+							<td id="nst">6:36:47 pm NST</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" height="3"><img src="http://images.neopets.com/transparent_spacer.gif" width="1" height="3" alt="" border="0"></td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="content">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+<td align="center" class="sidebar" width="178">
+<div class="sidebarModule" style="margin-bottom: 7px;">
+	<table width="150" cellpadding="3" cellspacing="0" border="0" class="sidebarTable">
+		<tr>
+			<td valign="middle" class="sidebarHeader medText"><a href="/quickref.phtml"><b>LuckRabbit</b></a> </td>
+		</tr>
+		<tr>
+			<td class="activePet"><a href="/quickref.phtml"><IMG src="http://pets.neopets.com/cp/tj9b9g7v/4/2.png" width="150" height="150" border="0" style=""></a></td>
+		</tr>
+		<tr>
+			<td class="activePet sf" align="center"><a href="/customise/?view=LuckRabbit"><b><span class="pointer">&raquo</span> Customise</b></a></td>
+		</tr>
+
+		<tr>
+			<td class="activePetInfo" align="center">
+				<table cellpadding="1" cellspacing="0" border="0">
+					<tr>
+						<td align="right">Species:</td>
+						<td align="left"><b>Cybunny</b></td>
+					</tr>
+
+					<tr>
+						<td align="right">Health:</td>
+						<td align="left"><b><font color='blue'><b>8 / 13</b></font></b></td>
+					</tr>
+
+					<tr>
+						<td align="right">Mood:</td>
+						<td align="left"><b>delighted!</b></td>
+					</tr>
+
+					<tr>
+						<td align="right">Hunger:</td>
+						<td align="left"><b><span style="color: #FF0000;">dying</span></b></td>
+					</tr>
+
+					<tr>
+						<td align="right">Age:</td>
+						<td align="left"><b>806 days</b></td>
+						</tr>
+
+					<tr>
+						<td align="right">Level:</td>
+						<td align="left"><b>3</b></td>
+					</tr>
+				</table>
+
+				
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="sidebarModule" style="margin-bottom: 7px;">
+	<table width="158" cellpadding="2" cellspacing="0" border="0" class="sidebarTable">
+		<tr>
+			<td valign="middle" class="sidebarHeader medText">Search Neopets</td>
+		</tr>
+		<tr>
+			<td class="neofriend" align="center">
+				<form onSubmit="search_handle(this);" style="padding-top: 4px; padding-bottom: 4px;">
+					<input class="sf" type="text" name="q" maxlength="255" value="Enter search text..." style="width: 135px; color: #a5a5a5; padding: 2px;" onFocus="this.style.color='#000000'; if( this.value=='Enter search text...' ) { this.value=''; }" onBlur="if( this.value=='' ) { this.style.color='#A5A5A5'; this.value='Enter search text...'; }"><br>
+					<input type="submit" value="Go!" class="sf">
+					<input type="hidden" name="client" value="pub-9208792519293771">
+					<input type="hidden" name="forid" value="1">
+					<input type="hidden" name="ie" value="ISO-8859-1">
+					<input type="hidden" name="oe" value="ISO-8859-1">
+					<input type="hidden" name="safe" value="active">
+					<input type="hidden" name="domains" value="www.neopets.com">
+					<input type="hidden" name="cof" value="GALT:#FFFFFF;GL:1;DIV:#000066;VLC:FFFFFF;AH:center;BGC:FFFFFF;LBGC:000066;ALC:FFFFFF;LC:FFFFFF;T:000000;GFNT:000066;GIMP:000077;FORID:1">
+					<input type="hidden" name="hl" value="en">
+					<input type="hidden" name="s">
+				</form>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="sidebarModule">
+	<table width="158" cellpadding="2" cellspacing="0" border="0" class="sidebarTable">
+		<tr>
+			<td valign="middle" class="sidebarHeader medText"><a href="/neofriends.phtml"><b>Neofriends</b></a> (Beta!) <a href="/s/index.phtml?track_cat_id=50&item_id=488"><img src="http://images.neopets.com/help/question_mark.png" width="13" height="13" alt="" border="0" align="absbottom"></a></td>
+		</tr>
+		<tr>
+			<td class="neofriend" align="center">
+
+<br />
+			None of your Neofriends are currently online.  You must be lonely.
+			<br /><br />			</td>
+		</tr>
+	</table>
+</div>
+</td>				<td class="content">
+										<!-- r0 -->
+
+<div align="center" class="medText">
+
+<a href="/objects.phtml"><b>Neopia Central</b></a>&nbsp;|
+<a href="/market_bazaar.phtml"><b>Bazaar</b></a>&nbsp;|
+<a href="/market_plaza.phtml"><b>Plaza</b></a>&nbsp;|
+<a href="/market_map.phtml"><b>Marketplace</b></a>&nbsp;|
+<a href="/market.phtml?type=wizard"><b>Shop Wizard</b></a>&nbsp;|
+<a href="/auctions.phtml"><b>Auctions</b></a>&nbsp;|
+<a href="/island/tradingpost.phtml"><b>Trading Post</b></a>
+<br />
+<a href="/objects.phtml?type=inventory"><b>Inventory</b></a>&nbsp;|
+<a href="/closet.phtml"><b>Closet</b></a>&nbsp;|
+<a href="/safetydeposit.phtml"><b>Safety Deposit Box</b></a>&nbsp;|
+<a href="/bank.phtml"><b>Bank</b></a>&nbsp;|
+<a href="/market.phtml?type=your"><b>Your Shop</b></a>
+<br />
+<a href="/battledome/battledome.phtml"><b>Battledome</b></a>&nbsp;|
+<a href="/guilds/index.phtml"><b>Guild Headquarters</b></a>&nbsp;|
+<a href="/noticeboard.phtml"><b>Notice Board</b></a>&nbsp;|
+<a href="/neohome/"><b>Neohomes</b></a>&nbsp;|
+<a href="/neohome/shed"><b>Storage Shed</b></a>
+
+
+<!--
+	<a href="/objects.phtml"><b>Neopia Central</b></a>&nbsp;|&nbsp;<a href="/market_bazaar.phtml"><b>Bazaar</b></a>&nbsp;|&nbsp;<a href="/market_plaza.phtml"><b>Plaza</b></a>&nbsp;|&nbsp;<a href="/market_map.phtml"><b>Marketplace</b></a>&nbsp;|&nbsp;<a href="/objects.phtml?type=inventory"><b>Inventory</b></a>&nbsp;|&nbsp;<a href="/closet.phtml"><b>Closet</b></a>&nbsp;|&nbsp;<a href="/safetydeposit.phtml"><b>Safety Deposit Box</b></a>
+
+	<br />
+
+	<a href="/battledome/battledome.phtml"><b>Battledome</b></a>&nbsp;|&nbsp;<a href="/guilds/index.phtml"><b>Guild Headquarters</b></a>&nbsp;|&nbsp;<a href="/noticeboard.phtml"><b>Notice Board</b></a>&nbsp;|&nbsp;<a href="/neohome/"><b>Neohomes</b></a>&nbsp;|&nbsp;<a href="/neohome/shed"><b>Storage Shed</b></a>
+	
+--->
+</div>
+
+
+
+
+<br />
+ 
+<BR><DIV align="center"><SCRIPT type="text/javascript">
+var right_str = "If you want to buy an item, use the left mouse button :)";
+</SCRIPT>
+<SCRIPT type="text/javascript" src="/js/browseshop.js"></SCRIPT>
+</DIV><b>~* Valleymede *~</b> (owned by <A href="/userlookup.phtml?user=valleymede89"><b>valleymede89</b></a>) - Click <a href='/autoform_abuse.phtml?abuse=report&offender=valleymede89&reportType=shop' onClick="if ( !confirm('Are you SURE you wish to report this shop?\n\nShops that have offensive material in, or scams can be reported to the\nNeopets Team by clicking \'OK\' below.  We will deal with it as soon as we can.') ) { return false; }"><b>here</b></a> to report shop.<br><BR><DIV align="center"><img src="http://images.neopets.com/new_shopkeepers/1240.gif" width="150" height="150" border="0"><br><b>Valleymede says 'Hi and Welcome!'</b><br></DIV><BR>
+<!-- desc start -->
+<center><map name="MAP"><area href="/~Alamartheslayer" coords="12,12,950,135"><area href="/browseshop.phtml?owner=gardener3&amp;mall=" coords="12,141,139,246"><area href="/~Alamartheslayer" coords="139,138,289,246"><area href="/browseshop.phtml?owner=freakadee&amp;mall=" coords="295,140,481,248"><area href="/browseshop.phtml?owner=supersimon007&amp;mall=" coords="483,137,602,245"><area href="/browseshop.phtml?owner=happy_training_shop&amp;mall=" coords="606,137,950,245"><area href="/browseshop.phtml?owner=donnabrennan&amp;mall=" coords="15,250,246,361"><area href="/browseshop.phtml?owner=sophieauditore&amp;mall=" coords="249,252,394,363"><area href="/browseshop.phtml?owner=lyric666&amp;mall=" coords="400,253,591,364"><area href="/browseshop.phtml?owner=repossesson&amp;mall=" coords="595,251,696,362"><area href="/browseshop.phtml?owner=shadomir&amp;mall=" coords="701,250,947,364"><area href="/browseshop.phtml?owner=beaniepush&amp;mall=" coords="14,366,181,474"><area href="/browseshop.phtml?owner=hufflebunny&amp;mall=" coords="184,366,344,474"><area href="/browseshop.phtml?owner=orients&amp;mall=" coords="347,367,624,473"><area href="/browseshop.phtml?owner=valleymede89&amp;mall=" coords="625,366,821,474"><area href="/browseshop.phtml?owner=jackthezafara&amp;mall=" coords="824,366,946,474"><area href="/browseshop.phtml?owner=da_map_shop&amp;mall=" coords="13,480,238,588"><area href="/browseshop.phtml?owner=falling_dreams_16&amp;mall=" coords="244,480,386,588"><area href="/browseshop.phtml?owner=angelinalaurraine&amp;mall=" coords="392,478,587,590"><area href="/browseshop.phtml?owner=xxx_ac_xxx&amp;mall=" coords="586,476,785,587"><area href="/browseshop.phtml?owner=chuckycheesebouncer&amp;mall=" coords="790,479,946,590"><area href="/browseshop.phtml?owner=36cooper&amp;mall=" coords="10,593,197,704"><area href="/browseshop.phtml?owner=malitana&amp;mall=" coords="201,595,324,706"><area href="/browseshop.phtml?owner=3basketballrules7&amp;mall=" coords="331,595,533,707"><area href="/~Alamartheslayer" coords="537,594,644,705"><area href="/browseshop.phtml?owner=deadlykaix&amp;mall=" coords="649,593,815,704"><area href="/browseshop.phtml?owner=kieke25&amp;mall=" coords="819,595,945,706"><area href="/browseshop.phtml?owner=repossesson&amp;mall=" coords="13,712,178,823"><area href="/~xnightshade" coords="182,712,781,823"><area href="/browseshop.phtml?owner=i_am_abc_123&amp;mall=" coords="786,712,947,822"><br><img src="http://abload.de/img/gold9zs8t.jpg" usemap="#MAP"><br><font color="#ffffcc" size="-5">
+<p><a name="s"></a></p>
+
+<style>
+.sidebar, .sidebar img, .sidebar td, .sf, .sidebarModule, .sidebar a, td.sidebarHeader.medText, .activePetInfo td, .sidebarTable, .neofriendInfo, #ad-slug-wrapper, hr, #footer {
+	height: 0px !important;
+	width: 0px !important;
+	padding: 0px !important;
+	font: 0pt Verdana;
+	overflow: hidden;
+	border: none;
+}
+body {
+	background: url("http://i143.photobucket.com/albums/r137/fmall/RB/goldbg3.jpg");
+}
+#header {
+	background: url("http://abload.de/img/gg93zocp.png");
+}
+#ban {
+	background: url("http://abload.de/img/gg7ujsqd.png");
+}
+#content a img {
+	border-width: 0px;
+}
+.content table {
+	width: 100%;
+}
+</style></font>
+</map></center>
+
+
+<center>
+<p><font size="4" color="#DFBFFF">
+<b></b><br></font>
+
+<br><img src="http://shops.neomallers.com/valleymede89.gif?theme=mtpurple"><br>Counter started at Feb 2011</p><p>
+
+<font face="Arial" color="#DFBFFF" size="4">
+<a href="/browseshop.phtml?lower=80&amp;owner=valleymede89">Page 2~
+</a><a href="/browseshop.phtml?lower=240&amp;owner=valleymede89">Page 4~
+</a><a href="/browseshop.phtml?lower=400&amp;owner=valleymede89">Page 6~
+</a><a href="/browseshop.phtml?lower=560&amp;owner=valleymede89">Page 8~
+</a></font></p></center>
+<!-- desc end -->
+</a><div style='text-align: center; margin: 10px;'><TABLE border="0" align='center'><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=7458&g=1&xhs=5466op3s&old_price=3191&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Mau Codestone at 3,191 NP?') ) { return false; }"><img src="http://images.neopets.com/items/codestone1.gif" width="80" height="80" title="This mystical codestone is used for training pets in the Mystery Island Training School - it is very valuable!" border="1"></a> <br> <b>Mau Codestone</b><br>20 in stock<br>Cost : 3,191 NP<br><br></td></TR></TABLE><A href="/browseshop.phtml?lower=80&owner=valleymede89&"><B>Next 80 Items <span class="pointer">&raquo</span></b></a> </div><HR noshade size="1" width="75%" style="margin-bottom: 0px;"><BR><TABLE align="center" border="0" cellpadding="3"><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=467&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Underwater Chef at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This poor little guy is constantly rushed off his feet.  He is the only cook in a very demanding palace and could really use your help." border="1"></a> <br> <b>Underwater Chef</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=468&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Glug Glug Jones at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="A notorious rascal with an eye for the ladies and a strong liking for Kraku Berry juice.  His sharp wit and loud mouth have often got him into trouble." border="1"></a> <br> <b>Glug Glug Jones</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=469&g=1&xhs=5466op3s&old_price=1050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Bug Eye McGee at 1,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="Bug Eye is a very jumpy fellow, he hasnt quite been the same since his last ship went down and seems to be afraid of the water." border="1"></a> <br> <b>Bug Eye McGee</b><br>4 in stock<br>Cost : 1,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=470&g=1&xhs=5466op3s&old_price=20050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Capara at 20,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/blacktradingcardback.gif" width="80" height="80" title="Capara uses all her feminine wiles and amazing intelligence to trick her way to the top, however it hasnt worked yet... she is a hopeless cheater and nearly always loses. " border="1"></a> <br> <b>Capara</b><br>4 in stock<br>Cost : 20,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=471&g=1&xhs=5466op3s&old_price=1050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Samuel No Eyes at 1,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Even though he is as blind as a bat, you will never find a pirate with a keener sense of direction.  " border="1"></a> <br> <b>Samuel No Eyes</b><br>4 in stock<br>Cost : 1,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=472&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Velvet Pimpernel at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="A smooth charmer who often frequents the Golden Dubloon.  His silky words have put a stop to many ugly brawls." border="1"></a> <br> <b>Velvet Pimpernel</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=473&g=1&xhs=5466op3s&old_price=4550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Fontaine Sisters at 4,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="Loretta and Rosetta serve all sorts of hungry folk at The Golden Dubloon.  Inside its cosy walls tales of great adventures are told over tankards of fresh grog." border="1"></a> <br> <b>The Fontaine Sisters</b><br>4 in stock<br>Cost : 4,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=474&g=1&xhs=5466op3s&old_price=3050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Lord Luparn at 3,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="When he heard of the nightmarish Skeith who was terrorising villagers, he just had to go to the rescue.  Only this time he may have bitten off more than he can chew." border="1"></a> <br> <b>Lord Luparn</b><br>4 in stock<br>Cost : 3,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=476&g=1&xhs=5466op3s&old_price=4050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Ursula Usul at 4,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="This dedicated Usul has just one focus in life, to be the Ultimate Gormball Champion.  She has studied her entire life for this and wont be beaten easily." border="1"></a> <br> <b>Ursula Usul</b><br>4 in stock<br>Cost : 4,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=477&g=1&xhs=5466op3s&old_price=2350&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Korabric at 2,350 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Korabric was the researcher in charge of the facility that has now become the Jungle Ruins. He locked himself in the upper tower, and awaits rescue at the hands of a brave adventurer.." border="1"></a> <br> <b>Korabric</b><br>4 in stock<br>Cost : 2,350 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=478&g=1&xhs=5466op3s&old_price=1050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Flutter at 1,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Flutter fell into the Rainbow Pool when she was a baby, since then she has gigantic faerie wings, and the ability to change colours whenever she wishes." border="1"></a> <br> <b>Flutter</b><br>4 in stock<br>Cost : 1,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=479&g=1&xhs=5466op3s&old_price=1050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Gorunda the Wise at 1,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Deep within the western reaches of the Spooky Woods lives an old crone named Gorunda.  If you can brave her traps and traverse the swamp she is said to know many secrets from the beginning of Neopia." border="1"></a> <br> <b>Gorunda the Wise</b><br>4 in stock<br>Cost : 1,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=480&g=1&xhs=5466op3s&old_price=20050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Princess Fernypoo at 20,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="Young and spoilt, Princess Fernypoo is not accustomed to losing.  Back home in her castle anyone who offended her was immediately thrown into the moat." border="1"></a> <br> <b>Princess Fernypoo</b><br>4 in stock<br>Cost : 20,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=483&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Moogi at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Moogi is a Poogle Racer.  He is a daredevil Poogle who seeks out the most extreme places in Neopia, looking for excitement." border="1"></a> <br> <b>Moogi</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=484&g=1&xhs=5466op3s&old_price=25550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Kyruggi at 25,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="Kyruggi didnt get to be Tyrannian Grand Elder for nothing.  She is a brilliant strategist, fierce warrior and fantastic Go Go Go player! " border="1"></a> <br> <b>Kyruggi</b><br>4 in stock<br>Cost : 25,550 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=485&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Mrs. Prenderghast at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This lonely old Aisha died three hundred years ago.  She still haunts her old mansion, keeping those who would steal her valuable paintings at bay." border="1"></a> <br> <b>Mrs. Prenderghast</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=486&g=1&xhs=5466op3s&old_price=7250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Grarrg at 7,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="Grarrg is the Tyrannian Battle Master.  He is fierce, intimidating and not afraid of a good fight.  " border="1"></a> <br> <b>Grarrg</b><br>4 in stock<br>Cost : 7,250 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=487&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Antikia Lighten at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="High in the treetops of the forbidden forest sits a small Shoyru singing, her name is Antikia Lighten.  She alone is trusted with tending the Faerie Queens private crop of Health Shrooms." border="1"></a> <br> <b>Antikia Lighten</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=488&g=1&xhs=5466op3s&old_price=3050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Myncha at 3,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="This reconnaissance master can sneak in and out of the most heavily guarded places.  If you want something found out, Myncha is your man." border="1"></a> <br> <b>Myncha</b><br>4 in stock<br>Cost : 3,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=489&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Phantom at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Sitting alone in a deserted chapel, the phantom waits for his lost love Riyella who left him at the altar many, many years ago.  Every day he plays the same tune, waiting for her to return, but she never does..." border="1"></a> <br> <b>The Phantom</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=490&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Aurora the Healer at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Bruila and his friends didnt want to be heroes, it just kind of happened. When everyone else left them, what choice did they have?" border="1"></a> <br> <b>Aurora the Healer</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=493&g=1&xhs=5466op3s&old_price=6050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Umma Bunga at 6,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="Umma is the chief of a tribe of Cocos who live in the North Western Jungles of Mystery Island.  He welcomes visitors, as long as they bring him plenty of gifts." border="1"></a> <br> <b>Umma Bunga</b><br>4 in stock<br>Cost : 6,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=494&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Tyrela Softpaw at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Born in the arctic heights of Terror Mountain, Tyrela can follow tracks in the toughest of blizzards. She is often sent out to find Meercas and Chias who get lost in the snow." border="1"></a> <br> <b>Tyrela Softpaw</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=495&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Pomanna at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="A crazy old servant, Pomanna worked in the jungle research
+facility until it was overrun by monsters. Now, she hides in the deepest level, protecting her home from invasion by Rollays monstrous lizards!" border="1"></a> <br> <b>Pomanna</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=496&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Liandra at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="This clever little Flotsam loves to dive and often finds old treasures to sell on Mystery Island." border="1"></a> <br> <b>Liandra</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=497&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Haiki-Lu at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This impetuous young Nimmo is a talented Battledome contender, although his impatience can lead to foolishness.  " border="1"></a> <br> <b>Haiki-Lu</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=498&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Grundo Chef at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Grundo Chef (also known as Gargarox Isafuhlarg) has two loves in his life, making bizarre new recipes and playing Gormball.  " border="1"></a> <br> <b>Grundo Chef</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=499&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Wrawk the Merciless at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This bitter old sorcerer stalks the empty corridors of his mansion cursing his luck.  If only he hadnt slain everyone, he may have somebody to help him achieve his true goal..." border="1"></a> <br> <b>Wrawk the Merciless</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=500&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Sarkif at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This is currently being worked on." border="1"></a> <br> <b>Sarkif</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=501&g=1&xhs=5466op3s&old_price=95550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Lupe Collector at 95,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/blacktradingcardback.gif" width="80" height="80" title="Branches shake and tremble as the air fills with a hideous mechanical rumbling.  The Lupe collector has begun his rounds..." border="1"></a> <br> <b>The Lupe Collector</b><br>1 in stock<br>Cost : 95,550 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=502&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Admiral Arvakis at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Ah ha! he snarled, finally he had found the fragile princess...Now he just had to get back to his ship, before it was too late." border="1"></a> <br> <b>Admiral Arvakis</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=504&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Stuff Collectable Card at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Spreading like a plague across the mountains and countryside into a town near you, its... THE STUFF!!! Doubling in size every day, the stuff must be stopped at all costs." border="1"></a> <br> <b>The Stuff Collectable Card</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=505&g=1&xhs=5466op3s&old_price=1050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Trrygdorr at 1,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This successful Tyrannian salesman has sold more tentacle sprouts than anyone else in Neopia.  Maybe its his personality, or his brilliant sales pitch  - Uggh-Ugga-Ugg!" border="1"></a> <br> <b>Trrygdorr</b><br>4 in stock<br>Cost : 1,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=506&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Green Scale at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This brave little Scorchio will do anything to protect his village.  Tales of his great deeds have spread far and wide, he really is quite a hero." border="1"></a> <br> <b>Green Scale</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=507&g=1&xhs=5466op3s&old_price=2250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Flaming Wuzzle at 2,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Far more than an simple petpet, this particular Flaming Wuzzle has his own plans..." border="1"></a> <br> <b>Flaming Wuzzle</b><br>4 in stock<br>Cost : 2,250 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=510&g=1&xhs=5466op3s&old_price=6050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Grargadon at 6,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="Mean, ferocious and underhand.  Grargadon is a mercenary who will fight for anyone, providing there are enough NeoPoints involved." border="1"></a> <br> <b>Grargadon</b><br>4 in stock<br>Cost : 6,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=511&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Li-sha at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Whenever a young Aisha is in trouble, it is Li-Sha they turn to in their time of need." border="1"></a> <br> <b>Li-sha</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=512&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Otona, Protector of the Seas at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Weaving around the ruins of Ancient Maraqua Otona protects lost Neopets who travel too deep." border="1"></a> <br> <b>Otona, Protector of the Seas</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=513&g=1&xhs=5466op3s&old_price=3050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Kharlos at 3,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="Kharlos loves to eat. He spends all day gobbling down pizza and pies and has grown to an enormous size.  He is very strong but cant move all that fast." border="1"></a> <br> <b>Kharlos</b><br>4 in stock<br>Cost : 3,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=514&g=1&xhs=5466op3s&old_price=4250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Fire Paw at 4,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="Fire Paw was abandoned in the fiery region of Tyrannia.  He was taken in by a group of Scorchios who treated him as one of their own.  Now fully grown, Fire Paw has an amazing resistance to heat." border="1"></a> <br> <b>Fire Paw</b><br>4 in stock<br>Cost : 4,250 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=515&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Island Mystic at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="If you can make sense of his frustrating riddles you may be surprised how much he REALLY knows about Neopia." border="1"></a> <br> <b>Island Mystic</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=516&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Midas at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This little Grundos fascination with gold has left him isolated in his enormous golden castle. Each day he sits counting his money and plotting how to get his paws on more riches." border="1"></a> <br> <b>Midas</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=517&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Uzarro at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Bank managers all across Neopia tremble at the mention of Uzarros name.  There isnt a security system she cannot get through, and she loves nothing more than emptying bank vaults." border="1"></a> <br> <b>Uzarro</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=518&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Rikti at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="A young boy who set out in search of adventure, Rikti has found himself trapped by the evil magic of Xantan the Foul, and cannot escape from the Dank Cave." border="1"></a> <br> <b>Rikti</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=520&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Tylix at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="An eager student, Tylix explores the realm of Gors the Mighty, hoping to find a key to Gors power without awakening the wrath of the mutant pygmy." border="1"></a> <br> <b>Tylix</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=521&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Gors the Mighty at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="A giant mutated pygmy given super-strength, Gors rules over an ancient school long abandoned by those who studied there." border="1"></a> <br> <b>Gors the Mighty</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=523&g=1&xhs=5466op3s&old_price=85050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Spider Grundo at 85,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/blacktradingcardback.gif" width="80" height="80" title="This evil creature was once a Grundo before Dr Sloth made him the subject of his experiments.  Now this monstrous creation terrorises all who venture into his web." border="1"></a> <br> <b>The Spider Grundo</b><br>2 in stock<br>Cost : 85,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=524&g=1&xhs=5466op3s&old_price=4050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Captain Astounding at 4,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="This Grarrl was captured by Dr Sloth along with his four friends.  Sloths ray gun left them all with special powers which they use to fight evil and bring justice to Neopia." border="1"></a> <br> <b>Captain Astounding</b><br>4 in stock<br>Cost : 4,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=526&g=1&xhs=5466op3s&old_price=8050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Electro-Boy at 8,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="This Grarrl was captured by Dr Sloth along with his four friends.  Sloths ray gun left them all with special powers which they use to fight evil and bring justice to Neopia." border="1"></a> <br> <b>Electro-Boy</b><br>4 in stock<br>Cost : 8,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=527&g=1&xhs=5466op3s&old_price=4050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Wall at 4,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="This Grarrl was captured by Dr Sloth along with his four friends.  Sloths ray gun left them all with special powers which they use to fight evil and bring justice to Neopia." border="1"></a> <br> <b>The Wall</b><br>4 in stock<br>Cost : 4,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=528&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Ryshiki at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Ryshiki is a brave warrior.  With his flowing golden locks and lightning fast moves he is quite a sight to behold." border="1"></a> <br> <b>Ryshiki</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=531&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Doirn at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="After 90 days and 90 nights in the dungeons of Meridell castle he was beginning to regret ever trying to tell King Skarl a joke." border="1"></a> <br> <b>Doirn</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=532&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Xenia, Master Prankster at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="With a twinkle in her eye this young witch zooms across Neopia looking for a new target for her mischievous pranks." border="1"></a> <br> <b>Xenia, Master Prankster</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=535&g=1&xhs=5466op3s&old_price=2250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Rollay Scaleback at 2,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="A scientist who transformed himself into an evil lizard-man, Rollay lives on an island in the underground lake beneath the Jungle Ruins. Surrounded by giant lizards of his own creation, Rollay is a vicious opponent." border="1"></a> <br> <b>Rollay Scaleback</b><br>4 in stock<br>Cost : 2,250 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=538&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Boraxis the Healer at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="A long-time resident of Neopia City, Boraxis is there to heal your wounds and injuries whenever you need his assistance." border="1"></a> <br> <b>Boraxis the Healer</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=539&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Archmagus of Roo at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="An ancient wizard, trapped within the desert-entombed Temple of Roo, the Archmagus bitterly awaits the day when he may be freed from his prison. He commands many magics, and is difficult to defeat." border="1"></a> <br> <b>The Archmagus of Roo</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=542&g=1&xhs=5466op3s&old_price=2250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Moehawk at 2,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This Moehog has it all style, sensation and an army of dedicated fans who love to hear him wail.  " border="1"></a> <br> <b>Moehawk</b><br>4 in stock<br>Cost : 2,250 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=543&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Alabaster at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This brave adventurer isnt afraid of anything.  Despite her petite frame, she can wrestle even the most fearsome of beasts to the ground and make them whimper for mercy." border="1"></a> <br> <b>Alabaster</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=544&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Professor Chesterpot at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="This legendary adventurer found the location of Maraqua, the lost Battledome and pretty much everything else that was worth discovering." border="1"></a> <br> <b>Professor Chesterpot</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=545&g=1&xhs=5466op3s&old_price=3050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Farlax V at 3,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="Farlax loves to explore new territory and is always seeking new locations for Alien Aisha Vending machines.  His dream is to have a Vending Machine in every galaxy." border="1"></a> <br> <b>Farlax V</b><br>4 in stock<br>Cost : 3,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=546&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Desert Flower at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Though she may be shy, desert flower will help anyone who asks.  She knows a great deal about desert plant life and often helps Kauvara create new magical potions." border="1"></a> <br> <b>Desert Flower</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=551&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Xantan the Foul at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Stripped of his powers by the Circle of Twelve, Xantan was banished to the bottom of the Dank Cave long ago. What little power he retains, he uses to corrupt and destroy those who enter his domain." border="1"></a> <br> <b>Xantan the Foul</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=553&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Denethrir at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="An absentminded wizard who is investigating the tower above the Jungle Ruins. He knows the secrets of the Gaia Wands, should you bring him the right items..." border="1"></a> <br> <b>Denethrir</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=592&g=1&xhs=5466op3s&old_price=2250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Leirobas at 2,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="A denizen of Swamp Edge City, Leirobas is a collector of the fluids of various creatures. However, he may know darker magic, should you say the right thing to him..." border="1"></a> <br> <b>Leirobas</b><br>4 in stock<br>Cost : 2,250 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=593&g=1&xhs=5466op3s&old_price=6550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Beerlap III at 6,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="Brave, quick witted and full of adventure, Beerlap is not afraid to be the first Alien Aisha to set foot on a new planet." border="1"></a> <br> <b>Beerlap III</b><br>4 in stock<br>Cost : 6,550 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=594&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Captain Threelegs at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="After decades on the high seas, Capn Threelegs finally gave up his plundering ways to become head of the Swashbuckling Academy.  Now he passes on the wisdom of the seas to a new generation of buccaneers. " border="1"></a> <br> <b>Captain Threelegs</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=595&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Maelstra The Dark Faerie at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/blacktradingcardback.gif" width="80" height="80" title="Lying in wait to tempt those weak of heart, the power granted by these evil imps is great, but at a price." border="1"></a> <br> <b>Maelstra The Dark Faerie</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=596&g=1&xhs=5466op3s&old_price=2250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Gali Yoj at 2,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="A wise and powerful old wizard, Gali is the teacher of Eleus Batrin. She may have information that would lead to the freeing of ancient Neopia from a powerful curse." border="1"></a> <br> <b>Gali Yoj</b><br>4 in stock<br>Cost : 2,250 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=597&g=1&xhs=5466op3s&old_price=2250&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Erick at 2,250 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="A deranged, insane wizard, trapped in the Temple of Roo. However, he may know a way out, but the path to finding it will be long and arduous." border="1"></a> <br> <b>Erick</b><br>4 in stock<br>Cost : 2,250 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=598&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Jelly Chia at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Created as an experiment by a deranged confectioner by the name of Wizzle, the Jelly Chia now bounces round the deserted chocolate factory looking for new play things." border="1"></a> <br> <b>Jelly Chia</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=599&g=1&xhs=5466op3s&old_price=1550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Shadow Usul at 1,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/greentradingcardback.gif" width="80" height="80" title="... creeping slowly up the wall, the shadow usul did not make a sound. The light from the moon illuminated the whole area, apart from a slow, crawling blackness, an area in which no light shone. " border="1"></a> <br> <b>Shadow Usul</b><br>4 in stock<br>Cost : 1,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=601&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Chiazilla at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="Protector or predator, no one is quite sure... but no Maraquan will dare forget their yearly offerings to Chiazilla. " border="1"></a> <br> <b>Chiazilla</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=602&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Choras Tillie at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="An armoursmith in Neopia City, Choras makes some of the finest robes and shields this side of the Summer Sea" border="1"></a> <br> <b>Choras Tillie</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=603&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Eleus Batrin at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="A weaponsmith and keeper of lore, Eleus knows much about the world of ancient Neopia. He will be your primary guide through the world of NeoQuest." border="1"></a> <br> <b>Eleus Batrin</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=604&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Morax Dorangis at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="A young, eager armoursmith, Morax can make some basic types of armor, if you can bring him the right items." border="1"></a> <br> <b>Morax Dorangis</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td></TR><TR><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=605&g=1&xhs=5466op3s&old_price=2550&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Edna the Witch at 2,550 NP?') ) { return false; }"><img src="http://images.neopets.com/items/purpletradingcardback.gif" width="80" height="80" title="Edna is constantly trying to master her spells, spending most of her time tucked away in her gloomy, grey-walled tower, mixing ingredients in her bubbling cauldron." border="1"></a> <br> <b>Edna the Witch</b><br>4 in stock<br>Cost : 2,550 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=606&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy The Gate Keeper at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/pinktradingcardback.gif" width="80" height="80" title="Tasked with guarding the entrance to the valley of the Two Rings, the Gate Keeper will stand his guard till the time comes to pass the duty to another." border="1"></a> <br> <b>The Gate Keeper</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=607&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Lummock Sendent at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Lummock is a minor collector and amateur weaponsmith, who will provide you with a basic weapon if you can bring him the correct items." border="1"></a> <br> <b>Lummock Sendent</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=608&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Mokti at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/bluetradingcardback.gif" width="80" height="80" title="Riktis big brother, and a citizen of Swamp Edge City. Mokti also collects monster body parts, and may have an extra energy shield lying around." border="1"></a> <br> <b>Mokti</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td><TD width="120" align="center" valign="top"><A href="buy_item.phtml?lower=0&owner=valleymede89&obj_info_id=609&g=1&xhs=5466op3s&old_price=2050&feat=7458,3191,20&_ref_ck=18249e6d2d4ceaac6d6ff7385c49d74b" onClick="if ( !confirm ('Are you sure you wish to buy Fuhnah The Fire Faerie at 2,050 NP?') ) { return false; }"><img src="http://images.neopets.com/items/redtradingcardback.gif" width="80" height="80" title="Fire Faeries are mischievous urchins that inhabit the hotter realms of Neopia. They love nothing better than playing tricks and causing havoc wherever they go." border="1"></a> <br> <b>Fuhnah The Fire Faerie</b><br>4 in stock<br>Cost : 2,050 NP<br><br></td></TR></TABLE><BR><DIV align="center"><A href="/browseshop.phtml?lower=80&owner=valleymede89&"><B>Next 80 Items <span class="pointer">&raquo</span></b></a> </DIV><BR><BR><SPAN style="font-weight: normal; font-style: normal;"><center><form action='market_map.phtml' method='get'><input type='submit' value='Back to the Shops'></form></center></SPAN></DIV>
+<br clear="all">
+
+									</td>
+			</tr>
+		</table>
+	</div>
+	<div id="footer">
+		<img src="http://images.neopets.com/themes/000_def_f65b1/rotations/9.png" width="200" height="170" alt="" border="0" class="footerNifty">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0" class="footer">
+			<tr>
+				<td width="175" align="left"><a href="/index.phtml"><img src="http://images.neopets.com/transparent_spacer.gif" width="156" height="46" alt="Neopets.com" border="0"></a></td>
+				<td align="left"><br>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<!-- Search -->
+							<td class="sf" valign="middle">
+								<form onSubmit="javascript: search_handle(this);">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td class="footerForm sf" valign="middle"><b>Search Neopets:</b>&nbsp;</td>
+										<td valign="middle"><input class="sf" type="text" name="q" size="25" maxlength="255" value="Enter search text..." style="color: #a5a5a5; padding: 2px;" onFocus="this.style.color='#000000'; if( this.value=='Enter search text...' ) { this.value=''; }" onBlur="if( this.value=='' ) { this.style.color='#A5A5A5'; this.value='Enter search text...'; }">&nbsp;</td>
+										<td valign="middle"><input type="submit" value="Go!" class="sf">
+										<input type="hidden" name="client" value="pub-9208792519293771">
+										<input type="hidden" name="forid" value="1">
+										<input type="hidden" name="ie" value="ISO-8859-1">
+										<input type="hidden" name="oe" value="ISO-8859-1">
+										<input type="hidden" name="safe" value="active">
+										<input type="hidden" name="domains" value="www.neopets.com">
+										<input type="hidden" name="cof" value="GALT:#FFFFFF;GL:1;DIV:#000066;VLC:FFFFFF;AH:center;BGC:FFFFFF;LBGC:000066;ALC:FFFFFF;LC:FFFFFF;T:000000;GFNT:000066;GIMP:000077;FORID:1">
+										<input type="hidden" name="hl" value="en">
+										<input type="hidden" name="s">
+										</td>
+									</tr>
+								</table>
+								</form>
+							</td>
+							<td width="15">&nbsp;</td>
+							<!-- Language -->
+							<td class="sf" valign="top">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td class="footerForm sf" valign="middle"><form method="post"><b>Select Language:</b>&nbsp;</td>
+										<td valign="top">
+											<select name="lang" class="sf"><option value="en" selected>English</option><option value="nl">Nederlands</option><option value="pt">Português</option><option value="de">Deutsch</option><option value="fr">Français</option><option value="it">Italiano</option><option value="es">Español</option><option value="ch">简体中文</option><option value="zh">繁體中文</option><option value="ja">日本語</option><option value="ko">한국어</option></select>&nbsp;</td>
+										<td valign="top"><input type="submit" value="Go!" class="sf"></form></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="copyright">
+					
+					<a href='/privacy.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/privacypolicy.png' width='81' height='18' border='0' alt='privacypolicy'></a>
+<img src='http://images.neopets.com/themes/000_def_f65b1/navigation/divider.png' width='4' height='16' border='0'>
+<a href='/safetytips.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/safetytips.png' width='61' height='18' border='0' alt='safetytips'></a>
+<img src='http://images.neopets.com/themes/000_def_f65b1/navigation/divider.png' width='4' height='16' border='0'>
+<a href='/contact.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/contactus.png' width='60' height='18' border='0' alt='contactus'></a>
+<img src='http://images.neopets.com/themes/000_def_f65b1/navigation/divider.png' width='4' height='16' border='0'>
+<a href='/aboutus.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/aboutus.png' width='50' height='18' border='0' alt='aboutus'></a>
+<img src='http://images.neopets.com/themes/000_def_f65b1/navigation/divider.png' width='4' height='16' border='0'>
+<a href='/refer/index.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/referral.png' width='98' height='18' border='0' alt='referral'></a>
+<img src='http://images.neopets.com/themes/000_def_f65b1/navigation/divider.png' width='4' height='16' border='0'>
+<a href='/help.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/help.png' width='25' height='18' border='0' alt='help'></a>
+<img src='http://images.neopets.com/themes/000_def_f65b1/navigation/divider.png' width='4' height='16' border='0'>
+<a href='/adchoices.phtml'><img src='http://images.neopets.com/themes/000_def_f65b1/navigation/ad-choices.png' width='75' height='18' border='0' alt='ad-choices'></a>
+<script type="text/javascript">
+<!--
+
+
+function setVisible(obj) {
+	obj = document.getElementById(obj);
+	obj.style.visibility = (obj.style.visibility == 'visible') ? 'hidden' : 'visible';
+	obj.style.zIndex = '9999';
+	document.getElementById('dimBackground').style.visibility = (document.getElementById('dimBackground').style.visibility == 'visible') ? 'hidden' : 'visible';
+    if(document.getElementById('fb-decoy') != null) {
+        document.getElementById('fb-decoy').style.zIndex = (document.getElementById('fb-decoy').style.zIndex == '9999') ? '-1' : '9999';
+    }
+
+    if(document.getElementById('kq-body-content') != null) {
+        document.getElementById('kq-body-content').style.visibility = (document.getElementById('kq-body-content').style.visibility == 'hidden') ? 'visible' : 'hidden';
+    }
+
+    if(document.getElementById('navigation') != null) {
+        document.getElementById('navigation').style.visibility = (document.getElementById('navigation').style.visibility == 'hidden') ? 'visible' : 'hidden';
+    }
+}
+
+
+function registerAutoBumper() {
+	jQuery('a.auto_bumper').click( function() {
+		window.auto_bumper_last = jQuery(this);
+		setVisible('auto_bumper');
+		return false;
+	});
+}
+
+function autoBumperGo() {
+	window.open(window.auto_bumper_last.attr('href'),'auto_bumper','width=800,height=800,resizable=yes,scrollbars=yes,toolbar=yes');
+	setVisible('auto_bumper', true);
+}
+
+if(typeof jQuery == 'undefined') {
+	window.onload = function(){
+		registerAutoBumper();
+	}
+}
+else {
+	jQuery(document).ready( function() { registerAutoBumper(); } );
+}
+
+
+
+if(document.getElementById('fb-decoy') != null) {
+    document.getElementById('fb-decoy').style.zIndex = '9999';
+}
+-->
+</script>
+<style type="text/css">
+.bumper {
+    position: fixed;
+    top:50%;
+    left:50%;
+    right:50%;
+    margin-top:-10%;
+    margin-left:-20%;
+    visibility: hidden;
+    background: url('http://images.neopets.com/help/bumper/bg.png');
+    width: 580px;
+    height: 300px;
+    padding: 20px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    background-repeat: no-repeat;
+    z-index:9200;
+}
+
+.bumper p {
+	display:block;
+	position:absolute;
+	left:20px;
+	top:50px;
+	width:385px;
+	font-size:12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	margin:0px; 
+	padding:0px;
+}
+
+.bumper div, .bumper p {
+	color: black;
+}
+	
+#open {
+    position:absolute;
+    top:118px;
+	background: url('http://images.neopets.com/help/bumper/buttons/yes.png');
+	width: 177px;
+	height: 137px;
+	overflow:hidden;
+	text-align: center;
+	cursor: pointer
+}
+
+div.bumper div#close {
+    position:absolute;
+    top:118px;
+    left:220px;
+	background: url('http://images.neopets.com/help/bumper/buttons/no.png');
+	width: 177px;
+	height: 137px;
+	overflow:hidden;
+	cursor: pointer
+}
+
+div.bumper div#close:hover {
+   background: url('http://images.neopets.com/help/bumper/buttons/no.png') repeat 0 -137px;
+}
+
+#open:hover {
+   background: url('http://images.neopets.com/help/bumper/buttons/yes.png') repeat 0 -137px;
+} 
+
+#a:hover .close {
+    background: url('http://images.neopets.com/help/bumper/buttons/no.png') repeat 0 -137px;
+}
+
+#close-text {
+    position: absolute;
+top:68px;    left:7px;
+    width: 160px;
+    height:75px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+#open-text {
+    position: absolute;
+    top:68px;
+    left:7px;
+    width: 160px;
+    height:75px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+#dimBackground {
+    position:fixed;
+	width: 100%;
+	height: 100%;
+	background: url(http://images.neopets.com/dark-semi-trans.png);
+	left: 0;
+	top: 0;
+	z-index: 998;
+    visibility:hidden;
+}
+
+#fb-decoy {
+    display:inline-block;
+    position:relative;
+    right:0px;
+    bottom:21px;
+    height:30px;
+    width:60px;
+    background-color:white;
+    z-index:9;
+}
+
+#fb-decoy a {
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:20px;
+    width:45px;
+    background-image:url("http://images.neopets.com/np-facebook-like.png");
+    background-position:0px 0px;
+    background-repeat:no-repeat;
+    z-index:999999;
+}
+
+#fb-decoy a:hover {
+    text-align:left;
+    background-position:0px -20px;
+}
+
+.layer-msg {
+    display:inline;
+    position:absolute;
+    top:252px;
+    left:27px;
+    width:370px;
+}
+
+#facebook_games { 
+position:relative;
+display:inline-block; 
+top:-21px;
+left:115px;
+text-align:right; 
+width:144px;
+height:15px;
+}
+
+.fb_iframe_widget iframe {
+display:block;
+left:0px;
+}
+
+#facebook_games #fb-decoy {
+display:inline-block;
+left:-94px;
+width:46px;
+height:21px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0){
+    #facebook_games #fb-decoy {
+        bottom:22px;
+        left:-98px;
+    }
+}
+
+#hab-main #facebook_games {
+float:left;
+text-align:right;
+height:25px;
+margin-top:2px;
+}
+
+#hab-main #facebook_games #fb-decoy {
+float:left;
+left:0px;
+}
+
+.fb-like-button #fb-decoy {
+display:block;
+height:21px;
+width:45px;
+}
+
+#hab-logo {
+clear:both;
+display:block;
+position:relative;
+right:2px;
+bottom:4px;
+}
+
+#gamesHeader #facebook_games {
+margin-left:0px;
+height:23px;
+top:2px;
+}
+
+#gamesHeader #fb-decoy {
+top:-35px;
+left:0px;
+float:left;
+height:21px;
+}
+
+.fb_edge_widget_with_comment span.fb_edge_comment_widget iframe.fb_ltr {
+display:none;
+}
+
+.connect_comment_widget .nub {
+display:none;
+}
+</style>
+<div id="dimBackground"></div>
+<div class="bumper" id="auto_bumper">
+    <img src="http://images.neopets.com/help/bumper/headers/leaving-neopia.png" alt="Heads Up! You're about to leave Neopia!" />
+    <br />
+    <p>You've clicked on a link that will take you outside of<BR> Neopets.com. We do not control your destination's website,<BR> so its rules, regulations, and Meepit defense systems will be<BR> different! Are you sure you'd like to continue?</p>
+    <br><br>
+    <div id="open" onclick="autoBumperGo()">
+        <div id="open-text">
+           It is a journey<BR>I must face...alone.<br>*dramatic music* 
+        </div>
+    </div>
+    <div id="close-hover" style="display: none;"></div>
+    <div id="close" onclick="javascript:setVisible('auto_bumper',true)">
+        <div id="close-text" >
+            I want to stay on Neopets,<BR>where the dangers of<br>Meepit invasion<br> are taken seriously.
+        </div>
+    </div></div><div class="bumper" id="layer1">
+    <img src="http://images.neopets.com/help/bumper/headers/leaving-neopia.png" alt="Heads Up! You're about to leave Neopia!" />
+    <br />
+    <p>You've clicked on a link that will take you outside of<BR> Neopets.com. We do not control your destination's website,<BR> so its rules, regulations, and Meepit defense systems will be<BR> different! Are you sure you'd like to continue?</p>
+    <br><br>
+    <div id="open" onclick="window.open('http://www.facebook.com/neopets','Facebook','width =800,height=800, resizable=yes,scrollbars=yes,toolbar=yes');location.href='javascript:setVisible(\'layer1\',true)'">
+        <div id="open-text">
+           It is a journey<BR>I must face...alone.<br>*dramatic music* 
+        </div>
+    </div>
+    <div id="close-hover" style="display: none;"></div>
+    <div id="close" onclick="location.href='javascript:setVisible(\'layer1\',true)'">
+        <div id="close-text" >
+            I want to stay on Neopets,<BR>where the dangers of<br>Meepit invasion<br> are taken seriously.
+        </div>
+    </div></div><div class="bumper" id="layer2">
+    <img src="http://images.neopets.com/help/bumper/headers/leaving-neopia.png" alt="Heads Up! You're about to leave Neopia!" />
+    <br />
+    <p>You've clicked on a link that will take you outside of<BR> Neopets.com. We do not control your destination's website,<BR> so its rules, regulations, and Meepit defense systems will be<BR> different! Are you sure you'd like to continue?</p>
+    <br><br>
+    <div id="open" onclick="document.getElementById('fb-decoy').style.visibility='hidden';location.href='javascript:setVisible(\'layer2\',true)'">
+        <div id="open-text">
+           It is a journey<BR>I must face...alone.<br>*dramatic music* 
+        </div>
+    </div>
+    <div id="close-hover" style="display: none;"></div>
+    <div id="close" onclick="location.href='javascript:setVisible(\'layer2\',true)'">
+        <div id="close-text" >
+            I want to stay on Neopets,<BR>where the dangers of<br>Meepit invasion<br> are taken seriously.
+        </div>
+    </div>
+                    <div class="layer-msg" style="clear:both;">
+                        <img src="http://images.neopets.com/help/bumper/headers/log-in-to-facebook.png" alt="/help/bumper/headers/log-in-to-facebook" />
+                    </div></div><div style='position:absolute;right:257px;top:52px;overflow:hidden;'><img src ='http://images.neopets.com/themes/000_def_f65b1/navigation/follow-us-on.png'><a href="http://www.facebook.com/neopets" target="_blank"><img src ='http://images.neopets.com/facebook-icon.png' border=0><a/></div><div style='position:absolute;right:257px;top:82px;overflow:hidden;'><a href="/prefs_fb.phtml"><img src="http://images.neopets.com/template/fb_connect/fb-connect.png" border="0"></a></div>					<br>
+					<div class='sf' style='width: 800px;'>
+						<div style="position: relative; height: 42px; width: 300px;"></div>						NEOPETS and all related indicia are trademarks of <a href="/aboutus.phtml"><b>Neopets, Inc.</b></a>, &copy; 1999-2014. &reg; denotes Reg. USPTO. All rights reserved. Use of this site signifies your acceptance of the <a href='/terms.phtml'><b>Terms of Use</b></a>. <a href="/privacy.phtml">Your California Privacy Rights</a>
+						
+						
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+<script language="JavaScript">
+function tzCook() { 
+	var today = new Date();
+	var expire = new Date();
+	expire.setTime(today.getTime() + 3600000*24*30);
+	var cstr = "_tz="+escape(today.getTimezoneOffset()) + ";expires="+expire.toGMTString() + ";path=/;domain=.neopets.com;";
+	document.cookie = cstr;
+}
+tzCook();
+</script>
+</div>
+<div style="display: none" id="logout_nchub"></div>
+</body>
+</html>

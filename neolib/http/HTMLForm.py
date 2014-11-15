@@ -51,14 +51,20 @@ class HTMLForm(UserDict):
             if inp.name:
                 self.data[inp.name] = inp
 
-    def update(self, **kwargs):
-        """Updates the stored fields with the given fields
+    def update(self, data=None, **kwargs):
+        """Updates the stored fields with the given data
 
         Args:
-            **fields**: A dictionary to update the currently stored fields with
+            **data**: Optional dictionary to use instead of keyword arguments
+            **kwargs**: Keyword arguments to use for updating field values
         """
-        for key in kwargs.keys():
-            self.data[key].value = kwargs[key]
+        if data:
+            d = data
+        else:
+            d = kwargs
+
+        for key in d.keys():
+            self.data[key].value = d[key]
 
     def submit(self, usr):
         """Submits the current form as if the user had pressed the submit button
