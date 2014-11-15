@@ -27,8 +27,10 @@ Inventory:
    :maxdepth: 2
 
    inventory/inventory
+   inventory/msinventory
    inventory/usbackinventory
    inventory/userinventory
+   inventory/usfrontinventory
 
 Item:
 
@@ -39,8 +41,14 @@ Item:
    item/inventoryitemlist
    item/item
    item/itemlist
+   item/msitem
+   item/msitemlist
    item/usbackitem
    item/usbackitemlist
+   item/usfrontitem
+   item/usfrontitemlist
+   item/wizarditem
+   item/wizarditemlist
 
 Registration:
 
@@ -54,7 +62,12 @@ Shop:
 .. toctree::
    :maxdepth: 2
 
+   shop/history
+   shop/mainshop
+   shop/transaction
    shop/userbackshop
+   shop/userfrontshop
+   shop/wizard
 
 User:
 

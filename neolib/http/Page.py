@@ -86,19 +86,22 @@ class Page:
         self.request = r.request
         self.response = r
         self.headers = r.headers
-        self.content = r.text
 
         # Check what this is
         if r.headers['Content-Type'] == 'application/ajax':
+            self.content = r.text
             self.json = json.loads(r.text)
-        else:
+        elif 'text/html' in r.headers['Content-Type']:
             # Prep the html parser
+            self.content = r.text
             self.document = lxml.html.document_fromstring(self.content)
 
             # Process forms
             self.forms = []
             for form in self.xpath('//form'):
                 self.forms.append(HTMLForm(url, form))
+        else:
+            self.content = r.content
 
     def form(self, **kwargs):
         """Searches for forms this page holds using the given keyword args

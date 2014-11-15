@@ -64,13 +64,13 @@ class Inventory(NeolibBase, UserList):
                             continue
 
                         if arg == 'contains' and type(value) is str:
-                            if kwargs[key] in value:
+                            if kwargs[key].lower() in value.lower():
                                 match += 1
                         elif arg == 'startswith' and type(value) is str:
-                            if value.startswith(kwargs[key]):
+                            if value.lower().startswith(kwargs[key].lower()):
                                 match += 1
                         elif arg == 'endswith' and type(value) is str:
-                            if value.endswith(kwargs[key]):
+                            if value.lower().endswith(kwargs[key].lower()):
                                 match += 1
                         elif arg == 'gt' and self._is_int(value):
                             if int(value) > int(kwargs[key]):
@@ -80,7 +80,7 @@ class Inventory(NeolibBase, UserList):
                                 match += 1
                     else:
                         value = getattr(item, key)
-                        if kwargs[key] == value:
+                        if kwargs[key].lower() == value.lower():
                             match += 1
                 except Exception:
                     continue

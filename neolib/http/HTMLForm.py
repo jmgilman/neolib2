@@ -64,7 +64,13 @@ class HTMLForm(UserDict):
             d = kwargs
 
         for key in d.keys():
-            self.data[key].value = d[key]
+            if key not in self.data:
+                inp = HTMLFormInput()
+                inp.name = key
+                inp.value = d[key]
+                self.data[key] = inp
+            else:
+                self.data[key].value = d[key]
 
     def submit(self, usr):
         """Submits the current form as if the user had pressed the submit button

@@ -10,7 +10,7 @@ class UserDetails(Hook):
     _paths = {
         'nps': '//*[@id="npanchor"]',
         'neopet_name': '//*[@id="content"]/table/tr/td[1]/div[1]/table/tr[1]/td/a/b',
-        'neopet_info': '//*[@id="content"]/table/tr/td[1]/div[1]/table/tr[4]/td/table',
+        'neopet_info': '//table[@class="sidebarTable"][1]',
     }
 
     _regex = {

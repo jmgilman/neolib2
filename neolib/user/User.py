@@ -173,6 +173,10 @@ class User(NeolibBase):
 
         pg = Page(url, self, post_data=post_data, header_values=header_values)
 
+        # Check if this is an HTML page
+        if type(pg.content) is bytes:
+            return pg
+
         self._last_page = url
 
         # This image is shown if Neopets is offline
