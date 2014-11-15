@@ -4,6 +4,12 @@ from neolib.NeolibBase import NeolibBase
 
 
 class UserFrontShop(NeolibBase):
+    """ Provides an interface for interacting with another user's shop
+
+    Attributes:
+        | **inventory**: Instance of :class:`USFrontInventory` with the shop's
+            inventory loaded.
+    """
 
     inventory = None
 
@@ -19,6 +25,22 @@ class UserFrontShop(NeolibBase):
     }
 
     def __init__(self, usr, owner, item_id='', price=''):
+        """ Loads the shops inventory and grabs main item if necessary
+
+        The initialization of this class takes multiple parameters for different
+        scenarios. If a shop needs to be loaded (including all shop pages) then
+        the `usr` and `owner` arguments should only be supplied. If a specific
+        item in the shop is being sought after (like from a shop wizard result)
+        then the item id and price should also be supplied. In the latter case
+        only the first page of the user shop is loaded and if the item is found
+        it will be appended to the very beginning of the inventory list.
+
+        Arguments:
+            | **usr**: The :class:`User` instance to use
+            | **owner**: The username of the owner of the shop
+            | **item_id**: The item id to search for
+            | **price**: The price of the item to search for
+        """
         super().__init__(usr)
 
         # Load the appropriate page

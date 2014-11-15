@@ -4,6 +4,7 @@ from neolib.item.ItemList import ItemList
 
 
 class WizardItemList(ItemList):
+    """ Represents the results from a Shop Wizard search """
 
     query_types = [
         'contains',
@@ -16,10 +17,15 @@ class WizardItemList(ItemList):
     _log_name = 'neolib.item.WizardItemList'
 
     def buy(self):
-        success = 0
+        """ Attempts to buy all items in the current item list
+
+        Returns:
+            List of items that were purchased
+        """
+        success = []
         for item in self.data:
             if item.buy():
-                success += 1
+                success.append(item)
 
         return success
 

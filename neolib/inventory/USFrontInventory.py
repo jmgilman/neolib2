@@ -4,6 +4,7 @@ from neolib.item.USFrontItemList import USFrontItemList
 
 
 class USFrontInventory(Inventory):
+    """ Provides an interface to another user's shop inventory """
 
     _log_name = 'neolib.inventory.USFrontInventory'
 
@@ -17,6 +18,13 @@ class USFrontInventory(Inventory):
     }
 
     def load(self, owner, index, pages=False):
+        """ Loads the shop contents
+
+        Arguments:
+            | **owner**: The owner of the shop
+            | **index**: The index page of the shop
+            | **pages**: Whether or not to fetch all shop pages
+        """
         # Determine if we're going to load multiple pages
         if pages:
             # Parse the index

@@ -32,6 +32,10 @@ class NeopetNotAvailable(Exception):
 class InvalidNeopet(Exception):
     pass
 
+#Shop
+class WizardBanned(Exception):
+    pass
+
 # User
 class NeopetsOffline(Exception):
     pass

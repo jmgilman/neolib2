@@ -4,14 +4,20 @@ from neolib.item.ItemList import ItemList
 
 
 class USFrontItemList(ItemList):
+    """ Represents a list of items returned from querying another user's shop """
 
     _log_name = 'neolib.item.USFrontItemList'
 
     def buy(self):
-        success = 0
+        """ Attempts to buy all items from this list
+
+        Returns:
+            List of items that were successfully bought
+        """
+        success = []
         for item in self.data:
             if item.buy():
-                success += 1
+                success.append(item)
 
         return success
 
