@@ -89,12 +89,12 @@ class USBackInventory(Inventory):
             item = USBackItem(id, self._usr)
             details = self._xpath('details', row)
 
-            item.name = details[0].xpath('./b/text()')[0]
+            item.name = str(details[0].xpath('./b/text()')[0])
             item.img = details[1].xpath('./img/@src')[0]
             item.stock = int(details[2].xpath('./b/text()')[0])
-            item.type = details[3].xpath('./b/text()')[0]
+            item.type = str(details[3].xpath('./b/text()')[0])
             item.price = int(details[4].xpath('./input/@value')[0])
-            item.desc = details[5].xpath('./i/text()')[0]
+            item.desc = str(details[5].xpath('./i/text()')[0])
 
             item.old_price = int(self._xpath('old_price', row)[0])
             item.pos = self._xpath('pos', row)[0].replace('obj_id_', '')

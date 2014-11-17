@@ -17,13 +17,9 @@ class USBackItem(Item):
     pos = ''
 
     pg = 0
-    remove = 0
+    remove = False
 
     _log_name = 'neolib.item.USBackItem'
 
     def __init__(self, id, usr, name=""):
         super().__init__(id, usr, name)
-
-    def remove(self):
-        """ Marks this item to be removed during the next shop update """
-        self.remove = 1

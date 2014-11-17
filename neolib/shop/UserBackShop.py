@@ -171,7 +171,7 @@ class UserBackShop(NeolibBase):
             # A change in the remove attribute indicates an item needs removing
             if item.old_price != item.price:
                 return True
-            elif item.remove == 1:
+            elif item.remove:
                 return True
 
         return False
@@ -188,7 +188,7 @@ class UserBackShop(NeolibBase):
             data['obj_id_' + item.pos] = item.id
             data['oldcost_' + item.pos] = str(item.old_price)
             data['cost_' + item.pos] = str(item.price)
-            data['back_to_inv[' + item.id + ']'] = str(item.remove)
+            data['back_to_inv[' + item.id + ']'] = str(int(item.remove))
 
         return data
 

@@ -2,6 +2,7 @@ import requests
 
 from neolib.Exceptions import NeopetsOffline
 from neolib.http.Page import Page
+from neolib.inventory.SDBInventory import SDBInventory
 from neolib.inventory.UserInventory import UserInventory
 from neolib.NeolibBase import NeolibBase
 from neolib.shop.UserBackShop import UserBackShop
@@ -58,7 +59,7 @@ class User(NeolibBase):
     mail = None
 
     _inventory = None
-    sdb = None
+    _SDB = None
     _shop = None
     bank = None
 
@@ -90,6 +91,14 @@ class User(NeolibBase):
             self._inventory.load()
 
         return self._inventory
+
+    @property
+    def SDB(self):
+        if not self._SDB:
+            self._SDB = SDBInventory(self)
+            self._SDB.load()
+
+        return self._SDB
 
     @property
     def shop(self):

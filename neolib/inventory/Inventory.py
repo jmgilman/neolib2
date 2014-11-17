@@ -80,8 +80,12 @@ class Inventory(NeolibBase, UserList):
                                 match += 1
                     else:
                         value = getattr(item, key)
-                        if kwargs[key].lower() == value.lower():
-                            match += 1
+                        if type(kwargs[key]) is str:
+                            if kwargs[key].lower() == value.lower():
+                                match += 1
+                        else:
+                            if kwargs[key] == value:
+                                match += 1
                 except Exception:
                     continue
 
