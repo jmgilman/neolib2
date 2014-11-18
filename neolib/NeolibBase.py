@@ -204,3 +204,14 @@ class NeolibBase:
             string = string.replace(sub, '')
 
         return string
+
+    def _format_nps(self, nps_str):
+        """ Formats common neopoints strings into integer values
+
+        Arguments:
+            nps_str: The string to format (i.e '21,000 NP')
+
+        Returns:
+            An integer value reflecting the string value
+        """
+        return int(self._remove_multi(nps_str, [',', 'NP', ' ', 'np']))

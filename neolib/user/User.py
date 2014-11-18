@@ -6,6 +6,7 @@ from neolib.inventory.SDBInventory import SDBInventory
 from neolib.inventory.UserInventory import UserInventory
 from neolib.NeolibBase import NeolibBase
 from neolib.shop.UserBackShop import UserBackShop
+from neolib.user.Bank import Bank
 from neolib.user.hooks.UserDetails import UserDetails
 from neolib.user.Profile import Profile
 
@@ -61,7 +62,7 @@ class User(NeolibBase):
     _inventory = None
     _SDB = None
     _shop = None
-    bank = None
+    _bank = None
 
     trades = None
     auctions = None
@@ -107,6 +108,14 @@ class User(NeolibBase):
             self._shop.load()
 
         return self._shop
+
+    @property
+    def bank(self):
+        if not self._bank:
+            self._bank = Bank(self)
+            self._bank.load()
+
+        return self._bank
 
     def __init__(self, username, password='', pin=None):
         """Initializes the user with the given username, password, and pin

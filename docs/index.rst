@@ -74,6 +74,7 @@ User:
 .. toctree::
    :maxdepth: 2
 
+   user/bank
    user/neopet
    user/profile
    user/user
