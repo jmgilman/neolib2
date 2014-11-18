@@ -31,10 +31,19 @@ it and understand it fully before making contributions to the project.
 
 Installation
 ============
+* Run the following
+
+```
+$ pip install neolib2
+```
+
+Alternatively:
+
 * Clone the repository
 * Install the dependancies
 
 ```
+$ cd neolib2
 $ pip install -r requirements.txt
 ```
 
