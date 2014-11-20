@@ -29,6 +29,8 @@ it and understand it fully before making contributions to the project.
 
 **Contribution Primer**: http://neolib2.readthedocs.org/en/latest/development/primer.html
 
+**Example Programs**: https://github.com/jmgilman/neolib2_apps
+
 Installation
 ============
 * Run the following
