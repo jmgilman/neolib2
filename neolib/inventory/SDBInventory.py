@@ -54,10 +54,7 @@ class SDBInventory(Inventory):
                 items = self.find(pg=pg_num)
                 data = self._build_data(items, pg_num)
 
-                pg = self._get_page('update', post_data=data)
-                f = open('test.html', 'w')
-                f.write(pg.content)
-                f.close()
+                self._get_page('update', post_data=data)
 
     def find(self, **kwargs):
         """ Overrides the :class:`Inventory`:`find()` function to return an

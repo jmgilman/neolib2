@@ -47,7 +47,7 @@ class UserDetails(Hook):
                 html = self._path_to_html('neopet_info', pg)
                 for key in self._regex['neopet'].keys():
                     if key == 'age' or key == 'level':
-                        value = int(self._search('neopet/' + key, html, True)[0])
+                        value = int(self._search('neopet/' + key, html, True)[0].replace(',', ''))
                     else:
                         value = self._search('neopet/' + key, html, True)[0]
                     setattr(usr.active_pet, key, value)
