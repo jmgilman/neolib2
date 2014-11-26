@@ -193,8 +193,9 @@ class Profile(NeolibBase):
             # Parse the second set of collections
             self._set_attributes(pg, 'colls2', 'colls2', collections2_exception)
 
-            # Parse the shop and gallery information
-            self._set_attributes(pg, 'shop_gallery', 'shop_gallery')
+            # The user might not have a shop or gallery
+            if 'Shop & Gallery' in pg.content:
+                self._set_attributes(pg, 'shop_gallery', 'shop_gallery')
 
             # The neopets are parsed slightly differently
             for td in pg.xpath(self._paths['neopets']):

@@ -39,3 +39,12 @@ class WizardBanned(Exception):
 # User
 class NeopetsOffline(Exception):
     pass
+
+class BirthdayLocked(Exception):
+    pass
+
+class InvalidBirthday(Exception):
+    pass
+
+class AccountFrozen(Exception):
+    pass

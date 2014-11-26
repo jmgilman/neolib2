@@ -82,6 +82,10 @@ class USBackInventory(Inventory):
         rows.pop(0)
         rows.pop()
 
+        # If there's a Pin entry it needs to be removed
+        if 'http://images.neopets.com/pin/bank_pin_mgr_35.jpg' in pg.content:
+            rows.pop()
+
         # Grab all items
         for row in rows:
             id = self._xpath('id', row)[0]

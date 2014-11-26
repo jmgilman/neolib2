@@ -1,6 +1,9 @@
+import random
+
 import requests
 
-from neolib.Exceptions import NeopetsOffline
+from neolib.Exceptions import (AccountFrozen, BirthdayLocked, InvalidBirthday,
+                               NeopetsOffline)
 from neolib.http.Page import Page
 from neolib.inventory.SDBInventory import SDBInventory
 from neolib.inventory.UserInventory import UserInventory
@@ -140,7 +143,7 @@ class User(NeolibBase):
         # Setup default hooks
         self.add_hook(UserDetails)
 
-    def login(self):
+    def login(self, birthday=None):
         """Performs a login and returns the result
 
         This function will submit the login form on the Neopets website with
@@ -148,6 +151,10 @@ class User(NeolibBase):
         login by checking for the user's username on the resulting page. This
         method must be called before doing any other account activities that
         normally require the user to be logged in.
+
+        Arguments:
+            birthday: `Date` object with the user's birthday for accessing a
+                locked account
 
         Returns:
             A boolean value indicating if the login was successful
@@ -163,6 +170,47 @@ class User(NeolibBase):
 
         # Submit the form
         pg = form.submit(self)
+
+        # Check if the account is frozen
+        if 'account has been FROZEN' in pg.content:
+            self._logger.error('User account ' + self.username + ' is frozen')
+            raise AccountFrozen('Account is frozen')
+
+        # Check for password strength
+        if 'STOP! Your password' in pg.content or 'username matches your e-mail' in pg.content:
+            # We're actually logged in now, we can ignore this page and just
+            # request the index again
+            self._logger.warning('User ' + self.username + ' has an unsecured password')
+            pg = self.get_page('http://www.neopets.com/')
+
+        # Check if account is birthday locked and if a birthday was given
+        if 'please verify your birthday' in pg.content and not birthday:
+            self._logger.error('User ' + self.username + ' is birthday locked')
+            raise BirthdayLocked('Account is birthday locked')
+        elif 'please verify your birthday' in pg.content:
+            self._logger.warning('User ' + self.username + ' is birthday locked. Attempting to submit date')
+            pg = self._submit_birthday(pg, birthday)
+
+            if 'Invalid birthday' in pg.content:
+                f = open('test.html', 'w')
+                f.write(pg.content)
+                f.close()
+                self._logger.error('Birthday failed for user ' + self.username)
+                raise InvalidBirthday('Invalid birthday given')
+
+        # Check if we've maxed out birthday tries
+        if 'birthdate for this account incorrectly 3 times today' in pg.content:
+            self._logger.error('Birthday failed for user ' + self.username)
+            self._logger.warning('Birthday locked for one day')
+            raise InvalidBirthday('Birthday locked for one day')
+
+        # Check for Lawyerbot
+        if 'Lawyerbot message' in pg.content:
+            # We have to take one extra step and accept the EULA
+            self._logger.warning('Lawyerbot detected. Accepting EULA.')
+            form = pg.form(action='/accept_terms.phtml')[0]
+            form.update(accept='1')
+            pg = form.submit(self)
 
         # Return if it was successful
         return self.username in pg.content
@@ -213,6 +261,27 @@ class User(NeolibBase):
         page calls
         """
         self.hooks.append(hook)
+
+    def _submit_birthday(self, pg, birthday):
+        """ Submits a user's birthday for authentication
+
+        Arguments:
+            birthday: Date object with the user's birthday
+
+        Returns:
+            Page object with the result of the submission
+        """
+        # Update the form with birthday values and password
+        form = pg.form(action='/login.phtml')[1]
+        form.update(password=self.password, dob_m=str(birthday.month),
+                    dob_y=(birthday.year), dob_d=str(birthday.day))
+
+        # Random x,y coordinates
+        x = random.randint(10, 30)
+        y = random.randint(10, 30)
+        form.update(x=str(x), y=str(y))
+
+        return form.submit(self)
 
     def __repr__(self):
         return "User <" + self.username + ">"

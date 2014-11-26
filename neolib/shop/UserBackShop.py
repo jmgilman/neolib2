@@ -17,6 +17,8 @@ class UserBackShop(NeolibBase):
         | **keeper_message**: The shop keeper's message
         | **stocked**: The total number of items stocked in the shop
         | **free_space**: The total amount of free space in the shop
+        | **created**: If the shop has been created or not (False if user does
+            not currently have a shop)
         | **inventory**: Instance of :class:`USBackInventory`
         | **till**: The user's current till (updated everytime it's read)
         | **history**: The sales history for the user's shop (:class:`History`)
@@ -29,6 +31,8 @@ class UserBackShop(NeolibBase):
     keeper_message = ''
     stocked = 0
     free_space = 0
+
+    created = True
 
     inventory = None
 
@@ -91,17 +95,33 @@ class UserBackShop(NeolibBase):
         # Load the index
         pg = self._get_page('index')
 
+        # Check if they have a shop
+        if 'You don\'t have your own shop yet!' in pg.content:
+            # Initialize empty inventory and set status
+            self.created = False
+            self.inventory = []
+            self._logger.warning('User ' + self._usr.username + ' does not have a shop')
+            return
+
         # Load the main details
         self.name = self._xpath('shop/name', pg)[0]
         self.size = int(self._xpath('shop/size', pg)[0].split('size ')[1].replace(')', ''))
         self.keeper_img = self._xpath('keeper/img', pg)[0]
         self.keeper_name = self._xpath('keeper/name_msg', pg)[0].split(' says')[0]
         self.keeper_message = self._xpath('keeper/name_msg', pg)[0].split('says ')[1].replace('\'', '')
-        self.stocked = int(self._xpath('stock/stocked', pg)[0])
-        self.free_space = int(self._xpath('stock/free_space', pg)[0])
+        self.inventory = USBackInventory(self._usr)
 
         # Load the inventory
         self.inventory = USBackInventory(self._usr)
+
+        # Check for stock
+        if 'There are no items in your shop!' in pg.content:
+            return
+
+        # Load the inventory
+        self.stocked = int(self._xpath('stock/stocked', pg)[0])
+        self.free_space = int(self._xpath('stock/free_space', pg)[0])
+
         self.inventory.load(pg)
 
     def update(self):

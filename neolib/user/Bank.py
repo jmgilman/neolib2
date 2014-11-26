@@ -39,13 +39,22 @@ class Bank(NeolibBase):
         # Get the index
         pg = self._get_page('index')
 
+        # Check if the user has a bank account
+        if 'I see you don\'t currently have an account with us' in pg.content:
+            self._logger.warning('User ' + self._usr.username + ' does not have a bank account')
+            return
+
         # Load the details
         rows = self._xpath('rows', pg)
         self.type = str(rows[0].xpath('./td[2]/text()')[0])
         self.balance = self._format_nps(rows[1].xpath('./td[2]/text()')[0])
         self.interest_rate = float(rows[2].xpath('./td[2]/b/text()')[0].replace('%', ''))
         self.yearly_interest = self._format_nps(rows[3].xpath('./td[2]/text()')[0])
-        self.daily_interest = self._format_nps(self._xpath('daily', pg)[0])
+
+        # Some user's don't have enough for daily interest
+        if 'you might want to deposit a few more Neopoints' not in pg.content:
+            self.daily_interest = self._format_nps(self._xpath('daily', pg)[0])
+            self.interest_collected = True
 
         if 'You have already collected your interest today' in pg.content:
             self.interest_collected = True
