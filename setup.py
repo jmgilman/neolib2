@@ -11,7 +11,7 @@ setup(
               "neolib.user",
               "neolib.user.hooks"
               ],
-    version="0.1.1",
+    version="0.1.4",
     description="Neopets automation library for Python",
     author="Joshua Gilman",
     author_email="joshuagilman@gmail.com",
@@ -19,7 +19,7 @@ setup(
     download_url="https://github.com/jmgilman/neolib2/tarball/0.1",
     install_requires=[
         "requests==2.4",
-        "lxml==3.4",
+        "lxml==3.4.1",
         "pillow==2.6",
         ],
     package_data={'neolib2': ['tests/*', 'examples/*']},

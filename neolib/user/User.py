@@ -192,9 +192,6 @@ class User(NeolibBase):
             pg = self._submit_birthday(pg, birthday)
 
             if 'Invalid birthday' in pg.content:
-                f = open('test.html', 'w')
-                f.write(pg.content)
-                f.close()
                 self._logger.error('Birthday failed for user ' + self.username)
                 raise InvalidBirthday('Invalid birthday given')
 
@@ -273,8 +270,11 @@ class User(NeolibBase):
         """
         # Update the form with birthday values and password
         form = pg.form(action='/login.phtml')[1]
-        form.update(password=self.password, dob_m=str(birthday.month),
-                    dob_y=(birthday.year), dob_d=str(birthday.day))
+        month = '%02d' % birthday.month
+        day = '%02d' % birthday.day
+
+        form.update(password=self.password, dob_m=month,
+                    dob_y=str(birthday.year), dob_d=day)
 
         # Random x,y coordinates
         x = random.randint(10, 30)
