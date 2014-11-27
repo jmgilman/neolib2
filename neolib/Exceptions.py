@@ -48,3 +48,6 @@ class InvalidBirthday(Exception):
 
 class AccountFrozen(Exception):
     pass
+
+class NoActiveNeopet(Exception):
+    pass

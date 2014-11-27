@@ -3,7 +3,7 @@ import random
 import requests
 
 from neolib.Exceptions import (AccountFrozen, BirthdayLocked, InvalidBirthday,
-                               NeopetsOffline)
+                               NeopetsOffline, NoActiveNeopet)
 from neolib.http.Page import Page
 from neolib.inventory.SDBInventory import SDBInventory
 from neolib.inventory.UserInventory import UserInventory
@@ -208,6 +208,12 @@ class User(NeolibBase):
             form = pg.form(action='/accept_terms.phtml')[0]
             form.update(accept='1')
             pg = form.submit(self)
+
+        # If the account doesn't have a Neopet, we will be redirected to create
+        # one on the Neopet creation page
+        if pg.response.url == 'http://www.neopets.com/reg/page4.phtml':
+            self._logger.error('No active Neopet for user ' + self.username)
+            raise NoActiveNeopet('Missing active pet')
 
         # Return if it was successful
         return self.username in pg.content

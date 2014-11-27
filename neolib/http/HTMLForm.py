@@ -1,6 +1,8 @@
 from collections import UserDict
 from urllib.parse import urlparse
 
+import lxml
+
 
 class HTMLForm(UserDict):
     """Represents a HTML form on a web page
@@ -48,6 +50,12 @@ class HTMLForm(UserDict):
             for attribute in dir(inp):
                 if len(einp.xpath('./@' + attribute)) > 0:
                     setattr(inp, attribute, einp.xpath('./@' + attribute)[0])
+
+            # Look for default values on select inputs
+            if type(einp) is lxml.html.SelectElement:
+                if einp.xpath('./option[@selected]'):
+                    inp.value = einp.xpath('./option[@selected]/@value')[0]
+
             if inp.name:
                 self.data[inp.name] = inp
 
