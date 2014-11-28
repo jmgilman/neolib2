@@ -63,7 +63,7 @@ class InventoryItem(Item):
             self.rarity = str(self._xpath('rarity', pg)[0])
             self.value = str(self._xpath('value', pg)[0])
         except Exception:
-            self._logger.exception('Failed to parse details for ' + self.name)
+            self._logger.exception('Failed to parse details for ' + self.name, {'pg': pg})
             raise ParseException('Failed to parse details for ' + self.name)
 
     def move(self, location):

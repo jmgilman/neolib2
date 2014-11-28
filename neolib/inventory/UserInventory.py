@@ -57,7 +57,7 @@ class UserInventory(Inventory):
 
                 self.data.append(item)
         except Exception:
-            self._logger.exception('Unable to parse user\'s inventory')
+            self._logger.exception('Unable to parse user\'s inventory', {'pg': pg})
             raise ParseException('Unable to parse user\'s inventory')
 
     def find(self, **kwargs):

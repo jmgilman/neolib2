@@ -1,3 +1,4 @@
+from neolib.Exceptions import ParseException
 from neolib.inventory.Inventory import Inventory
 from neolib.item.USBackItem import USBackItem
 from neolib.item.USBackItemList import USBackItemList
@@ -56,13 +57,17 @@ class USBackInventory(Inventory):
         # The first link is not a page
         self.pages = pages - 1
 
-        # Load the items from the first page
-        self._parse_page(pg, 1)
+        try:
+            # Load the items from the first page
+            self._parse_page(pg, 1)
 
-        # Grab from the remaining pages. By starting at 2 we ignore the index.
-        for i in range(2, pages):
-            pg = self._get_page('page', str(i * self._items_per_page))
-            self._parse_page(pg, i)
+            # Grab from the remaining pages. By starting at 2 we ignore the index.
+            for i in range(2, pages):
+                pg = self._get_page('page', str(i * self._items_per_page))
+                self._parse_page(pg, i)
+        except Exception:
+            self._logger.exception('Failed to parse user shop', {'pg': pg})
+            raise ParseException('Failed to parse user shop')
 
     def find(self, **kwargs):
         """ Overrides the :class:`Inventory`:`find()` function to return an

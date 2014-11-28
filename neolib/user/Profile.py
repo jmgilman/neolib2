@@ -208,7 +208,7 @@ class Profile(NeolibBase):
                         setattr(pet, key, self._remove_extra(result[0]))
                 self.neopets.append(pet)
         except:
-            self._logger.exception('Failed to parse user profile')
+            self._logger.exception('Failed to parse user profile with name: ' + self._usr.username, {'pg': pg})
             raise ParseException('Could not parse user profile')
 
     def _set_attributes(self, pg, path, exps, exception=None):

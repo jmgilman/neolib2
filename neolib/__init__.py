@@ -1,57 +1,62 @@
 import logging
 import logging.config
+from neolib.Filters import HTMLFilter
+import os
 
 
-class LevelFilter(logging.Filter):
-    """ Filters logs so high levels don't show up on low level consoles """
-    def __init__(self, name=''):
-        self.name = name
+def set_config(config):
+    logging.config.dictConfig(config)
 
-    def filter(self, record):
-        if record.levelno >= logging.ERROR:
-            return False
-        else:
-            return True
-
-
-# The below variable should be imported and modified by developers to configure
+# The below variables should be imported and modified by developers to configure
 # the internal logging. For further information on how this dictionary should
 # be configured please refer to the python help documents.
+LOG_DIR = 'neolib_logs'
+LOG_FILE = 'neolib.log'
+PAGE_DIR = 'pages'
+
 CONFIG = {'version': 1,
           'formatters': {
-              'debug': {
-                  'format': '%(message)s'
-                  },
-              'error': {
+              'default': {
                   'format': '[%(asctime)s] %(name)s (%(levelname)s) Line %(lineno)d in %(filename)s : %(message)s'
-                  }
+                  },
               },
           'filters': {
-              'level_filter': {
+              'html_filter': {
                   'name': 'neolib',
-                  '()': LevelFilter
-                  }
+                  '()': HTMLFilter,
+                  },
               },
           'handlers': {
-              'console_low': {
+              'console': {
                   'class': 'logging.StreamHandler',
                   'level': 'DEBUG',
-                  'formatter': 'debug',
-                  'filters': ['level_filter']
+                  'formatter': 'default',
+                  'filters': ['html_filter'],
                   },
-              'console_high': {
-                  'class': 'logging.StreamHandler',
-                  'level': 'ERROR',
-                  'formatter': 'error'
-                  }
+              'file': {
+                  'class': 'logging.handlers.TimedRotatingFileHandler',
+                  'level': 'DEBUG',
+                  'formatter': 'default',
+                  'filters': ['html_filter'],
+                  'filename': LOG_DIR + '/' + LOG_FILE,
+                  'when': 'D',
+                  },
               },
           'loggers': {
               'neolib': {
                   'level': 'DEBUG',
-                  'handlers': ['console_low', 'console_high']
-                  }
-              }
+                  'handlers': ['console', 'file'],
+                  },
+              },
           }
 
+# Check for the log directory
+if not os.path.isdir(LOG_DIR):
+    os.makedirs(LOG_DIR)
+
+# Check for pages directory
+if not os.path.isdir(LOG_DIR + '/' + PAGE_DIR):
+    os.makedirs(LOG_DIR + '/' + PAGE_DIR)
+
 # Set the configuration for the base logger 'neolib'
-logging.config.dictConfig(CONFIG)
+set_config(CONFIG)

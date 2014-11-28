@@ -1,3 +1,4 @@
+from neolib.Exceptions import ParseException
 from neolib.inventory.Inventory import Inventory
 from neolib.item.SDBItem import SDBItem
 from neolib.item.SDBItemList import SDBItemList
@@ -33,13 +34,17 @@ class SDBInventory(Inventory):
         # Clear any data
         self.data = []
 
-        # Grab the first page
-        self._parse_page(pg, 1)
+        try:
+            # Grab the first page
+            self._parse_page(pg, 1)
 
-        # And the rest
-        for i in range(1, self.pages):
-            pg = self._get_page('pages', str(i * self._items_per_page))
-            self._parse_page(pg, i + 1)
+            # And the rest
+            for i in range(1, self.pages):
+                pg = self._get_page('pages', str(i * self._items_per_page))
+                self._parse_page(pg, i + 1)
+        except Exception:
+            self._logger.exception('Failed to load SDB inventory', {'pg': pg})
+            raise ParseException('Failed to load SDB inventory')
 
     def update(self):
         # Check for changes

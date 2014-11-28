@@ -2,6 +2,7 @@ import io
 
 from PIL import Image
 
+from neolib.Exceptions import ParseException
 from neolib.item.Item import Item
 
 
@@ -47,26 +48,30 @@ class MSItem(Item):
         if not price:
             price = self.price
 
-        # Check to see if the item is still for sale
-        if pg.form(action='haggle.phtml') and 'SOLD OUT' not in pg.content:
-            form = pg.form(action='haggle.phtml')[0]
+        try:
+            # Check to see if the item is still for sale
+            if pg.form(action='haggle.phtml') and 'SOLD OUT' not in pg.content:
+                form = pg.form(action='haggle.phtml')[0]
 
-            # Download the image
-            url = self._base_url + self._xpath('captcha', pg)[0]
-            pg = self._usr.get_page(url)
+                # Download the image
+                url = self._base_url + self._xpath('captcha', pg)[0]
+                pg = self._usr.get_page(url)
 
-            x, y = self._crack_OCR(io.BytesIO(pg.content))
-            form.update(current_offer=str(price), x=str(x), y=str(y))
+                x, y = self._crack_OCR(io.BytesIO(pg.content))
+                form.update(current_offer=str(price), x=str(x), y=str(y))
 
-            # Attempt to buy the item
-            pg = form.submit(self._usr)
+                # Attempt to buy the item
+                pg = form.submit(self._usr)
 
-            if "I accept" in pg.content:
-                return True
+                if "I accept" in pg.content:
+                    return True
+                else:
+                    return False
             else:
                 return False
-        else:
-            return False
+        except Exception:
+            self._logger.exception('Failed to handle haggle page', {'pg': pg})
+            raise ParseException('Failed to handle haggle page')
 
     def _crack_OCR(self, img):
         # Open the image and convert to grayscale

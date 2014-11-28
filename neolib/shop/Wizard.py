@@ -90,7 +90,7 @@ class Wizard(NeolibBase):
 
                 items.append(item)
         except Exception:
-            self._logger.log('Failed to parse shop wizard results')
+            self._logger.log('Failed to parse shop wizard results', {'pg': pg})
             raise ParseException('Could not parse shop wizard results')
 
         return WizardItemList(self._usr, items)

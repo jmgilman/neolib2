@@ -1,3 +1,4 @@
+from neolib.Exceptions import ParseException
 from neolib.inventory.USBackInventory import USBackInventory
 from neolib.NeolibBase import NeolibBase
 from neolib.shop.History import History
@@ -70,7 +71,11 @@ class UserBackShop(NeolibBase):
     def till(self):
         pg = self._get_page('till')
 
-        return int(self._xpath('till', pg)[0].replace(' NP', ''))
+        try:
+            return int(self._xpath('till', pg)[0].replace(' NP', ''))
+        except Exception:
+            self._logger.exception('Failed to parse user till', {'pg': pg})
+            raise ParseException('Failed to parse user till')
 
     @property
     def history(self):

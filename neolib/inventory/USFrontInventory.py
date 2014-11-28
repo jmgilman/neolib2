@@ -1,3 +1,4 @@
+from neolib.Exceptions import ParseException
 from neolib.inventory.Inventory import Inventory
 from neolib.item.USFrontItem import USFrontItem
 from neolib.item.USFrontItemList import USFrontItemList
@@ -26,24 +27,28 @@ class USFrontInventory(Inventory):
             | **pages**: Whether or not to fetch all shop pages
         """
         # Determine if we're going to load multiple pages
-        if pages:
-            # Parse the index
-            self._parse_page(index)
+        try:
+            if pages:
+                # Parse the index
+                self._parse_page(index)
 
-            # Keep going until we run out of pages
-            i = 1
-            while True:
-                lim = i * 80
+                # Keep going until we run out of pages
+                i = 1
+                while True:
+                    lim = i * 80
 
-                pg = self._get_page('shop', (str(lim), owner))
-                self._parse_page(pg)
+                    pg = self._get_page('shop', (str(lim), owner))
+                    self._parse_page(pg)
 
-                if 'Next 80 Items' not in pg.content:
-                    break
+                    if 'Next 80 Items' not in pg.content:
+                        break
 
-                i += 1
-        else:
-            self._parse_page(index)
+                    i += 1
+            else:
+                self._parse_page(index)
+        except Exception:
+            self._logger.exception('Failed to parse user front shop with owner: ' + owner, {'pg': pg})
+            raise ParseException('Failed to parse user front shop')
 
     def find(self, **kwargs):
         """ Overrides the :class:`Inventory`:`find()` function to return an
