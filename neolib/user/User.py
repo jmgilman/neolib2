@@ -177,7 +177,7 @@ class User(NeolibBase):
             raise AccountFrozen('Account is frozen')
 
         # Check for password strength
-        if 'STOP! Your password' in pg.content or 'username matches your e-mail' in pg.content:
+        if 'STOP!  Your password' in pg.content or 'username matches your e-mail' in pg.content:
             # We're actually logged in now, we can ignore this page and just
             # request the index again
             self._logger.warning('User ' + self.username + ' has an unsecured password')
@@ -216,7 +216,7 @@ class User(NeolibBase):
             raise NoActiveNeopet('Missing active pet')
 
         # Return if it was successful
-        return self.username in pg.content
+        return pg.response.url == 'http://www.neopets.com/'
 
     def get_page(self, url, post_data='', header_values=''):
         """A wrapper function that returns a page using the user's session

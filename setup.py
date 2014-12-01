@@ -11,7 +11,7 @@ setup(
               "neolib.user",
               "neolib.user.hooks"
               ],
-    version="0.1.5",
+    version="0.1.7",
     description="Neopets automation library for Python",
     author="Joshua Gilman",
     author_email="joshuagilman@gmail.com",

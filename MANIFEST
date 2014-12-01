@@ -2,6 +2,7 @@
 setup.cfg
 setup.py
 neolib/Exceptions.py
+neolib/Filters.py
 neolib/NeolibBase.py
 neolib/__init__.py
 neolib/http/HTMLForm.py
