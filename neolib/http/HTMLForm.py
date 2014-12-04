@@ -53,7 +53,7 @@ class HTMLForm(UserDict):
 
             # Look for default values on select inputs
             if type(einp) is lxml.html.SelectElement:
-                if einp.xpath('./option[@selected]'):
+                if einp.xpath('./option[@selected]/@value'):
                     inp.value = einp.xpath('./option[@selected]/@value')[0]
 
             if inp.name:

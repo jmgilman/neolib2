@@ -72,7 +72,7 @@ class UserBackShop(NeolibBase):
         pg = self._get_page('till')
 
         try:
-            return int(self._xpath('till', pg)[0].replace(' NP', ''))
+            return int(self._remove_multi(self._xpath('till', pg)[0], [' NP', ',']))
         except Exception:
             self._logger.exception('Failed to parse user till', {'pg': pg})
             raise ParseException('Failed to parse user till')
