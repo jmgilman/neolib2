@@ -108,7 +108,7 @@ class TestUser(NeolibTestBase):
         print('Items:')
 
         for item in self._usr.shop.inventory:
-            print(item.name)
+            print(item.name + ' priced at ' + str(item.price) + ' NPs (' + str(item.stock) + ' in stock)')
 
     def test_bank(self):
         print('')

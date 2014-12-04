@@ -11,6 +11,7 @@ class MainShop(NeolibBase):
     Attributes:
         **inventory**: Instance of :class:`MSInventory` with the shop's items
     """
+    name = ''
     inventory = None
 
     _log_name = 'neolib.shop.MainShop'
