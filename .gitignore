@@ -59,4 +59,4 @@ target/
 .gitignore~
 
 # Logging
-neolib_logs/*
+*neolib_logs/*
