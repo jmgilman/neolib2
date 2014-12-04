@@ -194,7 +194,7 @@ class Profile(NeolibBase):
             self._set_attributes(pg, 'colls2', 'colls2', collections2_exception)
 
             # The user might not have a shop or gallery
-            if 'Shop & Gallery' in pg.content:
+            if 'Shop &amp; Gallery' in pg.content:
                 self._set_attributes(pg, 'shop_gallery', 'shop_gallery')
 
             # The neopets are parsed slightly differently
