@@ -57,3 +57,6 @@ target/
 .DS_Store
 .gitignore.swp
 .gitignore~
+
+# Logging
+neolib_logs/*
