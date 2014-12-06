@@ -60,3 +60,10 @@ target/
 
 # Logging
 *neolib_logs/*
+
+# Users file
+users.py
+
+# Test files
+test.py
+test.html

@@ -24,6 +24,7 @@ class HTMLForm(UserDict):
 
     action = ''
     method = ''
+    id = ''
     url = ''
     data = {}
 
@@ -41,6 +42,8 @@ class HTMLForm(UserDict):
             self.action = form_element.xpath('./@action')[0]
         if len(form_element.xpath('./@method')) > 0:
             self.method = form_element.xpath('./@method')[0]
+        if len(form_element.xpath('./@id')) > 0:
+            self.id = form_element.xpath('./@id')[0]
 
         # Grab all the inputs
         self.data = {}

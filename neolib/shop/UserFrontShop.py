@@ -1,3 +1,4 @@
+from neolib.Exceptions import ParseException
 from neolib.inventory.USFrontInventory import USFrontInventory
 from neolib.item.USFrontItem import USFrontItem
 from neolib.NeolibBase import NeolibBase
@@ -11,6 +12,12 @@ class UserFrontShop(NeolibBase):
             inventory loaded.
     """
 
+    name = ''
+    keeper_img = ''
+    keeper_name = ''
+    keeper_messag = ''
+    description = ''
+
     inventory = None
 
     _log_name = 'neolib.shop.UserFrontShop'
@@ -21,6 +28,10 @@ class UserFrontShop(NeolibBase):
     }
 
     _paths = {
+        'name': '//*[@id="content"]/table/tr/td[2]/b/text()',
+        'keeper_img': '//*[@id="content"]/table/tr/td[2]/div[3]/img/@src',
+        'keeper_text': '//*[@id="content"]/table/tr/td[2]/div[3]/b/text()',
+        'desc': '//*[@id="content"]/table/tr/td[2]/center',
         'main_item': '//*[@id="content"]/table/tr/td[2]/div[4]/table/tr/td',
     }
 
@@ -48,6 +59,16 @@ class UserFrontShop(NeolibBase):
             pg = self._get_page('shop_item', (owner, item_id, str(price)))
         else:
             pg = self._get_page('shop', owner)
+
+        # Get the details
+        try:
+            self.name = str(self._xpath('name', pg)[0])
+            self.keeper_img = self._xpath('keeper_img', pg)[0]
+            self.keeper_name = str(self._xpath('keeper_text', pg)[0].split(' says')[0])
+            self.keeper_message = str(self._xpath('keeper_text', pg)[0].split('says ')[1].replace('\'', ''))
+        except Exception:
+            self._logger.exception('Failed to parse user front shop details')
+            raise ParseException('Failed to parse user front shop details')
 
         # Load the inventory
         self.inventory = USFrontInventory(self._usr)

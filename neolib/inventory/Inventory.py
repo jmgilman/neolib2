@@ -32,6 +32,14 @@ class Inventory(NeolibBase, UserList):
         """
         pass
 
+    def all(self):
+        """ Returns all items in the inventory
+
+        Returns:
+            All items in the inventory
+        """
+        return self.data
+
     def find(self, **kwargs):
         """ Searches the current inventory using keyword arguments
 

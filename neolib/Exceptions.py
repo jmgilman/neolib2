@@ -1,3 +1,8 @@
+# Dailies
+class DailyAlreadyCompleted(Exception):
+    pass
+class DailyNotActive(Exception):
+    pass
 
 # General
 class ParseException(Exception):

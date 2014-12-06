@@ -132,6 +132,9 @@ class NeolibBase:
 
         Args:
             **string**: The HTML string to convert
+
+        Returns:
+            The converted HTML element
         """
         return html.document_fromstring(string)
 
@@ -140,6 +143,9 @@ class NeolibBase:
 
         Args:
             **element**: The HTML element to conver to a HTML string
+
+        Returns:
+            The converted HTML string
         """
         return etree.tostring(element).decode('utf-8')
 
