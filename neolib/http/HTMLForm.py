@@ -108,6 +108,11 @@ class HTMLForm(UserDict):
             self.action = self.url
         elif self.action == u.path:
             self.action = self.url
+        elif self.action.split('?')[0] == u.path:
+            if self.action.startswith('/'):
+                self.action = 'http://' + u.netloc + self.action
+            else:
+                self.action = 'http://' + u.netloc + '/' + self.action
         else:
             if u.netloc not in self.action:
                 path = '/'.join(u.path.split('/')[1:-1])

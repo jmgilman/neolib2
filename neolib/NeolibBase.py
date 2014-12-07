@@ -163,7 +163,7 @@ class NeolibBase:
         """
         return self._to_html(self._xpath(path, subject)[0])
 
-    def _wait_random(max):
+    def _wait_random(self, max):
         """Wait a random time up to the max seconds given
 
         Takes the max seconds given and divides it by two to obtain a minimum

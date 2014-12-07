@@ -5,3 +5,6 @@ class Daily(NeolibBase):
 
     def run(self):
         pass
+
+    def do_prereq(self):
+        pass
