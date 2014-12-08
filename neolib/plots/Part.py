@@ -25,6 +25,8 @@ class Part(NeolibBase):
 
             if step.form:
                 pg = step.execute(pg)
+            elif step.path:
+                pg = step.execute(pg)
             else:
                 pg = step.execute()
 
@@ -38,9 +40,17 @@ class Part(NeolibBase):
         return False
 
     def _append(self, link):
-        self._steps.append(Step(self._usr, self._links[link]['link'],
-                           self._links[link]['checks'],
-                           self._links[link]['form']))
+        if 'form' in self._links[link]:
+            self._steps.append(Step(self._usr, self._links[link]['link'],
+                                    self._links[link]['checks'],
+                                    form=self._links[link]['form']))
+        elif 'path' in self._links[link]:
+            self._steps.append(Step(self._usr, self._links[link]['link'],
+                                    self._links[link]['checks'],
+                                    path=self._links[link]['path']))
+        else:
+            self._steps.append(Step(self._usr, self._links[link]['link'],
+                                    self._links[link]['checks']))
 
     def _append_existing(self, step):
         self._steps.append(step)

@@ -18,7 +18,7 @@ class FindOil(Step):
         # Setup checks
         self._checks = ['you notice a jar of oil', 'a statue']
 
-    def execute(self):
+    def execute(self, last_pg=None):
         # The oil could be behind any of the statues
         for link in self.link:
             pg = self._usr.get_page(link)

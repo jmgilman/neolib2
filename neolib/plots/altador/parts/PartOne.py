@@ -8,17 +8,14 @@ class PartOne(Part):
         'hall': {
             'link': 'http://www.neopets.com/altador/hallofheroes.phtml?',
             'checks': ['monument to the great legends of Altador'],
-            'form': False,
         },
         'janitor': {
             'link': 'http://www.neopets.com/altador/hallofheroes.phtml?janitor=1',
             'checks': ['button here is supposed', 'gotten dirty or seized up', 'found the oil'],
-            'form': False,
         },
         'button': {
             'link': 'http://www.neopets.com/altador/hallofheroes.phtml?janitor=1&push_button=1',
             'checks': ['Nothing appears to happen', 'gears begin to grind'],
-            'form': False,
         },
         'button_ack': {
             'link': '/altador/hallofheroes.phtml?janitor=1&push_button=1&acpcont=1',
@@ -28,17 +25,14 @@ class PartOne(Part):
         'archives': {
             'link': 'http://www.neopets.com/altador/archives.phtml',
             'checks': ['repository of all Altadorian knowledge'],
-            'form': False,
         },
         'archivist': {
             'link': 'http://www.neopets.com/altador/archives.phtml?archivist=1',
             'checks': ['that button in the Hall of Heroes', 'stabilise this table', 'What a fascinating book'],
-            'form': False,
         },
         'archivist_bk': {
             'link': 'http://www.neopets.com/altador/archives.phtml?archivist=1&get_book=1',
             'checks': ['You can\'t have that book!', 'replace the book'],
-            'form': False,
         },
         'archivist_ack': {
             'link': '/altador/archives.phtml?archivist=1&get_book=1&acpcont=1',
@@ -48,12 +42,10 @@ class PartOne(Part):
         'quarry': {
             'link': 'http://www.neopets.com/altador/quarry.phtml',
             'checks': ['quarry workers argue'],
-            'form': False,
         },
         'rock': {
             'link': 'http://www.neopets.com/altador/quarry.phtml?get_rock=1',
             'checks': ['Perfectly Flat Three-Inch Rock'],
-            'form': False,
         },
         'rock_ack': {
             'link': '/altador/quarry.phtml?get_rock=1&acpcont=1',
@@ -63,7 +55,6 @@ class PartOne(Part):
         'book': {
             'link': 'http://www.neopets.com/altador/archives.phtml?archivist=1&examine_book=1',
             'checks': ['http://images.neopets.com/altador/book/ul_corner_bent.gif'],
-            'form': False,
         },
     }
 
