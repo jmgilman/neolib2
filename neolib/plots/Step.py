@@ -25,7 +25,7 @@ class Step(NeolibBase):
                 form = last_pg.form(action=self.link)[0]
                 pg = form.submit(self._usr)
             elif self.path:
-                url = self._base_url + last_pg.xpath(self.path)[0]
+                url = self._base_url + last_pg.xpath(self.path[0])[(self.path[1])]
                 pg = self._usr.get_page(url)
 
             f = open('test.html', 'w', encoding='utf-8')

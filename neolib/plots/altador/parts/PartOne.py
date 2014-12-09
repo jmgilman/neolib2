@@ -59,7 +59,7 @@ class PartOne(Part):
     }
 
     def setup(self):
-        # We'll define all the steps for this part here
+        self._steps = []
 
         # Start at the halls
         self._append('hall')

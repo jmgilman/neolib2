@@ -17,7 +17,17 @@ class FindConstellation(Step):
 
     _OFFSETS = {
         'sleeper': ((40, -30), (80, -60), (120, -60), (160, -30), (200, 0)),
-        'dreamer': ((60, -20), (120, 0), (130, 40), (190, 60), (110, -90))
+        'dreamer': ((60, -20), (120, 0), (130, 40), (190, 60), (110, -90)),
+        'first_to_rise': ((20, 60), (80, 80), (160, 0), (140, -60), (80, -80)),
+        'farmer': ((140, -30), (10, -80), (120, -60), (160, -70), (80, 60)),
+        'dancer': ((60, -30), (120, 0), (0, 140), (60, 170), (120, 140)),
+        'wave': ((50, 70), (170, 40), (200, 0), (190, -90), (140, -10)),
+        'gladiator': ((70, 30), (140, 0), (40, -120), (70, -140), (100, -120)),
+        'collector': ((10, -50), (100, -130), (100, 10), (190, -50), (200, 0)),
+        'thief': ((40, 40), (20, -40), (40, -80), (-50, -10), (-60, 120)),
+        'gatherer': ((40, -70), (-30, -140), (10, -200), (110, -170), (120, -90)),
+        'protector': ((-70, 0), (70, 0), (0, -70), (0, 70), (-130, 90)),
+        'hunter': ((10, -140), (120, -60), (160, -190), (170, -20), (200, 0)),
     }
 
     def __init__(self, usr, const):
@@ -67,6 +77,7 @@ class FindConstellation(Step):
 
         # Now we have to connect the points to each other
         url = self._connect_all(matches, self._const)
+        print('URL: ' + url)
 
         # Submit the points
         pg = self._usr.get_page(url)
@@ -104,6 +115,35 @@ class FindConstellation(Step):
             point = self._p_to_str(points[5])
 
             return self.link[1] + line + point
+        elif const is 'first_to_rise':
+            line1 = self._connect(points[0], points[1]) + '|'
+            line1 += self._connect(points[1], points[0]) + '|'
+            line1 += self._connect(points[1], points[2]) + '|'
+            line1 += self._connect(points[2], points[1]) + '|'
+
+            line2 = self._connect(points[3], points[4]) + '|'
+            line2 += self._connect(points[4], points[3]) + '|'
+            line2 += self._connect(points[4], points[5]) + '|'
+            line2 += self._connect(points[5], points[4])
+
+            return self.link[1] + line1 + line2
+        elif const is 'farmer':
+            line = self._connect(points[0], points[1]) + '|'
+            line += self._connect(points[1], points[0]) + '|'
+
+            line += self._connect(points[2], points[3]) + '|'
+            line += self._connect(points[3], points[2]) + '|'
+
+            line += self._connect(points[3], points[4]) + '|'
+            line += self._connect(points[4], points[3]) + '|'
+
+            line += self._connect(points[1], points[4]) + '|'
+            line += self._connect(points[4], points[1]) + '|'
+
+            line += self._connect(points[1], points[5]) + '|'
+            line += self._connect(points[5], points[1])
+
+            return self.link[1] + line
 
     def _connect(self, point1, point2):
         return self._p_to_str(point1) + ';' + self._p_to_str(point2)

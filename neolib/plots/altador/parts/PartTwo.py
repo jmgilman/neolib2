@@ -37,7 +37,7 @@ class PartTwo(Part):
         'tomb_door': {
             'link': '',
             'checks': ['What could it mean'],
-            'path': '//area/@href'
+            'path': ['//area/@href', 0]
         },
         'tomb_ack': {
             'link': '/altador/tomb.phtml',
@@ -55,7 +55,7 @@ class PartTwo(Part):
         'clouds_bt': {
             'link': '',
             'checks': ['gaps between the clouds seem to have formed'],
-            'path': '//area/@href'
+            'path': ['//area/@href', 0]
         },
         'clouds_ack': {
             'link': '/altador/clouds.phtml',
@@ -65,6 +65,8 @@ class PartTwo(Part):
     }
 
     def setup(self):
+        self._steps = []
+        
         # Start at the archives
         self._append('archives')
 
