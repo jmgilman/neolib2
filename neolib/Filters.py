@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 
-#from neolib import LOG_DIR, PAGE_DIR
+# from neolib import LOG_DIR, PAGE_DIR
 
 LOG_DIR = 'neolib_logs'
 LOG_FILE = 'neolib.log'

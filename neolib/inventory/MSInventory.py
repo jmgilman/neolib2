@@ -46,6 +46,7 @@ class MSInventory(Inventory):
 
                     item = MSItem(id, self._usr)
                     item.name = str(td.xpath('./b/text()')[0])
+                    item.img = td.xpath('./a/img/@src')
                     item.stock = int(td.xpath('./text()')[0].replace(' in stock', ''))
                     item.price = int(self._remove_multi(td.xpath('./text()')[1], ['Cost: ', ',', ' NP']))
                     item.stock_id = stock_id

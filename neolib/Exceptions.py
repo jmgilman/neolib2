@@ -56,3 +56,5 @@ class AccountFrozen(Exception):
 
 class NoActiveNeopet(Exception):
     pass
+class UserLoggedOut(Exception):
+    pass

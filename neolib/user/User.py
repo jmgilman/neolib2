@@ -11,6 +11,8 @@ from neolib.NeolibBase import NeolibBase
 from neolib.shop.UserBackShop import UserBackShop
 from neolib.user.Bank import Bank
 from neolib.user.hooks.UserDetails import UserDetails
+from neolib.user.hooks.LoginCheck import LoginCheck
+from neolib.user.hooks.NSTHook import NSTHook
 from neolib.user.Profile import Profile
 
 
@@ -29,6 +31,8 @@ class User(NeolibBase):
        | **pin**: The pin number for the account if applicable
 
        | **session**: The HTTP session for the account
+
+       | **logged_in**: If the user is logged in
 
        | **neopoints**: The number of neopoints the user has on hand
 
@@ -54,6 +58,8 @@ class User(NeolibBase):
     pin = ''
 
     session = ''
+
+    logged_in = False
 
     neopoints = 0
 
@@ -142,6 +148,8 @@ class User(NeolibBase):
 
         # Setup default hooks
         self.add_hook(UserDetails)
+        self.add_hook(LoginCheck)
+        self.add_hook(NSTHook)
 
     def login(self, birthday=None):
         """Performs a login and returns the result
@@ -216,7 +224,11 @@ class User(NeolibBase):
             raise NoActiveNeopet('Missing active pet')
 
         # Return if it was successful
-        return pg.response.url == 'http://www.neopets.com/'
+        if pg.response.url == 'http://www.neopets.com/':
+            self.logged_in = True
+            return True
+        else:
+            return False
 
     def get_page(self, url, post_data='', header_values=''):
         """A wrapper function that returns a page using the user's session

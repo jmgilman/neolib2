@@ -45,5 +45,6 @@ neolib/user/Profile.py
 neolib/user/User.py
 neolib/user/__init__.py
 neolib/user/hooks/Hook.py
+neolib/user/hooks/LoginCheck.py
 neolib/user/hooks/UserDetails.py
 neolib/user/hooks/__init__.py

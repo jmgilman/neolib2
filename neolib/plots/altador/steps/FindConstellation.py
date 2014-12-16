@@ -5,15 +5,7 @@ from neolib.plots.Step import Step
 
 class FindConstellation(Step):
 
-    link = [
-        'http://www.neopets.com/altador/astro.phtml?get_star_data=1',
-        'http://www.neopets.com/altador/astro.phtml?star_submit=',
-    ]
-
     _const = ''
-
-    _X_OFFSETS = [60, 120, 130, 190, 110]
-    _Y_OFFSETS = [-20, 0, 40, 60, -90]
 
     _OFFSETS = {
         'sleeper': ((40, -30), (80, -60), (120, -60), (160, -30), (200, 0)),
@@ -28,6 +20,19 @@ class FindConstellation(Step):
         'gatherer': ((40, -70), (-30, -140), (10, -200), (110, -170), (120, -90)),
         'protector': ((-70, 0), (70, 0), (0, -70), (0, 70), (-130, 90)),
         'hunter': ((10, -140), (120, -60), (160, -190), (170, -20), (200, 0)),
+    }
+
+    _LINES = {
+        'sleeper': ((0, 1), (1, 0), (1, 2), (2, 1), (3, 4), (4, 3), (4, 5), (5, 4)),
+        'dreamer': ((0, 1), (1, 0), (1, 2), (2, 1), (2, 3), (3, 2), (3, 4), (4, 3)),
+        'first_to_rise': ((0, 1), (1, 0), (1, 2), (2, 1), (3, 4), (4, 3), (4, 5), (5, 4)),
+        'farmer': ((0, 1), (1, 0), (2, 3), (3, 2), (3, 4), (4, 3), (1, 4), (4, 1), (1, 5), (5, 1)),
+        'dancer': (0, 1), (1, 0), (1, 2), (2, 1), (3, 4), (4, 3), (4, 5), (5, 4)),
+        'wave': ((0, 1), (1, 0), (1, 2), (2, 1), (2, 3), (3, 2), (3, 4), (4, 3), (4, 5), (5, 4)),
+        'gladiator': ((0, 1), (1, 0), (1, 2), (2, 1), (2, 5), (5, 2), (4, 5), (5, 4), (4, 3), (3, 4), (3, 0), (0, 3)),
+        'collector': ((0, 3), (3, 0), (3, 5), (5, 3), (3, 2), (2, 3), (0, 1), (1, 0), (4, 5), (5, 4)),
+        'thief': ((2, 3), (3, 2), (2, 0), (0, 2), (0, 1), (1, 0), (1, 5), (5, 1), (5, 4), (4, 5), (0, 4), (4, 0)),
+        'gatherer': ((0, 1), (1, 0), (2, 3), (3, 2), (3, 4), (4, 3), (4, 5), (5, 4), (5, 2), (2, 5)),
     }
 
     def __init__(self, usr, const):
@@ -84,7 +89,7 @@ class FindConstellation(Step):
 
         # Check the result
         print('Content: ' + pg.content)
-        if '0' not in pg.content:
+        if '0' not in pg.content or '10' in pg.content:
             return True
         else:
             return False
@@ -144,6 +149,101 @@ class FindConstellation(Step):
             line += self._connect(points[5], points[1])
 
             return self.link[1] + line
+        elif const is 'dancer':
+            line1 = self._connect(points[0], points[1]) + '|'
+            line1 += self._connect(points[1], points[0]) + '|'
+            line1 += self._connect(points[1], points[2]) + '|'
+            line1 += self._connect(points[2], points[1]) + '|'
+
+            line2 = self._connect(points[3], points[4]) + '|'
+            line2 += self._connect(points[4], points[3]) + '|'
+            line2 += self._connect(points[4], points[5]) + '|'
+            line2 += self._connect(points[5], points[4])
+
+            return self.link[1] + line1 + line2
+        elif const is 'wave':
+            line = self._connect(points[0], points[1]) + '|'
+            line += self._connect(points[1], points[0]) + '|'
+            line += self._connect(points[1], points[2]) + '|'
+            line += self._connect(points[2], points[1]) + '|'
+            line += self._connect(points[2], points[3]) + '|'
+            line += self._connect(points[3], points[2]) + '|'
+            line += self._connect(points[3], points[4]) + '|'
+            line += self._connect(points[4], points[3]) + '|'
+            line += self._connect(points[4], points[5]) + '|'
+            line += self._connect(points[5], points[4])
+
+            return self.link[1] + line
+        elif const is 'gladiator':
+            line = self._connect(points[0], points[1]) + '|'
+            line += self._connect(points[1], points[0]) + '|'
+            line += self._connect(points[1], points[2]) + '|'
+            line += self._connect(points[2], points[1]) + '|'
+            line += self._connect(points[2], points[5]) + '|'
+            line += self._connect(points[5], points[2]) + '|'
+            line += self._connect(points[4], points[5]) + '|'
+            line += self._connect(points[5], points[4]) + '|'
+            line += self._connect(points[4], points[3]) + '|'
+            line += self._connect(points[3], points[4]) + '|'
+            line += self._connect(points[3], points[0]) + '|'
+            line += self._connect(points[0], points[3])
+
+            return self.link[1] + line
+
+        elif const is 'collector':
+            line = self._connect(points[0], points[3]) + '|'
+            line += self._connect(points[3], points[0]) + '|'
+
+            line += self._connect(points[3], points[5]) + '|'
+            line += self._connect(points[5], points[3]) + '|'
+
+            line += self._connect(points[3], points[2]) + '|'
+            line += self._connect(points[2], points[3]) + '|'
+
+            line += self._connect(points[0], points[1]) + '|'
+            line += self._connect(points[1], points[0]) + '|'
+
+            line += self._connect(points[4], points[5]) + '|'
+            line += self._connect(points[5], points[4])
+
+            return self.link[1] + line
+        elif const is 'thief':
+            line = self._connect(points[2], points[3]) + '|'
+            line += self._connect(points[3], points[2]) + '|'
+
+            line += self._connect(points[2], points[0]) + '|'
+            line += self._connect(points[0], points[2]) + '|'
+
+            line += self._connect(points[0], points[1]) + '|'
+            line += self._connect(points[1], points[0]) + '|'
+
+            line += self._connect(points[1], points[5]) + '|'
+            line += self._connect(points[5], points[1]) + '|'
+
+            line += self._connect(points[5], points[4]) + '|'
+            line += self._connect(points[4], points[5]) + '|'
+
+            line += self._connect(points[0], points[4]) + '|'
+            line += self._connect(points[4], points[0])
+
+            return self.link[1] + line
+        elif const is 'gatherer':
+            line1 = self._connect(points[0], points[1]) + '|'
+            line1 += self._connect(points[1], points[0]) + '|'
+
+            line2 = self._connect(points[2], points[3]) + '|'
+            line2 += self._connect(points[3], points[2]) + '|'
+
+            line2 += self._connect(points[3], points[4]) + '|'
+            line2 += self._connect(points[4], points[3]) + '|'
+
+            line2 += self._connect(points[4], points[5]) + '|'
+            line2 += self._connect(points[5], points[4]) + '|'
+
+            line2 += self._connect(points[5], points[2]) + '|'
+            line2 += self._connect(points[2], points[5])
+
+            return self.link[1] + line1 + line2
 
     def _connect(self, point1, point2):
         return self._p_to_str(point1) + ';' + self._p_to_str(point2)
