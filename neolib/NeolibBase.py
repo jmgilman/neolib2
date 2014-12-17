@@ -177,7 +177,7 @@ class NeolibBase:
             return
 
         min = max / 2
-        delay = random.randint(min, max)
+        delay = round(random.uniform(min, max), 2)
 
         time.sleep(delay)
 

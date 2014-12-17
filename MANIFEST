@@ -3,6 +3,7 @@ setup.cfg
 setup.py
 neolib/Exceptions.py
 neolib/Filters.py
+neolib/NST.py
 neolib/NeolibBase.py
 neolib/__init__.py
 neolib/http/HTMLForm.py
@@ -46,5 +47,6 @@ neolib/user/User.py
 neolib/user/__init__.py
 neolib/user/hooks/Hook.py
 neolib/user/hooks/LoginCheck.py
+neolib/user/hooks/NSTHook.py
 neolib/user/hooks/UserDetails.py
 neolib/user/hooks/__init__.py

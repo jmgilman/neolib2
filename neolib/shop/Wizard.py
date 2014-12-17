@@ -64,7 +64,7 @@ class Wizard(NeolibBase):
 
         # Check for results
         if 'I did not find anything' in pg.content:
-            return
+            return []
 
         # Check for ban
         if 'too many searches' in pg.content:

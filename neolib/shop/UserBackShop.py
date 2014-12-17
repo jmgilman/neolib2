@@ -136,6 +136,9 @@ class UserBackShop(NeolibBase):
         changes in either the delete attribute or a difference between the
         old price and current price of an item (indicating a price change). It
         will then submit only the pages that have items which changed.
+
+        Returns:
+            Boolean value indicating if update was successful or not
         """
         # Determine if any pages have changed
         changed_pages = []
@@ -149,7 +152,14 @@ class UserBackShop(NeolibBase):
                 items = self.inventory.find(pg=pg_num)
                 data = self._build_data(items, pg_num)
 
-                self._get_page('update', post_data=data)
+                pg = self._get_page('update', post_data=data,
+                                    header_values={'Referer': self._urls['index']})
+
+                if 'red_oops.gif' in pg.content:
+                    self._logger.error('Failed to update user shop', {'pg': pg})
+                    return False
+
+        return True
 
     def withdraw(self, amount):
         """ Withdraws the given amount from the user's shop till

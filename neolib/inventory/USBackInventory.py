@@ -57,6 +57,10 @@ class USBackInventory(Inventory):
         # The first link is not a page
         self.pages = pages - 1
 
+        # Always have at least one page
+        if self.pages <= 0:
+            self.pages = 1
+
         try:
             # Load the items from the first page
             self._parse_page(pg, 1)
