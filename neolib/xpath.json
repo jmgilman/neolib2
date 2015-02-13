@@ -1,0 +1,29 @@
+{
+  "inventory": {
+    "personal": {
+      "rows": "//table[@class=\"inventory\"][1]//td",
+      "item": {
+        "id": "substring-after(./a/@onclick, \"(\")",
+        "img": "./a/img/@src",
+        "desc": "./a/img/@title",
+        "name": "./text()",
+        "rarity": "./span/span/text()"
+      }
+    }
+  },
+  "NST": "//*[@id=\"nst\"]/text()",
+  "user": {
+    "details": {
+      "active_pet": {
+        "name": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[1]/td/a/b/text()",
+        "species": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[1]/td[2]/b/text()",
+        "health": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[2]/td[2]/b/font/b/text()",
+        "mood": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[3]/td[2]/b/text()",
+        "hunger": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[4]/td[2]/b/span/text()",
+        "age": "translate(//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[5]/td[2]/b/text(), \" days\", \"\")",
+        "level": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[6]/td[2]/b/text()"
+      },
+      "neopoints": "translate(//*[@id=\"npanchor\"]/text(), \",\", \"\")"
+    }
+  }
+}

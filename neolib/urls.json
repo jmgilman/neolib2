@@ -1,0 +1,6 @@
+{
+  "index": "http://www.neopets.com/",
+  "inventory": {
+    "personal": "http://www.neopets.com/inventory.phtml"
+  }
+}

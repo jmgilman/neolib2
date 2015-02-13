@@ -62,7 +62,7 @@ target/
 *neolib_logs/*
 
 # Users file
-users.py
+users.json
 
 # Test files
 test.py

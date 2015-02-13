@@ -2,6 +2,7 @@ import logging
 import logging.config
 from neolib.Filters import HTMLFilter
 import os
+import json
 
 
 def set_config(config):
@@ -60,3 +61,11 @@ if not os.path.isdir(LOG_DIR + '/' + PAGE_DIR):
 
 # Set the configuration for the base logger 'neolib'
 set_config(CONFIG)
+
+# The base logger to be imported and used by modules
+log = logging.getLogger('neolib')
+
+# Preload path, regex, and urls data
+XPATH = json.load(open('neolib/xpath.json'))
+REGEX = json.load(open('neolib/regex.json'))
+URLS = json.load(open('neolib/urls.json'))

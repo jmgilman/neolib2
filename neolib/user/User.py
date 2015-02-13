@@ -1,7 +1,6 @@
 import random
 
 import requests
-
 from neolib.Exceptions import (AccountFrozen, BirthdayLocked, InvalidBirthday,
                                NeopetsOffline, NoActiveNeopet)
 from neolib.http.Page import Page
@@ -10,10 +9,12 @@ from neolib.inventory.UserInventory import UserInventory
 from neolib.NeolibBase import NeolibBase
 from neolib.shop.UserBackShop import UserBackShop
 from neolib.user.Bank import Bank
-from neolib.user.hooks.UserDetails import UserDetails
 from neolib.user.hooks.LoginCheck import LoginCheck
 from neolib.user.hooks.NSTHook import NSTHook
+from neolib.user.hooks.UserDetails import UserDetails
 from neolib.user.Profile import Profile
+
+from neolib import log
 
 
 class User(NeolibBase):
@@ -80,12 +81,6 @@ class User(NeolibBase):
 
     _last_page = ''
 
-    _log_name = 'neolib.user.User'
-
-    _urls = {
-        'index': 'http://www.neopets.com/',
-    }
-
     @property
     def profile(self):
         if not self._profile:
@@ -140,8 +135,8 @@ class User(NeolibBase):
         # Set username and password
         self.username, self.password = username, password
 
-        # Grab the pin if available
-        self.pin = pin if pin else None
+        # Grab the pin
+        self.pin = pin
 
         # Initialize session
         self.session = requests.session()
@@ -150,6 +145,9 @@ class User(NeolibBase):
         self.add_hook(UserDetails)
         self.add_hook(LoginCheck)
         self.add_hook(NSTHook)
+
+        # Funky but required for now
+        self._usr = self
 
     def login(self, birthday=None):
         """Performs a login and returns the result
@@ -170,7 +168,7 @@ class User(NeolibBase):
         # TNT has very tight anti-cheat controls so in this scenario it
         # is best to simulate a legitimate login by navigating to the
         # index page first
-        pg = self.get_page(self._urls['index'])
+        pg = self._page('index')
 
         # Fill in the login form
         form = pg.form(action='/login.phtml')[0]
@@ -181,38 +179,38 @@ class User(NeolibBase):
 
         # Check if the account is frozen
         if 'account has been FROZEN' in pg.content:
-            self._logger.error('User account ' + self.username + ' is frozen')
+            log.error('User account ' + self.username + ' is frozen')
             raise AccountFrozen('Account is frozen')
 
         # Check for password strength
         if 'STOP!  Your password' in pg.content or 'username matches your e-mail' in pg.content:
             # We're actually logged in now, we can ignore this page and just
             # request the index again
-            self._logger.warning('User ' + self.username + ' has an unsecured password')
+            log.warning('User ' + self.username + ' has an unsecured password')
             pg = self.get_page('http://www.neopets.com/')
 
         # Check if account is birthday locked and if a birthday was given
         if 'please verify your birthday' in pg.content and not birthday:
-            self._logger.error('User ' + self.username + ' is birthday locked')
+            log.error('User ' + self.username + ' is birthday locked')
             raise BirthdayLocked('Account is birthday locked')
         elif 'please verify your birthday' in pg.content:
-            self._logger.warning('User ' + self.username + ' is birthday locked. Attempting to submit date')
+            log.warning('User ' + self.username + ' is birthday locked. Attempting to submit date')
             pg = self._submit_birthday(pg, birthday)
 
             if 'Invalid birthday' in pg.content:
-                self._logger.error('Birthday failed for user ' + self.username)
+                log.error('Birthday failed for user ' + self.username)
                 raise InvalidBirthday('Invalid birthday given')
 
         # Check if we've maxed out birthday tries
         if 'birthdate for this account incorrectly 3 times today' in pg.content:
-            self._logger.error('Birthday failed for user ' + self.username)
-            self._logger.warning('Birthday locked for one day')
+            log.error('Birthday failed for user ' + self.username)
+            log.warning('Birthday locked for one day')
             raise InvalidBirthday('Birthday locked for one day')
 
         # Check for Lawyerbot
         if 'Lawyerbot message' in pg.content:
             # We have to take one extra step and accept the EULA
-            self._logger.warning('Lawyerbot detected. Accepting EULA.')
+            log.warning('Lawyerbot detected. Accepting EULA.')
             form = pg.form(action='/accept_terms.phtml')[0]
             form.update(accept='1')
             pg = form.submit(self)
@@ -220,7 +218,7 @@ class User(NeolibBase):
         # If the account doesn't have a Neopet, we will be redirected to create
         # one on the Neopet creation page
         if pg.response.url == 'http://www.neopets.com/reg/page4.phtml':
-            self._logger.error('No active Neopet for user ' + self.username)
+            log.error('No active Neopet for user ' + self.username)
             raise NoActiveNeopet('Missing active pet')
 
         # Return if it was successful
@@ -258,6 +256,7 @@ class User(NeolibBase):
         if type(pg.content) is bytes:
             return pg
 
+        # Track the last page visited for this user (for referer use)
         self._last_page = url
 
         # This image is shown if Neopets is offline

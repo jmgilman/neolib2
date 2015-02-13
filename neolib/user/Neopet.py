@@ -22,3 +22,6 @@ class Neopet:
     health = ''
     mood = ''
     hunger = ''
+
+    def __repr__(self):
+        return "<Neopet '" + self.name + "'>"
