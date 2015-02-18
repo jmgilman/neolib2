@@ -6,8 +6,6 @@ from neolib.item.ItemList import ItemList
 class MSItemList(ItemList):
     """ Represents a list of items returned from querying a main shop """
 
-    _log_name = 'neolib.item.MSItemList'
-
     def buy(self):
         """ Attempts to buy all items in this list with their asking prices
 

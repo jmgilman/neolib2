@@ -8,7 +8,5 @@ class SDBItem(Item):
 
     remove = False
 
-    _log_name = 'neolib.item.SDBItem'
-
     def __repr__(self):
         return "SDB Item <" + self.name + ">"

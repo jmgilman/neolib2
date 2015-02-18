@@ -1,4 +1,41 @@
 {
   "user": {
+    "profile": {
+      "general": {
+        "age": "shields/(.*?).gif",
+        "name": "Name:</b>(.*?)<br/>",
+        "gender": "Gender:</b> <b.*\">(.*?)</b>",
+        "country": "Country:</b>(.*?)<br/>",
+        "last_spotted": "Last Spotted:</b>(.*?)<br/>",
+        "started_playing": "Started Playing:</b>(.*?)<br/>",
+        "hobbies": "Hobbies:</b>(.*?)<br/>"
+      },
+      "colls1": {
+        "secret_avatars": "Secret Avatars:</b><br/>(.*?)<br/>",
+        "stamps": "Stamps:</b><br/>(.*?)<br/>",
+        "site_themes": "Site Themes:</b><br/>(.*?)</td>"
+      },
+      "colls2": {
+        "keyquest_tokens": "Key Quest Tokens:</b>.*?<br/>(.*?) \\(",
+        "neocards": "Neodeck:.*?<br/>(.*?) cards",
+        "neocards2": "</a><br/><b>(.*?)</b> cards",
+        "bd_wins": "\"><b>(.*?) out of"
+      },
+      "shop_gallery": {
+        "shop_name": "<a href=\".*?\"><b>(.*?)</b>",
+        "shop_size": "Size:</b>(.*?)<br/>",
+        "shop_link": "<a href=\"(.*?)\"><b>",
+        "gallery_name": "Gallery.*?\">(.*?)</a>",
+        "gallery_size": "Gallery.*?</b> ([1-9]+).*</td>",
+        "gallery_link": "Gallery:</b> <a href=\"(.*?)\">"
+      },
+      "neopets": {
+        "name": "<b>(.*?)</b><br/>",
+        "gender": ";\">(.*?)</b>",
+        "species": "</b> (.*?)<br/>",
+        "age": "Age:</b> (.*?) days",
+        "level": "Level:</b> (.*?)<"
+      }
+    }
   }
 }

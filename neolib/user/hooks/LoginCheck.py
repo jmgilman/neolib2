@@ -7,9 +7,9 @@ class LoginCheck(Hook):
     """A hook for checking if a user was logged out"""
 
     def execute(self, usr, pg):
-        # First make sure we were already logged in
+        # First make sure we've already logged in at least once
         if usr.logged_in:
-            # Store the request data
+            # Store the previous request data
             url = pg.url
             post_data = pg.post_data
             header_values = pg.header_values
@@ -17,7 +17,7 @@ class LoginCheck(Hook):
             # Check the page for login content
             if 'welcomeLoginButton' in pg.content:
                 log.warning('User ' + usr.username + ' was logged out!')
-                log.warning('Attempting courtesy relogin attempt...')
+                log.warning('Attempting courtesy re-login attempt...')
 
                 try:
                     if usr.login():
@@ -29,4 +29,4 @@ class LoginCheck(Hook):
                     else:
                         raise UserLoggedOut('User ' + usr.username + ' was unable to log back in')
                 except Exception:
-                    log.exception('User ' + usr.username + ' was unable to log back in')
+                    log.exception('User ' + usr.username + ' was unable to log back in', {'pg': pg})

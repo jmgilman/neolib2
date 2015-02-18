@@ -1,3 +1,4 @@
+from neolib.common import xpath
 from neolib.inventory.MSInventory import MSInventory
 from neolib.NeolibBase import NeolibBase
 
@@ -19,17 +20,6 @@ class MainShop(NeolibBase):
     inflation = 0.0
     inventory = None
 
-    _log_name = 'neolib.shop.MainShop'
-
-    _urls = {
-        'shop': 'http://www.neopets.com/objects.phtml?type=shop&obj_type=%s',
-    }
-
-    _paths = {
-        'name': '//*[@id="content"]/table/tr/td[2]/table[1]/tr/td[1]/div/table/tr[1]/td/text()',
-        'inflation': '//*[@id="content"]/table/tr/td[2]/table/tr/td[1]/div/table/tr[2]/td/div/div/b/text()'
-    }
-
     def __init__(self, usr, id):
         """ Loads the shop's name and inventory
 
@@ -41,11 +31,11 @@ class MainShop(NeolibBase):
         self.id = id
 
         # Request the shop page
-        pg = self._get_page('shop', str(id))
+        pg = self._page('shop/main/index', str(id))
 
         # Get the shop name
-        self.name = str(self._xpath('name', pg)[0]).strip()
-        self.inflation = float(self._xpath('inflation', pg)[0].replace('%', ''))
+        self.name = xpath('shop/main/name', pg)[0].strip()
+        self.inflation = float(xpath('shop/main/inflation', pg)[0].replace('%', ''))
 
         # Check for items and load inventory
         if 'Sorry, we are sold out of everything!' not in pg.content:

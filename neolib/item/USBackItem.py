@@ -19,7 +19,3 @@ class USBackItem(Item):
     pg = 0
     remove = False
 
-    _log_name = 'neolib.item.USBackItem'
-
-    def __init__(self, id, usr, name=""):
-        super().__init__(id, usr, name)

@@ -12,22 +12,13 @@ class Inventory(NeolibBase, UserList):
 
     Attributes
         | **data**: A list of items in the inventory
-        | **query_types**: The valid queries that can be supplied to find()
     """
     data = []
-
-    query_types = [
-        'contains',
-        'startswith',
-        'endswith'
-        'gt',
-        'lt',
-    ]
 
     def load(self):
         """ Loads the current inventory
 
-        This function should be overriden by children classes and used to load
+        This function should be overridden by children classes and used to load
         items with the content of the inventory
         """
         pass
@@ -40,69 +31,19 @@ class Inventory(NeolibBase, UserList):
         """
         return self.data
 
-    def find(self, **kwargs):
-        """ Searches the current inventory using keyword arguments
-
-        Loops through each keyword argument and searches the current inventory
-        for any item that has an attribute (key name) that matches a value
-        (key value).
+    def find(self, fn):
+        """ Uses the supplied function to filter the current inventory and returns filtered items.
 
         Args
-            **kwargs**: Keyword arguments used for searching
+            **fn**: The function to use for filtering
 
         Returns
-            A list of items that match the search
+            A list of filtered items
 
         Example
-            carrot = usr.inventory.item(name='carrot')[0]
+            carrot = usr.inventory.find(lambda item: item.name == 'carrot')[0]
         """
-        matches = []
-
-        for item in self.data:
-            match = 0
-            for key in kwargs.keys():
-                try:
-                    # Determine if this query has extra arguments
-                    if '__' in key:
-                        arg = key.split('__')[1]
-                        atrib = key.split('__')[0]
-                        value = getattr(item, atrib)
-
-                        if arg not in self.query_types:
-                            continue
-
-                        if arg == 'contains' and type(value) is str:
-                            if kwargs[key].lower() in value.lower():
-                                match += 1
-                        elif arg == 'startswith' and type(value) is str:
-                            if value.lower().startswith(kwargs[key].lower()):
-                                match += 1
-                        elif arg == 'endswith' and type(value) is str:
-                            if value.lower().endswith(kwargs[key].lower()):
-                                match += 1
-                        elif arg == 'gt' and self._is_int(value):
-                            if int(value) > int(kwargs[key]):
-                                match += 1
-                        elif arg == 'lt' and self._is_init(value):
-                            if int(value) < int(kwargs[key]):
-                                match += 1
-                    else:
-                        value = getattr(item, key)
-                        if type(kwargs[key]) is str:
-                            if kwargs[key].lower() == value.lower():
-                                match += 1
-                        else:
-                            if kwargs[key] == value:
-                                match += 1
-                except Exception:
-                    continue
-
-            if match == len(kwargs.keys()):
-                matches.append(item)
-        return matches
-
-    def __init__(self, usr):
-        super().__init__(usr)
+        return list(filter(fn, self.data))
 
     def __repr__(self):
         return "Inventory <" + str(len(self)) + " items>"

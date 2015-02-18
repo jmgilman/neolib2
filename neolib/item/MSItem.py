@@ -2,6 +2,8 @@ import io
 
 from PIL import Image
 
+from neolib import log
+from neolib.common import BASE_URL, xpath
 from neolib.Exceptions import ParseException
 from neolib.item.Item import Item
 
@@ -18,16 +20,6 @@ class MSItem(Item):
     stock = 0
     stock_id = ''
 
-    _log_name = 'neolib.item.MSItem'
-
-    _urls = {
-        'haggle': 'http://www.neopets.com/haggle.phtml?obj_info_id=%s&stock_id=%s&brr=%s',
-    }
-
-    _paths = {
-        'captcha': '//form[@name="haggleform"]//input[@type="image"]/@src',
-    }
-
     def buy(self, price=0):
         """ Attempts to buy the item from the main shop
 
@@ -42,7 +34,7 @@ class MSItem(Item):
             Boolean indicating if the purchase was successful
         """
         # Goto the haggle page
-        pg = self._get_page('haggle', (self.id, self.stock_id, self.brr))
+        pg = self._page('shop/main/haggle', (self.id, self.stock_id, self.brr))
 
         # Did we get a price?
         if not price:
@@ -54,7 +46,7 @@ class MSItem(Item):
                 form = pg.form(action='haggle.phtml')[0]
 
                 # Download the image
-                url = self._base_url + self._xpath('captcha', pg)[0]
+                url = BASE_URL + xpath('shop/main/captcha', pg)[0]
                 pg = self._usr.get_page(url)
 
                 x, y = self._crack_OCR(io.BytesIO(pg.content))
@@ -70,7 +62,7 @@ class MSItem(Item):
             else:
                 return False
         except Exception:
-            self._logger.exception('Failed to handle haggle page', {'pg': pg})
+            log.exception('Failed to handle haggle page', {'pg': pg})
             raise ParseException('Failed to handle haggle page')
 
     def _crack_OCR(self, img):

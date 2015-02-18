@@ -5,11 +5,14 @@ from functools import reduce
 
 from lxml import etree, html
 from lxml.etree import _ElementUnicodeResult
-from neolib import REGEX, XPATH
+from neolib import log, REGEX, URLS, XPATH
 from neolib.http.Page import Page
 
 # Neopets base URL
 BASE_URL = 'http://www.neopets.com'
+
+# Standard indicator for Neopets error pages
+ERROR_TEXT = 'red_oops.gif'
 
 
 def xpath(path, subject, as_html=False):
@@ -25,18 +28,18 @@ def xpath(path, subject, as_html=False):
     Returns:
         A list of results from querying the object with the xpath query
     """
-    # Try it as a path name first
-    query = ''
-    try:
-        query = reduce(dict.__getitem__, path.split('/'), XPATH)
-    except:
-        query = path
+    # Find the query
+    query = get_query(path, XPATH)
 
     # Test and return
     if type(subject) is Page:
         subject = subject.document
 
     result = subject.xpath(query)
+
+    # Provide a friendly warning if nothing was returned
+    if len(result) < 1:
+        log.warning('Query `' + path + '` failed to find anything!')
 
     # Convert unicode results to strings
     for r in result:
@@ -60,12 +63,8 @@ def match(exp, subject, all=False):
     Returns:
         A list of results from the match
     """
-    # Try it as a path name first
-    query = ''
-    try:
-        query = reduce(dict.__getitem__, exp.split('/'), REGEX)
-    except:
-        query = exp
+    # Find the query
+    query = get_query(exp, REGEX)
 
     # Test and return
     if type(subject) is Page:
@@ -87,6 +86,52 @@ def to_html(element):
 def from_html(html):
     """ Converts an html string into an lxml HTML element """
     return html.document_fromstring(html)
+
+
+def check_error(pg):
+    """ Checks if the current page contains the standard Neopet's error message
+
+    Args:
+        | **pg**:
+
+    Returns:
+        Boolean value indicating if there was an error
+    """
+    if ERROR_TEXT in pg.content:
+        return True
+    else:
+        return False
+
+
+def get_query(name, queries):
+    """ Fetches a query using the given name and dictionary of queries
+
+    Args:
+        | **name**: The string name of the query to reduce to
+
+    Returns:
+        The associated query
+    """
+    query = ''
+    try:
+        query = reduce(dict.__getitem__, name.split('/'), queries)
+    except:
+        log.warning('Using undocumented query: ' + query)
+        query = name
+
+    return query
+
+
+def get_url(name):
+    """ Returns the url using the given name
+
+    Args:
+        | **name**: The name of the url to return
+
+    Returns:
+        The url associated with the given name
+    """
+    return get_query(name, URLS)
 
 
 def is_init(val):

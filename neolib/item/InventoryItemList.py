@@ -1,5 +1,7 @@
 from collections import UserList
 
+from neolib import log
+from neolib.common import check_error
 from neolib.Exceptions import ParseException
 from neolib.item.ItemList import ItemList
 
@@ -13,15 +15,6 @@ class InventoryItemList(ItemList):
     SHOP = 'stock'
     GALLERY = 'gallery'
 
-    _log_name = 'neolib.item.InventoryItemList'
-
-    _urls = {
-        'quickstock': 'http://www.neopets.com/quickstock.phtml'
-    }
-
-    def __init__(self, usr, items):
-        super().__init__(usr, items)
-
     def move(self, location):
         """ Moves all items in the current list to the destination specified
 
@@ -32,11 +25,11 @@ class InventoryItemList(ItemList):
             Boolean inicating if the move was successful
 
         Example:
-            >>> snowballs = usr.inventory.find(name__contains='Snowball')
+            >>> snowballs = usr.inventory.find(lambda item: item.name.contains('Snowball'))
             >>> snowballs.move(snowballs.SHOP)
             True
         """
-        pg = self._get_page('quickstock')
+        pg = self._page('user/inventory/item/quickstock')
         form = pg.form(action='process_quickstock.phtml')[0]
 
         # First we need to build a dictionary of positions and id's
@@ -47,7 +40,7 @@ class InventoryItemList(ItemList):
                     pos = inp.name.split('[')[1].replace(']', '')
                     ids[pos] = inp.value
         except Exception:
-            self._logger.exception('Unable to parse item id\'s')
+            log.exception('Unable to parse item id\'s')
             raise ParseException('Unable to parse item id\'s')
 
         # Next we need to remove all positions that are not changing
@@ -72,7 +65,7 @@ class InventoryItemList(ItemList):
                     if pos not in list(ids.keys()):
                         del form[name]
         except Exception:
-            self._logger.exception('Unable to parse radio fields')
+            log.exception('Unable to parse radio fields')
             raise ParseException('Unable to parse radio fields')
 
         # Finally we need to set the destination for remaining radio fields
@@ -95,7 +88,7 @@ class InventoryItemList(ItemList):
 
         # Now we submit the form and check the result
         pg = form.submit(self._usr)
-        if 'red_oops.gif' in pg.content:
+        if check_error(pg):
             return False
         else:
             return True

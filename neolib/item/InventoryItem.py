@@ -1,3 +1,5 @@
+from neolib import log
+from neolib.common import check_error, xpath
 from neolib.Exceptions import InvalidItemID, ParseException
 from neolib.item.Item import Item
 
@@ -22,48 +24,28 @@ class InventoryItem(Item):
     # GIVE = 'give' (FUTURE)
     # AUCTION = 'auction' (FUTURE)
 
-    _log_name = 'neolib.item.InventoryItem'
-
-    _urls = {
-        'item': 'http://www.neopets.com/iteminfo.phtml?obj_id=%s'
-    }
-
-    _paths = {
-        'image': '/html/body/table[1]/tr/td[1]/img/@src',
-        'name': '/html/body/table[1]/tr/td[2]/text()[2]',
-        'desc': '/html/body/div[2]/span/i/text()',
-        'type': '/html/body/table[2]/tr[1]/td[2]/text()',
-        'weight': '/html/body/table[2]/tr[2]/td[2]/text()',
-        'rarity': '/html/body/table[2]/tr[3]/td[2]/text()',
-        'value': '/html/body/table[2]/tr[4]/td[2]/text()'
-    }
-
-    def __init__(self, id, usr, name=""):
-        """ Initializes parent class with the item id and :class:`User` instance"""
-        super().__init__(id, usr, name)
-
     def get_details(self):
         """ Fills in the item details obtained off the item info page
 
         Most details can be obtained directly off of the user's inventory
         screen, however a few key details like weight and value cannot and this
         function should be called to retrieve these """
-        pg = self._get_page('item', self.id)
+        pg = self._page('user/inventory/item/lookup', self.id)
 
         if "not in your inventory" in pg.content:
-            self._logger.error('No item with id ' + self.id + ' in inventory')
+            log.error('No item with id ' + self.id + ' in inventory')
             raise InvalidItemID(self.id)
 
         try:
-            self.name = str(self._xpath('name', pg)[0].replace(' : ', ''))
-            self.img = str(self._xpath('image', pg)[0])
-            self.desc = str(self._xpath('desc', pg)[0])
-            self.type = str(self._xpath('type', pg)[0])
-            self.weight = str(self._xpath('weight', pg)[0])
-            self.rarity = str(self._xpath('rarity', pg)[0])
-            self.value = str(self._xpath('value', pg)[0])
+            self.name = xpath('user/inventory/item/details/name', pg)[0].replace(' : ', '')
+            self.img = xpath('user/inventory/item/details/image', pg)[0]
+            self.desc = xpath('user/inventory/item/details/desc', pg)[0]
+            self.type = xpath('user/inventory/item/details/type', pg)[0]
+            self.weight = xpath('user/inventory/item/details/weight', pg)[0]
+            self.rarity = xpath('user/inventory/item/details/rarity', pg)[0]
+            self.value = xpath('user/inventory/item/details/value', pg)[0]
         except Exception:
-            self._logger.exception('Failed to parse details for ' + self.name, {'pg': pg})
+            log.exception('Failed to parse details for ' + self.name, {'pg': pg})
             raise ParseException('Failed to parse details for ' + self.name)
 
     def move(self, location):
@@ -80,7 +62,7 @@ class InventoryItem(Item):
             >>> item.move(item.SHOP)
             True
         """
-        pg = self._usr.get_page(self._urls['item'] % self.id)
+        pg = self._page('user/inventory/item/lookup', self.id)
 
         form = pg.form(action='useobject.phtml')[0]
 
@@ -98,7 +80,7 @@ class InventoryItem(Item):
             return False
 
         pg = form.submit(self._usr)
-        if 'red_oops.gif' in pg.content:
+        if check_error(pg):
             return False
         else:
             return True

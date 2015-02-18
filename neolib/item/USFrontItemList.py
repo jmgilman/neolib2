@@ -6,8 +6,6 @@ from neolib.item.ItemList import ItemList
 class USFrontItemList(ItemList):
     """ Represents a list of items returned from querying another user's shop """
 
-    _log_name = 'neolib.item.USFrontItemList'
-
     def buy(self):
         """ Attempts to buy all items from this list
 

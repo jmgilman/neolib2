@@ -1,3 +1,5 @@
+from neolib import log
+from neolib.common import check_error, format_nps, xpath
 from neolib.Exceptions import ParseException
 from neolib.NeolibBase import NeolibBase
 
@@ -23,45 +25,38 @@ class Bank(NeolibBase):
     daily_interest = 0
     interest_collected = False
 
-    _log_name = 'neolib.user.bank'
-
-    _urls = {
-        'index': 'http://www.neopets.com/bank.phtml',
-        'process': 'http://www.neopets.com/process_bank.phtml',
-    }
-
-    _paths = {
-        'rows': '//*[@id="content"]/table/tr/td[2]/div[2]/table/tr[2]/td/table/tr',
-        'daily': '//*[@id="content"]/table/tr/td[2]/table[2]/tr/td/div/table/tr[2]/td/b/text()',
-    }
-
     def load(self):
         """ Loads all bank account details """
         # Get the index
-        pg = self._get_page('index')
+        pg = self._page('bank/index')
 
         # Check if the user has a bank account
         if 'I see you don\'t currently have an account with us' in pg.content:
-            self._logger.warning('User ' + self._usr.username + ' does not have a bank account')
+            log.warning('User ' + self._usr.username + ' does not have a bank account')
             return
 
         # Load the details
         try:
-            rows = self._xpath('rows', pg)
-            self.type = str(rows[0].xpath('./td[2]/text()')[0])
-            self.balance = self._format_nps(rows[1].xpath('./td[2]/text()')[0])
-            self.interest_rate = float(rows[2].xpath('./td[2]/b/text()')[0].replace('%', ''))
-            self.yearly_interest = self._format_nps(rows[3].xpath('./td[2]/text()')[0])
+            # The rows from the main bank account details table
+            rows = xpath('bank/details_rows', pg)
+
+            self.type = xpath('bank/detail', rows[0])[0]
+            self.balance = format_nps(xpath('bank/detail', rows[1])[0])
+            self.interest_rate = float(xpath('bank/detail_bold', rows[2])[0].replace('%', ''))
+            self.yearly_interest = format_nps(xpath('bank/detail', rows[3])[0])
 
             # Some user's don't have enough for daily interest
             if 'you might want to deposit a few more Neopoints' not in pg.content:
-                self.daily_interest = self._format_nps(self._xpath('daily', pg)[0])
+                self.daily_interest = format_nps(xpath('bank/daily_interest', pg)[0])
                 self.interest_collected = True
 
+            # Text will be on the page if they've already collected their daily interest for the day
             if 'You have already collected your interest today' in pg.content:
                 self.interest_collected = True
+            else:
+                self.interest_collected = False
         except Exception:
-            self._logger.exception('Failed to parse user bank details', {'pg': pg})
+            log.exception('Failed to parse user bank details', {'pg': pg})
             raise ParseException('Failed to parse user bank details')
 
     def withdraw(self, amount):
@@ -107,13 +102,10 @@ class Bank(NeolibBase):
         }
 
         # Submit the form
-        pg = self._get_page('process', post_data=data)
+        pg = self._page('bank/action', post_data=data)
 
         # Check the result
-        if 'red_oops.gif' in pg.content:
-            return False
-        else:
-            return True
+        return not check_error(pg)
 
     def __repr__(self):
         return "Bank <" + "{:,}".format(self.balance) + " NP>"

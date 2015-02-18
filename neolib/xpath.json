@@ -1,29 +1,142 @@
 {
-  "inventory": {
-    "personal": {
-      "rows": "//table[@class=\"inventory\"][1]//td",
-      "item": {
-        "id": "substring-after(./a/@onclick, \"(\")",
-        "img": "./a/img/@src",
-        "desc": "./a/img/@title",
-        "name": "./text()",
-        "rarity": "./span/span/text()"
+  "bank": {
+    "daily_interest": "//*[@id=\"content\"]/table/tr/td[2]/table[2]/tr/td/div/table/tr[2]/td/b/text()",
+    "detail" : "./td[2]/text()",
+    "detail_bold": "./td[2]/b/text()",
+    "details_rows": "//*[@id=\"content\"]/table/tr/td[2]/div[2]/table/tr[2]/td/table/tr"
+  },
+  "NST": "//*[@id=\"nst\"]/text()",
+  "shop": {
+    "main": {
+      "captcha": "//form[@name=\"haggleform\"]//input[@type=\"image\"]/@src",
+      "name": "//*[@id=\"content\"]/table/tr/td[2]/table[1]/tr/td[1]/div/table/tr[1]/td/text()",
+      "inflation": "//*[@id=\"content\"]/table/tr/td[2]/table/tr/td[1]/div/table/tr[2]/td/div/div/b/text()",
+      "inventory": {
+        "item_rows": "//*[@id=\"content\"]/table/tr/td[2]/form[2]/div/table/tr/td/div/table/tr[2]/td/table/tr",
+        "item_tds": "./td",
+        "item": {
+          "img": "./a/img/@src",
+          "name": "./b/text()",
+          "onclick": "./a/@onclick",
+          "price": "./text()",
+          "stock": "./text()",
+          "url": "./a/@href"
+        }
       }
     }
   },
-  "NST": "//*[@id=\"nst\"]/text()",
   "user": {
     "details": {
       "active_pet": {
-        "name": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[1]/td/a/b/text()",
-        "species": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[1]/td[2]/b/text()",
-        "health": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[2]/td[2]/b/font/b/text()",
-        "mood": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[3]/td[2]/b/text()",
-        "hunger": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[4]/td[2]/b/span/text()",
         "age": "translate(//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[5]/td[2]/b/text(), \" days\", \"\")",
-        "level": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[6]/td[2]/b/text()"
+        "health": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[2]/td[2]/b/font/b/text()",
+        "hunger": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[4]/td[2]/b/span/text()",
+        "level": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[6]/td[2]/b/text()",
+        "mood": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[3]/td[2]/b/text()",
+        "name": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[1]/td/a/b/text()",
+        "species": "//*[@id=\"content\"]/table/tr/td[1]/div[1]/table/tr[4]/td/table/tr[1]/td[2]/b/text()"
       },
       "neopoints": "translate(//*[@id=\"npanchor\"]/text(), \",\", \"\")"
+    },
+    "inventory": {
+      "item": {
+        "details": {
+          "desc": "/html/body/div[2]/span/i/text()",
+          "image": "/html/body/table[1]/tr/td[1]/img/@src",
+          "name": "/html/body/table[1]/tr/td[2]/text()[2]",
+          "rarity": "/html/body/table[2]/tr[3]/td[2]/text()",
+          "type": "/html/body/table[2]/tr[1]/td[2]/text()",
+          "weight": "/html/body/table[2]/tr[2]/td[2]/text()",
+          "value": "/html/body/table[2]/tr[4]/td[2]/text()"
+        },
+        "desc": "./a/img/@title",
+        "id": "substring-after(./a/@onclick, \"(\")",
+        "img": "./a/img/@src",
+        "name": "./text()",
+        "rarity": "./span/span/text()"
+      },
+      "rows": "//table[@class=\"inventory\"][1]//td"
+    },
+    "profile": {
+      "colls1": "//*[@id=\"usercollections\"]/table/tr[2]/td/table/tr/td[1]",
+      "colls2": "//*[@id=\"usercollections\"]/table/tr[2]/td/table/tr/td[2]",
+      "general": "//*[@id=\"userinfo\"]/table/tr[2]/td/table/tr[1]/td",
+      "neopets": "//*[@id=\"userneopets\"]/table/tr[2]/td/table/tr/td",
+      "shop_gallery": "//*[@id=\"usershop\"]/table/tr[2]/td"
+    },
+    "SDB": {
+      "item_rows": "//*[@id=\"content\"]/table/tr/td[2]/form//tr",
+      "item_details": "./td",
+      "item": {
+        "desc": "./i/text()",
+        "id": "./input/@name",
+        "img": "./img/@src",
+        "name": "./b/text()",
+        "stock": "./b/text()",
+        "type": "./b/text()"
+      },
+      "pages": "//select[@name=\"offset\"][1]/option"
+    },
+    "shop": {
+      "back": {
+        "history": {
+          "rows": "//*[@id=\"content\"]/table/tr/td[2]/table[2]/tr",
+          "details": "./td"
+        },
+        "inventory": {
+          "item_col": "./td",
+          "item": {
+            "desc": "./i/text()",
+            "id": "./input[1]/@value",
+            "img": "./img/@src",
+            "name": "./b/text()",
+            "old_price": "./input[2]/@value",
+            "pos": "./input[1]/@name",
+            "price": "./input/@value",
+            "stock": "./b/text()",
+            "type": "./b/text()"
+          },
+          "main_table": "//form[@action=\"process_market.phtml\"]/table",
+          "page_count": "//*[@id=\"content\"]/table/tr/td[2]/p[3]/a",
+          "table_rows": "./tr"
+        },
+        "keeper": {
+          "img": "//img[@name=\"keeperimage\"]/@src",
+          "name_msg": "//*[@id=\"content\"]/table/tr/td[2]/center[1]/b[1]/text()"
+        },
+        "name": "//*[@id=\"content\"]/table/tr/td[2]/b/text()",
+        "size": "//*[@id=\"content\"]/table/tr/td[2]/text()[9]",
+        "stock_space": "//*[@id=\"content\"]/table/tr/td[2]/center[1]/b[3]/text()",
+        "stocked": "//*[@id=\"content\"]/table/tr/td[2]/center[1]/b[2]/text()",
+        "till": "//*[@id=\"content\"]/table/tr/td[2]/p[1]/b/text()",
+        "upgrade": {
+          "cost": "//form[@action=\"process_market.phtml\"]/input[@type=\"submit\"]/@value"
+        }
+      },
+      "front": {
+        "desc": "//*[@id=\"content\"]/table/tr/td[2]/center",
+        "inventory": {
+          "rows": "//*[@id=\"content\"]/table/tr/td[2]/table/tr",
+          "tds": "./td",
+          "item": {
+            "name": "./b/text()",
+            "price": "./text()[4]",
+            "stock": "./text()[3]",
+            "url": "./a/@href"
+          }
+        },
+        "keeper": {
+          "img": "//*[@id=\"content\"]/table/tr/td[2]/div[3]/img/@src",
+          "text": "//*[@id=\"content\"]/table/tr/td[2]/div[3]/b/text()"
+        },
+        "main_item": "//*[@id=\"content\"]/table/tr/td[2]/div[4]/table/tr/td",
+        "name": "//*[@id=\"content\"]/table/tr/td[2]/b/text()"
+      }
     }
+  },
+  "wizard": {
+    "details": "./td",
+    "rows": "//*[@id=\"content\"]/table/tr/td[2]/div[2]/table[2]/tr",
+    "url": "./a/@href"
   }
 }

@@ -20,3 +20,17 @@ class ItemList(NeolibBase, UserList):
     def __init__(self, usr, items):
         super().__init__(usr)
         self.data = items
+
+    def find(self, fn):
+        """ Uses the supplied function to filter the current inventory and returns filtered items.
+
+        Args
+            **fn**: The function to use for filtering
+
+        Returns
+            A list of filtered items
+
+        Example
+            carrot = usr.inventory.find(lambda item: item.name == 'carrot')[0]
+        """
+        return list(filter(fn, self.data))

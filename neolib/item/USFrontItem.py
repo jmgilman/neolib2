@@ -1,3 +1,4 @@
+from neolib.common import BASE_URL
 from neolib.item.Item import Item
 
 
@@ -11,8 +12,6 @@ class USFrontItem(Item):
     url = ''
     stock = 0
 
-    _log_name = 'neolib.item.USFrontItem'
-
     def buy(self):
         """ Attempts to buy this item from the user's shop
 
@@ -20,7 +19,7 @@ class USFrontItem(Item):
             Boolean value indicating if the purchase was successful
         """
         # Attempt to buy the item
-        pg = self._usr.get_page(self._base_url + '/' + self.url)
+        pg = self._usr.get_page(BASE_URL + '/' + self.url)
 
         if 'does not exist in this shop' in pg.content:
             return False

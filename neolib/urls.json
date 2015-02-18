@@ -1,6 +1,46 @@
 {
+  "bank": {
+    "index": "http://www.neopets.com/bank.phtml",
+    "action": "http://www.neopets.com/process_bank.phtml"
+  },
   "index": "http://www.neopets.com/",
-  "inventory": {
-    "personal": "http://www.neopets.com/inventory.phtml"
-  }
+  "shop": {
+    "main": {
+      "haggle": "http://www.neopets.com/haggle.phtml?obj_info_id=%s&stock_id=%s&brr=%s",
+      "index": "http://www.neopets.com/objects.phtml?type=shop&obj_type=%s"
+    }
+  },
+  "user": {
+    "inventory": {
+      "index": "http://www.neopets.com/inventory.phtml",
+      "item": {
+        "lookup": "http://www.neopets.com/iteminfo.phtml?obj_id=%s",
+        "quickstock": "http://www.neopets.com/quickstock.phtml"
+      }
+    },
+    "profile": {
+      "index": "http://www.neopets.com/userlookup.phtml?user=%s"
+    },
+    "SDB": {
+      "index": "http://www.neopets.com/safetydeposit.phtml",
+      "pages": "http://www.neopets.com/safetydeposit.phtml?offset=%s&obj_name=&category=0",
+      "update": "http://www.neopets.com/process_safetydeposit.phtml?checksub=scan"
+    },
+    "shop": {
+      "back": {
+        "index": "http://www.neopets.com/market.phtml?type=your",
+        "list": "http://www.neopets.com/market.phtml?order_by=id&type=your&lim=%s",
+        "update": "http://www.neopets.com/process_market.phtml",
+        "till": "http://www.neopets.com/market.phtml?type=till",
+        "edit": "http://www.neopets.com/market.phtml?type=edit",
+        "history": "http://www.neopets.com/market.phtml?type=sales"
+      },
+      "front": {
+        "index": "http://www.neopets.com/browseshop.phtml?owner=%s",
+        "index_find": "http://www.neopets.com/browseshop.phtml?owner=%s&buy_obj_info_id=%s&buy_cost_neopoints=%s",
+        "index_lim": "http://www.neopets.com/browseshop.phtml?lower=%s&owner=%s"
+      }
+    }
+  },
+  "wizard": "http://www.neopets.com/market.phtml?type=wizard"
 }

@@ -1,3 +1,5 @@
+from neolib import log
+from neolib.common import match, get_query, REGEX, to_html, xpath
 from neolib.Exceptions import ParseException
 from neolib.NeolibBase import NeolibBase
 from neolib.user.Neopet import Neopet
@@ -63,58 +65,6 @@ class Profile(NeolibBase):
     gallery_size = 0
     gallery_link = ''
 
-    _log_name = 'neolib.user.profile'
-
-    _urls = {
-        'profile': 'http://www.neopets.com/userlookup.phtml?user=%s'
-        }
-
-    _paths = {
-        'general': '//*[@id="userinfo"]/table/tr[2]/td/table/tr[1]/td',
-        'colls1': '//*[@id="usercollections"]/table/tr[2]/td/table/tr/td[1]',
-        'colls2': '//*[@id="usercollections"]/table/tr[2]/td/table/tr/td[2]',
-        'shop_gallery': '//*[@id="usershop"]/table/tr[2]/td',
-        'neopets': '//*[@id="userneopets"]/table/tr[2]/td/table/tr/td',
-        }
-
-    _regex = {
-        'general': {
-            'age': 'shields/(.*?).gif',
-            'name': 'Name:</b>(.*?)<br/>',
-            'gender': 'Gender:</b> <b.*">(.*?)</b>',
-            'country': 'Country:</b>(.*?)<br/>',
-            'last_spotted': 'Last Spotted:</b>(.*?)<br/>',
-            'started_playing': 'Started Playing:</b>(.*?)<br/>',
-            'hobbies': 'Hobbies:</b>(.*?)<br/>',
-            },
-        'colls1': {
-            'secret_avatars': 'Secret Avatars:</b><br/>(.*?)<br/>',
-            'stamps': 'Stamps:</b><br/>(.*?)<br/>',
-            'site_themes': 'Site Themes:</b><br/>(.*?)</td>',
-            },
-        'colls2': {
-            'keyquest_tokens': 'Key Quest Tokens:</b>.*?<br/>(.*?) \(',
-            'neocards': 'Neodeck:.*?<br/>(.*?) cards',
-            'neocards2': '</a><br/><b>(.*?)</b> cards',
-            'bd_wins': '"><b>(.*?) out of',
-            },
-        'shop_gallery': {
-            'shop_name': '<a href=".*?"><b>(.*?)</b>',
-            'shop_size': 'Size:</b>(.*?)<br/>',
-            'shop_link': '<a href="(.*?)"><b>',
-            'gallery_name': 'Gallery.*?">(.*?)</a>',
-            'gallery_size': 'Gallery.*?</b> ([1-9]+).*</td>',
-            'gallery_link': 'Gallery:</b> <a href="(.*?)">',
-            },
-        'neopets': {
-            'name': '<b>(.*?)</b><br/>',
-            'gender': ';">(.*?)</b>',
-            'species': '</b> (.*?)<br/>',
-            'age': 'Age:</b> (.*?) days',
-            'level': 'Level:</b> (.*?)<',
-            },
-        }
-
     def __init__(self, usr):
         """Initializes the profile with the given :class:`User` object
 
@@ -169,7 +119,7 @@ class Profile(NeolibBase):
                 # If the first match failed it will match an entire sentence.
                 # So we just check the results length to see if it failed
                 if len(result) > 4:
-                    result = self._search('colls2/neocards2', html, True)[0]
+                    result = match('user/profile/colls2/neocards2', html, True)[0]
 
                     self.neocards = int(self._remove_extra(result))
                 else:
@@ -181,48 +131,48 @@ class Profile(NeolibBase):
                 return False
 
         # Get the profile page
-        pg = self._get_page('profile', self._usr.username)
+        pg = self._page('user/profile/index', self._usr.username)
 
         try:
             # Parse the general profile details
-            self._set_attributes(pg, 'general', 'general', general_exception)
+            self._set_attributes(pg, 'user/profile/general', 'user/profile/general', general_exception)
 
             # Parse the first set of collections
-            self._set_attributes(pg, 'colls1', 'colls1')
+            self._set_attributes(pg, 'user/profile/colls1', 'user/profile/colls1')
 
             # Parse the second set of collections
-            self._set_attributes(pg, 'colls2', 'colls2', collections2_exception)
+            self._set_attributes(pg, 'user/profile/colls2', 'user/profile/colls2', collections2_exception)
 
             # The user might not have a shop or gallery
             if 'Shop &amp; Gallery' in pg.content:
-                self._set_attributes(pg, 'shop_gallery', 'shop_gallery')
+                self._set_attributes(pg, 'user/profile/shop_gallery', 'user/profile/shop_gallery')
 
             # The neopets are parsed slightly differently
-            for td in pg.xpath(self._paths['neopets']):
-                html = self._to_html(td)
+            for td in xpath('user/profile/neopets', pg):
+                html = to_html(td)
                 pet = Neopet()
 
-                for key in self._regex['neopets'].keys():
-                    result = self._search('neopets/' + key, html)
+                for key in get_query('user/profile/neopets', REGEX).keys():
+                    result = match('user/profile/neopets/' + key, html)
                     if result:
                         setattr(pet, key, self._remove_extra(result[0]))
                 self.neopets.append(pet)
         except:
-            self._logger.exception('Failed to parse user profile with name: ' + self._usr.username, {'pg': pg})
+            log.exception('Failed to parse user profile with name: ' + self._usr.username, {'pg': pg})
             raise ParseException('Could not parse user profile')
 
     def _set_attributes(self, pg, path, exps, exception=None):
-        html = self._path_to_html(path, pg)
+        html = xpath(path, pg, True)
 
         # Loop through all supplied regular expressions
-        for exp in self._regex[exps].keys():
+        for exp in get_query(exps, REGEX).keys():
             # Search the supplied HTML for matches
-            result = self._search(exps + '/' + exp, html)
+            result = match(exps + '/' + exp, html)
 
             # Sometimes weird characters mess with the match so we try it one
             # more time with DOTALL
             if not result:
-                result = self._search(exps + '/' + exp, html, True)
+                result = match(exps + '/' + exp, html, True)
 
             if result:
                 # If an exception function was given, call it and continue if

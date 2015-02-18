@@ -1,3 +1,5 @@
+from neolib import log
+from neolib.common import remove_strs, xpath
 from neolib.Exceptions import ParseException
 from neolib.inventory.Inventory import Inventory
 from neolib.item.USFrontItem import USFrontItem
@@ -6,17 +8,6 @@ from neolib.item.USFrontItemList import USFrontItemList
 
 class USFrontInventory(Inventory):
     """ Provides an interface to another user's shop inventory """
-
-    _log_name = 'neolib.inventory.USFrontInventory'
-
-    _urls = {
-        'shop': 'http://www.neopets.com/browseshop.phtml?lower=%s&owner=%s'
-    }
-
-    _paths = {
-        'rows': '//*[@id="content"]/table/tr/td[2]/table/tr',
-        'tds': './td',
-    }
 
     def load(self, owner, index, pages=False):
         """ Loads the shop contents
@@ -37,7 +28,7 @@ class USFrontInventory(Inventory):
                 while True:
                     lim = i * 80
 
-                    pg = self._get_page('shop', (str(lim), owner))
+                    pg = self._page('user/shop/front/index_lim', (str(lim), owner))
                     self._parse_page(pg)
 
                     if 'Next 80 Items' not in pg.content:
@@ -47,29 +38,29 @@ class USFrontInventory(Inventory):
             else:
                 self._parse_page(index)
         except Exception:
-            self._logger.exception('Failed to parse user front shop with owner: ' + owner, {'pg': pg})
+            log.exception('Failed to parse user front shop with owner: ' + owner, {'pg': pg})
             raise ParseException('Failed to parse user front shop')
 
-    def find(self, **kwargs):
+    def find(self, fn):
         """ Overrides the :class:`Inventory`:`find()` function to return an
         instance of :class:`USFrontItemList`.
 
         See the base class's function for more details
         """
-        result = super().find(**kwargs)
+        result = super().find(fn)
         return USFrontItemList(self._usr, result)
 
     def _parse_page(self, pg):
         # Loop through rows of items
-        for row in self._xpath('rows', pg):
+        for row in xpath('user/shop/front/inventory/rows', pg):
             # Each td is an item
-            for td in self._xpath('tds', row):
+            for td in xpath('user/shop/front/inventory/tds', row):
                 item = USFrontItem('', self._usr)
 
-                item.url = td.xpath('./a/@href')[0]
-                item.name = str(td.xpath('./b/text()')[0])
-                item.stock = int(td.xpath('./text()[3]')[0].replace(' in stock', ''))
-                item.price = int(self._remove_multi(td.xpath('./text()[4]')[0], [',', ' NP', 'Cost : ']))
+                item.url = xpath('user/shop/front/inventory/item/url', td)[0]
+                item.name = xpath('user/shop/front/inventory/item/name', td)[0]
+                item.stock = int(xpath('user/shop/front/inventory/item/stock', td)[0].replace(' in stock', ''))
+                item.price = int(remove_strs(xpath('user/shop/front/inventory/item/price', td)[0], [',', ' NP', 'Cost : ']))
 
                 self.data.append(item)
 

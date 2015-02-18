@@ -1,3 +1,5 @@
+from neolib import log
+from neolib.common import format_nps, xpath
 from neolib.Exceptions import ParseException, WizardBanned
 from neolib.item.WizardItem import WizardItem
 from neolib.item.WizardItemList import WizardItemList
@@ -12,21 +14,6 @@ class Wizard(NeolibBase):
 
     CONTAINING = 'containing'
     IDENTICAL = 'exact'
-
-    _log_name = 'neolib.shop.Wizard'
-
-    _urls = {
-        'index': 'http://www.neopets.com/market.phtml?type=wizard',
-    }
-
-    _paths = {
-        'rows': '//*[@id="content"]/table/tr/td[2]/div[2]/table[2]/tr',
-        'details': './td'
-
-    }
-
-    def __init__(self, usr):
-        super().__init__(usr)
 
     def search(self, item, area='shop', criteria='exact', min=0, max=99999):
         """ Searches the shop wizard with the provided details
@@ -43,7 +30,7 @@ class Wizard(NeolibBase):
                 if the search returned zero results
         """
         # Load the index
-        pg = self._get_page('index')
+        pg = self._page('wizard')
 
         # Grab the form and set the values
         form = pg.form(action='market.phtml')[0]
@@ -72,25 +59,25 @@ class Wizard(NeolibBase):
 
         # Parse the results
         try:
-            rows = self._xpath('rows', pg)
+            rows = xpath('wizard/rows', pg)
             rows.pop(0)
 
             items = []
             for row in rows:
-                details = self._xpath('details', row)
+                details = xpath('wizard/details', row)
 
-                url = details[0].xpath('./a/@href')[0]
+                url = xpath('wizard/url', details[0])[0]
                 id = url.split('obj_info_id=')[1].split('&')[0]
 
                 item = WizardItem(id, self._usr)
                 item.owner = str(details[0].text_content())
                 item.name = str(details[1].text_content())
                 item.stock = int(details[2].text_content())
-                item.price = int(self._remove_multi(details[3].text_content(), [',', ' NP']))
+                item.price = format_nps(details[3].text_content())
 
                 items.append(item)
         except Exception:
-            self._logger.log('Failed to parse shop wizard results', {'pg': pg})
+            log.exception('Failed to parse shop wizard results', {'pg': pg})
             raise ParseException('Could not parse shop wizard results')
 
         return WizardItemList(self._usr, items)

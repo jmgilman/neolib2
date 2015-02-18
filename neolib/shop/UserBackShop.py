@@ -1,3 +1,5 @@
+from neolib import log
+from neolib.common import check_error, format_nps, get_url, xpath
 from neolib.Exceptions import ParseException
 from neolib.inventory.USBackInventory import USBackInventory
 from neolib.NeolibBase import NeolibBase
@@ -39,42 +41,14 @@ class UserBackShop(NeolibBase):
 
     _history = None
 
-    _log_name = 'neolib.shop.UserBackShop'
-
-    _urls = {
-        'index': 'http://www.neopets.com/market.phtml?type=your',
-        'update': 'http://www.neopets.com/process_market.phtml',
-        'till': 'http://www.neopets.com/market.phtml?type=till',
-        'edit': 'http://www.neopets.com/market.phtml?type=edit',
-    }
-
-    _paths = {
-        'shop': {
-            'name': '//*[@id="content"]/table/tr/td[2]/b/text()',
-            'size': '//*[@id="content"]/table/tr/td[2]/text()[9]',
-        },
-        'keeper': {
-            'img': '//img[@name="keeperimage"]/@src',
-            'name_msg': '//*[@id="content"]/table/tr/td[2]/center[1]/b[1]/text()',
-        },
-        'stock': {
-            'stocked': '//*[@id="content"]/table/tr/td[2]/center[1]/b[2]/text()',
-            'free_space': '//*[@id="content"]/table/tr/td[2]/center[1]/b[3]/text()',
-        },
-        'upgrade': {
-            'cost': '//form[@action="process_market.phtml"]/input[@type="submit"]/@value',
-        },
-        'till': '//*[@id="content"]/table/tr/td[2]/p[1]/b/text()',
-    }
-
     @property
     def till(self):
-        pg = self._get_page('till')
+        pg = self._page('user/shop/back/till')
 
         try:
-            return int(self._remove_multi(self._xpath('till', pg)[0], [' NP', ',']))
+            return format_nps(xpath('user/shop/back/till', pg)[0])
         except Exception:
-            self._logger.exception('Failed to parse user till', {'pg': pg})
+            log.exception('Failed to parse user till', {'pg': pg})
             raise ParseException('Failed to parse user till')
 
     @property
@@ -87,33 +61,32 @@ class UserBackShop(NeolibBase):
 
     @property
     def upgrade_cost(self):
-        pg = self._get_page('edit')
-
-        amt = self._xpath('upgrade/cost', pg)[0].split(': ')[1].replace(' NP', '')
-        return int(amt)
-
-    def __init__(self, usr):
-        super().__init__(usr)
+        pg = self._page('user/shop/back/edit')
+        try:
+            return format_nps(xpath('user/shop/back/upgrade/cost', pg)[0].split(': ')[1])
+        except Exception:
+            log.exception('Failed to parse shop upgrade cost', {'pg': pg})
+            raise ParseException('Failed to parse shop upgrade cost')
 
     def load(self):
         """ Loads the user's shop details and inventory """
         # Load the index
-        pg = self._get_page('index')
+        pg = self._page('user/shop/back/index')
 
         # Check if they have a shop
         if 'You don\'t have your own shop yet!' in pg.content:
             # Initialize empty inventory and set status
             self.created = False
             self.inventory = []
-            self._logger.warning('User ' + self._usr.username + ' does not have a shop')
+            log.warning('User ' + self._usr.username + ' does not have a shop')
             return
 
         # Load the main details
-        self.name = self._xpath('shop/name', pg)[0]
-        self.size = int(self._xpath('shop/size', pg)[0].split('size ')[1].replace(')', ''))
-        self.keeper_img = self._xpath('keeper/img', pg)[0]
-        self.keeper_name = self._xpath('keeper/name_msg', pg)[0].split(' says')[0]
-        self.keeper_message = self._xpath('keeper/name_msg', pg)[0].split('says ')[1].replace('\'', '')
+        self.name = xpath('user/shop/back/name', pg)[0]
+        self.size = int(xpath('user/shop/back/size', pg)[0].split('size ')[1].replace(')', ''))
+        self.keeper_img = xpath('user/shop/back/keeper/img', pg)[0]
+        self.keeper_name = xpath('user/shop/back/keeper/name_msg', pg)[0].split(' says')[0]
+        self.keeper_message = xpath('user/shop/back/keeper/name_msg', pg)[0].split('says ')[1].replace('\'', '')
         self.inventory = USBackInventory(self._usr)
 
         # Load the inventory
@@ -124,8 +97,8 @@ class UserBackShop(NeolibBase):
             return
 
         # Load the inventory
-        self.stocked = int(self._xpath('stock/stocked', pg)[0])
-        self.free_space = int(self._xpath('stock/free_space', pg)[0])
+        self.stocked = int(xpath('user/shop/back/stocked', pg)[0])
+        self.free_space = int(xpath('user/shop/back/stock_space', pg)[0])
 
         self.inventory.load(pg)
 
@@ -143,20 +116,20 @@ class UserBackShop(NeolibBase):
         # Determine if any pages have changed
         changed_pages = []
         for i in range(1, self.inventory.pages + 1):
-            if self._page_change(self.inventory.find(pg=i)):
+            if self._page_change(self.inventory.find(lambda item: item.pg == i)):
                 changed_pages.append(i)
 
         # Update the pages with changes
         if len(changed_pages) > 0:
             for pg_num in changed_pages:
-                items = self.inventory.find(pg=pg_num)
+                items = self.inventory.find(lambda item: item.pg == pg_num)
                 data = self._build_data(items, pg_num)
 
-                pg = self._get_page('update', post_data=data,
-                                    header_values={'Referer': self._urls['index']})
+                pg = self._page('user/shop/back/update', post_data=data,
+                                header_values={'Referer': get_url('user/shop/back/index')})
 
-                if 'red_oops.gif' in pg.content:
-                    self._logger.error('Failed to update user shop', {'pg': pg})
+                if check_error(pg):
+                    log.error('Failed to update user shop', {'pg': pg})
                     return False
 
         return True
@@ -171,15 +144,13 @@ class UserBackShop(NeolibBase):
             Boolean indicating if the withdrawal was successful
         """
         # Build the data
-        data = {}
-        data['type'] = 'withdraw'
-        data['amount'] = str(amount)
+        data = {'type': 'withdraw', 'amount': str(amount)}
 
         # Submit the withdrawal
-        pg = self._get_page('update', post_data=data)
+        pg = self._page('user/shop/back/update', post_data=data)
 
         # Return the status
-        if 'red_oops.gif' in pg.content:
+        if check_error(pg):
             return False
         else:
             return True
@@ -190,12 +161,11 @@ class UserBackShop(NeolibBase):
         Returns:
             Boolean indicating whether or not the upgrade was successful
         """
-        data = {}
-        data['type'] = 'upgrade'
+        data = {'type': 'upgrade'}
 
-        pg = self._get_page('update', post_data=data)
+        pg = self._page('user/shop/back/update', post_data=data)
 
-        if 'red_oops.gif' in pg.content:
+        if check_error(pg):
             return False
         else:
             return True
